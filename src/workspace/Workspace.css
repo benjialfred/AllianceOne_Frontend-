@@ -1,0 +1,365 @@
+.workspace-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--color-surface-bg);
+}
+
+/* =========================================
+   SIDEBAR (Ultra Thin & Sleek)
+   ========================================= */
+.workspace-sidebar {
+  height: 100%;
+  border-right: 1px solid var(--color-surface-border);
+  background-color: var(--color-surface-card);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-6) 0;
+  z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+  box-shadow: 1px 0 2px 0 rgba(0,0,0,0.02);
+}
+
+.workspace-sidebar.collapsed {
+  align-items: center;
+}
+
+.sidebar-logo {
+  padding: 0 var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.sidebar-logo-icon, .sidebar-logo-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+[data-theme='dark'] .sidebar-logo-icon, [data-theme='dark'] .sidebar-logo-mini {
+  background: #fff;
+  color: #000;
+}
+
+.sidebar-logo h2 {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.sidebar-org-badge {
+  margin: 0 var(--spacing-4) var(--spacing-8);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-bg);
+  border: 1px solid var(--color-surface-border);
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.sidebar-org-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-org-label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0 var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  margin: var(--spacing-1) var(--spacing-4);
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  font-weight: var(--font-weight-medium);
+}
+
+.nav-item:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.nav-item.active {
+  background-color: var(--color-accent-50);
+  color: var(--color-accent-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+[data-theme='dark'] .sidebar-nav li.active {
+  background-color: var(--color-surface-hover);
+  color: #fff;
+}
+
+.sidebar-workspaces {
+  margin-top: auto;
+  padding: var(--spacing-6) var(--spacing-6) 0;
+  border-top: 1px solid var(--color-surface-border);
+}
+
+.sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: var(--spacing-3);
+}
+
+.sidebar-workspaces ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.sidebar-ws-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.sidebar-ws-item:hover {
+  color: var(--color-text-primary);
+}
+
+.sidebar-ws-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-surface-border);
+  flex-shrink: 0;
+}
+
+.sidebar-ws-item:hover .sidebar-ws-dot {
+  background: var(--color-primary-500);
+}
+
+/* =========================================
+   MAIN AREA & HEADER
+   ========================================= */
+.workspace-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.workspace-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-8);
+  z-index: 5;
+  background: transparent;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.header-menu-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.header-menu-btn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.search-bar-mock {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  width: 320px;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-bar-mock:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme='dark'] .search-bar-mock:hover {
+  border-color: #334155;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.workspace-content {
+  flex: 1;
+  padding: var(--spacing-4) var(--spacing-8) var(--spacing-8);
+  overflow-y: auto;
+}
+
+/* =========================================
+   BENTO BOX DASHBOARD
+   ========================================= */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+  gap: var(--spacing-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bento-card {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-surface-border);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bento-welcome {
+  grid-column: span 2;
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-500) 100%);
+  color: #fff;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-welcome h1 {
+  color: #fff;
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-2);
+  z-index: 1;
+}
+
+.bento-welcome p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-sm);
+  max-width: 80%;
+  line-height: 1.6;
+  z-index: 1;
+  margin-bottom: var(--spacing-6);
+}
+
+.bento-welcome .actions {
+  margin-top: auto;
+  z-index: 1;
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+/* Decorative background for welcome card */
+.bento-welcome::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bento-stat {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-2);
+}
+
+.bento-stat-value {
+  font-size: 3rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.bento-stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.bento-actions-list {
+  grid-column: span 1;
+  grid-row: span 2;
+  gap: var(--spacing-4);
+}
+
+.bento-actions-list h3 {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}

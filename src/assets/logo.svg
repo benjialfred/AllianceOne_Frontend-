@@ -1,0 +1,16 @@
+<svg xmlns="http://www.0w.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" rx="24" fill="#0f172a" />
+  <text 
+    x="50%" 
+    y="54%" 
+    dominant-baseline="middle" 
+    text-anchor="middle" 
+    fill="#ffffff" 
+    font-family="system-ui, -apple-system, Inter, sans-serif" 
+    font-weight="700" 
+    font-size="64"
+    letter-spacing="-0.05em"
+  >
+    A
+  </text>
+</svg>

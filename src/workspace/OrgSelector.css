@@ -1,0 +1,191 @@
+.org-selector-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--color-surface-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glowing orb effect in the background for premium feel */
+.org-selector-backdrop::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  top: -150px;
+  right: -100px;
+  pointer-events: none;
+}
+
+.org-selector-card {
+  width: 480px;
+  max-height: 85vh;
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.org-selector-header {
+  padding: var(--spacing-12) var(--spacing-8) var(--spacing-8);
+  text-align: center;
+}
+
+.org-selector-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-8);
+}
+
+.org-selector-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--color-primary-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='dark'] .org-selector-logo-icon {
+  background: #fff;
+  color: #000;
+}
+
+.org-selector-header h1 {
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-3);
+}
+
+.org-selector-header p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.org-selector-list {
+  padding: 0 var(--spacing-8) var(--spacing-12);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.org-selector-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-surface-border);
+  background: var(--color-surface-card);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+}
+
+.org-selector-item:hover {
+  background: var(--color-surface-hover);
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] .org-selector-item:hover {
+  border-color: #334155;
+}
+
+.org-selector-item-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-bg);
+  border: 1px solid var(--color-surface-border);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.org-selector-item:hover .org-selector-item-icon {
+  background: var(--color-surface-card);
+}
+
+.org-selector-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.org-selector-item-name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.org-selector-item-legal {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.org-selector-item-arrow {
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.org-selector-item:hover .org-selector-item-arrow {
+  color: var(--color-text-primary);
+}
+
+.org-selector-empty,
+.org-selector-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-8);
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.org-selector-error {
+  color: var(--color-danger);
+}
+
+.org-selector-error span {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.org-selector-spinner {
+  animation: spin 1s linear infinite;
+}

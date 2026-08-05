@@ -1,0 +1,168 @@
+.command-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  z-index: 9999;
+}
+
+.command-dialog {
+  width: 100%;
+  max-width: 640px;
+  background: var(--color-surface-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-surface-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Stronger shadow for spotlight */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-4);
+  border-bottom: 1px solid var(--color-surface-border);
+  gap: var(--spacing-3);
+}
+
+.command-icon {
+  color: var(--color-primary-500);
+}
+
+.command-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: var(--spacing-5) 0;
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  outline: none;
+  font-family: inherit;
+  font-weight: var(--font-weight-medium);
+}
+
+.command-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.command-shortcut-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.command-shortcut-hint kbd {
+  background: var(--color-surface-bg);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.7rem;
+}
+
+.command-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--spacing-2);
+}
+
+/* Scrollbar stylisée */
+.command-list::-webkit-scrollbar {
+  width: 8px;
+}
+.command-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.command-list::-webkit-scrollbar-thumb {
+  background: var(--color-surface-border);
+  border-radius: 4px;
+}
+.command-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+.command-empty {
+  padding: var(--spacing-12) var(--spacing-4);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.command-group {
+  margin-bottom: var(--spacing-2);
+}
+
+.command-group-title {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.command-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.command-item:last-child {
+  margin-bottom: 0;
+}
+
+.command-item:hover, .command-item.selected {
+  background: var(--color-primary-600);
+  color: #fff;
+}
+
+.command-item-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.command-shortcuts {
+  display: flex;
+  gap: 4px;
+}
+
+.command-shortcuts kbd {
+  background: var(--color-surface-bg);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  font-family: inherit;
+  color: var(--color-text-muted);
+}
+
+.command-item:hover .command-shortcuts kbd,
+.command-item.selected .command-shortcuts kbd {
+  background: rgba(0,0,0,0.2);
+  border-color: transparent;
+  color: #fff;
+}
