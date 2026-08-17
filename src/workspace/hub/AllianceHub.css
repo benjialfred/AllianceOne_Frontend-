@@ -301,51 +301,62 @@
 
 .hub-app-tiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .os-app-tile {
-  background: var(--color-surface-card);
-  border: 1px solid var(--color-surface-border);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-2xl);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+  transition: all var(--transition-medium);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  backdrop-filter: var(--blur-md);
+  
+  /* Stagger animation based on nth-child (assuming 8 tiles max) */
+  animation: staggerUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+.os-app-tile:nth-child(1) { animation-delay: 0.05s; }
+.os-app-tile:nth-child(2) { animation-delay: 0.10s; }
+.os-app-tile:nth-child(3) { animation-delay: 0.15s; }
+.os-app-tile:nth-child(4) { animation-delay: 0.20s; }
+.os-app-tile:nth-child(5) { animation-delay: 0.25s; }
+.os-app-tile:nth-child(6) { animation-delay: 0.30s; }
+.os-app-tile:nth-child(7) { animation-delay: 0.35s; }
 
 .os-app-tile::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--module-accent, #4f46e5);
-  opacity: 0;
-  transition: opacity var(--transition-fast);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at top right, var(--module-accent) 0%, transparent 50%);
+  opacity: 0.05;
+  transition: opacity var(--transition-medium);
+  pointer-events: none;
 }
 
 .os-app-tile:hover {
-  transform: translateY(-3px);
-  border-color: var(--module-accent, var(--color-text-muted));
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px) scale(1.01);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .os-app-tile:hover::before {
-  opacity: 1;
+  opacity: 0.15;
 }
 
 .app-tile-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  align-items: flex-start;
 }
 
 .app-tile-icon-frame {
@@ -412,6 +423,27 @@
   border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
+}
+
+.hub-workspace {
+  background: radial-gradient(circle at top left, var(--color-obsidian-700), var(--color-obsidian-900));
+  min-height: 100vh;
+  color: var(--color-text-primary);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  animation: hubFadeIn var(--transition-medium);
+}
+
+@keyframes hubFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes staggerUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .metric-tag {
@@ -786,4 +818,20 @@
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
+}
+
+/* Shimmer / Skeleton Animation for loading state */
+@keyframes shimmerPulse {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-metric {
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 75%);
+  background-size: 200% 100%;
+  animation: shimmerPulse 2s infinite ease-in-out;
+  border: 1px solid transparent;
 }

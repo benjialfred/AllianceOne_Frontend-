@@ -64,23 +64,24 @@ export const MyApplicationsGrid: React.FC = () => {
         {installedModules.map((mod) => {
           const Icon = mod.icon;
           
-          // Override mock metrics with real API metrics
-          let moduleMetrics = mod.metrics;
+          // Construct real API metrics
+          let moduleMetrics: { label: string; value: string }[] | null = null;
+          
           if (metrics) {
             if (mod.id === 'education') {
               moduleMetrics = [
-                { label: 'élèves', value: metrics.education.totalStudents.toString() },
+                { label: 'élèves actifs', value: metrics.education.totalStudents.toString() },
                 { label: 'en attente', value: metrics.education.pendingEnrollments.toString() }
               ];
             } else if (mod.id === 'finance') {
               moduleMetrics = [
-                { label: 'trésorerie', value: metrics.finance.totalRevenue.toLocaleString() + ' FCFA' },
+                { label: 'trésorerie nette', value: metrics.finance.totalRevenue.toLocaleString() + ' FCFA' },
                 { label: 'factures attente', value: metrics.finance.pendingInvoices.toString() }
               ];
             } else if (mod.id === 'inventory') {
               moduleMetrics = [
                 { label: 'valeur stock', value: metrics.inventory.totalStockValue.toLocaleString() + ' FCFA' },
-                { label: 'alertes', value: metrics.inventory.criticalAlerts.toString() }
+                { label: 'alertes stock', value: metrics.inventory.criticalAlerts.toString() }
               ];
             }
           }
@@ -112,17 +113,22 @@ export const MyApplicationsGrid: React.FC = () => {
                 <p className="app-tile-tagline">{mod.tagline}</p>
               </div>
 
-              {/* Live Metric Badges */}
-              {moduleMetrics && (
-                <div className="app-tile-metrics-row">
-                  {moduleMetrics.map((m, i) => (
+              {/* Live Metric Badges (or Skeletons if loading) */}
+              <div className="app-tile-metrics-row">
+                {moduleMetrics ? (
+                  moduleMetrics.map((m, i) => (
                     <div key={i} className="app-tile-metric">
                       <span className="metric-tag">{m.label}</span>
                       <strong className="metric-num">{m.value}</strong>
                     </div>
-                  ))}
-                </div>
-              )}
+                  ))
+                ) : (
+                  <>
+                    <div className="app-tile-metric skeleton-metric"></div>
+                    <div className="app-tile-metric skeleton-metric"></div>
+                  </>
+                )}
+              </div>
 
               {/* Hover Expansion Footer */}
               <div className="app-tile-footer">

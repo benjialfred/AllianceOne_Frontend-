@@ -41,12 +41,6 @@ export interface ModuleManifest {
   lastUpdated: string;
   permissions: string[];
   features: string[];
-  metrics?: {
-    label: string;
-    value: string;
-    change?: string;
-    trend?: 'up' | 'down' | 'neutral';
-  }[];
 }
 
 export const ALLIANCE_MODULES: ModuleManifest[] = [
@@ -76,10 +70,6 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
       'Calcul automatique des moyennes et classements',
       'Génération de bulletins et relevés PDF officiels',
       'Cartes scolaires biométriques & QR Code'
-    ],
-    metrics: [
-      { label: 'Élèves Inscrits', value: '482', change: '+12%', trend: 'up' },
-      { label: 'Taux de Recouvrement', value: '88.4%', change: '+4.1%', trend: 'up' }
     ]
   },
   {
@@ -108,10 +98,6 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
       'Méthode PMP & valorisation temps réel',
       'Bons de commande & réassort automatique',
       'Ordres de fabrication & nomenclatures (BOM)'
-    ],
-    metrics: [
-      { label: 'Valeur de Stock', value: '42.8M FCFA', change: '+2.4%', trend: 'up' },
-      { label: 'Alertes Réassort', value: '3 articles', change: 'Priorité', trend: 'down' }
     ]
   },
   {
@@ -140,10 +126,6 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
       'Facturation certifiée avec suivi des paiements',
       'Budgets prévisionnels vs réalisés',
       'Tontines & micro-épargne d’entreprise'
-    ],
-    metrics: [
-      { label: 'Trésorerie Nette', value: '18.4M FCFA', change: '+8.2%', trend: 'up' },
-      { label: 'Factures en Attente', value: '4', change: '3.1M FCFA', trend: 'neutral' }
     ]
   },
   {
@@ -172,10 +154,6 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
       'Filtres par priorité, membre et échéance',
       'Checklists & sous-tâches interactives',
       'Timeline visuelle des projets'
-    ],
-    metrics: [
-      { label: 'Tâches Actives', value: '24', change: '6 urgentes', trend: 'neutral' },
-      { label: 'Vélocité', value: '92%', change: '+5%', trend: 'up' }
     ]
   },
   {
@@ -203,10 +181,6 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
       'Catalogue avec code-barres et ISBN',
       'Enregistrement instantané des emprunts et retours',
       'Calcul automatique des pénalités de retard'
-    ],
-    metrics: [
-      { label: 'Ouvrages Référencés', value: '1 240', change: '+32 ce mois', trend: 'up' },
-      { label: 'Prêts en cours', value: '38', change: '2 retards', trend: 'neutral' }
     ]
   },
   {

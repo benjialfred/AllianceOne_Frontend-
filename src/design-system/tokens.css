@@ -129,9 +129,66 @@
   --glass-blur: blur(16px);
   
   /* --- Transitions --- */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =====================================================================
+   ALLIANCE DESIGN SYSTEM (ADS) - OS TOKENS V2 (ULTRA PREMIUM)
+   Palette: Obsidienne Profond, Titane, Or Métallique, Cuivre, Émeraude
+   ===================================================================== */
+
+:root {
+  /* --- PALETTE DE BASE : OBSIDIENNE & TITANE --- */
+  --color-obsidian-900: #040508; /* Noir absolu très légèrement bleuté */
+  --color-obsidian-800: #0a0d14; /* Fond principal */
+  --color-obsidian-700: #121620; /* Cartes et surfaces */
+  --color-obsidian-600: #1a1f2e; /* Bordures subtiles */
+  --color-obsidian-400: #8c97a8; /* Textes secondaires */
+  --color-obsidian-200: #d1d6e0; /* Textes principaux */
+  --color-obsidian-50:  #f8fafc; /* Blanc cassé Titane */
+
+  /* --- ACCENTS PREMIUM --- */
+  --color-gold-imperial: #d4af37;
+  --color-gold-muted: #b49126;
+  --color-copper: #c76f47;
+  --color-emerald-deep: #065f46;
+  --color-emerald-glow: #10b981;
+  
+  /* --- SEMANTIQUE DES SURFACES --- */
+  --color-surface-bg: var(--color-obsidian-800);
+  --color-surface-card: var(--color-obsidian-700);
+  --color-surface-hover: rgba(255, 255, 255, 0.04);
+  --color-surface-border: var(--color-obsidian-600);
+  --color-surface-border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* --- SEMANTIQUE TYPOGRAPHIQUE --- */
+  --color-text-primary: var(--color-obsidian-50);
+  --color-text-secondary: var(--color-obsidian-200);
+  --color-text-muted: var(--color-obsidian-400);
+
+  /* --- SEMANTIQUE DES ETATS --- */
+  --color-success-bg: rgba(16, 185, 129, 0.1);
+  --color-success-text: var(--color-emerald-glow);
+  --color-warning-bg: rgba(212, 175, 55, 0.1);
+  --color-warning-text: var(--color-gold-imperial);
+  --color-danger-bg: rgba(199, 111, 71, 0.1);
+  --color-danger-text: #f87171;
+  
+  /* --- SPATIAL GLASSMORPHISM & OMBRES --- */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(255, 255, 255, 0.05) inset;
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6), 0 1px 1px rgba(255, 255, 255, 0.1) inset;
+  
+  /* --- SPATIAL BLURS --- */
+  --blur-md: blur(12px);
+  --blur-lg: blur(24px);
+
+  /* --- TRANSITIONS CUBIC BEZIER (Extrême Fluidité) --- */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =========================================
