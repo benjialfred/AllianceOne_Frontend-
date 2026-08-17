@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import schoolVideo from '../../../assets/Cour_d_ecole_Duration_s.mp4';
 import campusVideo from '../../../assets/Campus_Hero_Dashboard_prin.mp4';
+import { useHubStore } from '../../../core/stores/hubStore';
 
 interface ActivityEvent {
   id: string;
@@ -82,56 +83,42 @@ export const SpatialActivityAndStory: React.FC = () => {
     }
   };
 
-  const events: ActivityEvent[] = [
-    {
-      id: 'evt-1',
-      module: 'Éducation',
-      action: 'Nouvelle Inscription',
-      subject: 'Marc Aurèle Ndomo (1ère S1)',
-      detail: 'Dossier académique validé. Reçu de scolarité généré.',
-      timestamp: 'Il y a 14 min',
-      icon: GraduationCap,
-      accentColor: '#4f46e5',
-      routePath: '/education/students',
-      badge: 'Validé'
-    },
-    {
-      id: 'evt-2',
-      module: 'Finance',
-      action: 'Paiement Reçu',
-      subject: '120 000 FCFA — Tranche 2',
-      detail: 'Règlement scolarité (Caisse Principale) élève Biya Christian.',
-      timestamp: 'Il y a 32 min',
-      icon: Landmark,
-      accentColor: '#059669',
-      routePath: '/finance/transactions',
-      badge: 'Encaissé'
-    },
-    {
-      id: 'evt-3',
-      module: 'Stock',
-      action: 'Mouvement Stock',
-      subject: 'Entrée Bon #BC-2026-084',
-      detail: '+500 Manuels de Mathématiques 3e au Dépôt Central.',
-      timestamp: 'Il y a 1h 10m',
-      icon: Package,
-      accentColor: '#0ea5e9',
-      routePath: '/inventory/stock-movements',
-      badge: '+500 Unités'
-    },
-    {
-      id: 'evt-4',
-      module: 'Tâches',
-      action: 'Jalon Terminé',
-      subject: 'Calcul Moyennes Trimestre 1',
-      detail: 'Validation des notes par le Directeur des Études.',
-      timestamp: 'Il y a 2h 45m',
-      icon: FolderKanban,
-      accentColor: '#8b5cf6',
-      routePath: '/tasks/board',
-      badge: '100%'
+  const { metrics } = useHubStore();
+
+  const getModuleIcon = (moduleName: string) => {
+    switch (moduleName) {
+      case 'Éducation': return GraduationCap;
+      case 'Finance': return Landmark;
+      case 'Stock': return Package;
+      case 'Tâches': return FolderKanban;
+      default: return Activity;
     }
-  ];
+  };
+
+  const getModuleColor = (moduleName: string) => {
+    switch (moduleName) {
+      case 'Éducation': return '#4f46e5';
+      case 'Finance': return '#059669';
+      case 'Stock': return '#0ea5e9';
+      case 'Tâches': return '#8b5cf6';
+      default: return '#64748b';
+    }
+  };
+
+  const displayEvents: ActivityEvent[] = metrics?.activities 
+    ? metrics.activities.map(act => ({
+        id: act.id,
+        module: act.module as any,
+        action: act.action,
+        subject: act.subject,
+        detail: act.detail,
+        timestamp: act.timestamp,
+        routePath: act.routePath,
+        badge: act.badge,
+        icon: getModuleIcon(act.module),
+        accentColor: getModuleColor(act.module)
+      }))
+    : [];
 
   return (
     <section className="hub-spatial-section">
@@ -147,38 +134,44 @@ export const SpatialActivityAndStory: React.FC = () => {
           </div>
 
           <div className="activity-stream-compact-card">
-            {events.map((evt) => {
-              const Icon = evt.icon;
-              return (
-                <div
-                  key={evt.id}
-                  className="activity-compact-row"
-                  onClick={() => navigate(evt.routePath)}
-                >
-                  <div 
-                    className="activity-icon-bubble"
-                    style={{ backgroundColor: `${evt.accentColor}18`, color: evt.accentColor }}
+            {displayEvents.length === 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '13px' }}>
+                Aucune activité récente.
+              </div>
+            ) : (
+              displayEvents.map((evt) => {
+                const Icon = evt.icon;
+                return (
+                  <div
+                    key={evt.id}
+                    className="activity-compact-row"
+                    onClick={() => navigate(evt.routePath)}
                   >
-                    <Icon size={15} />
-                  </div>
-
-                  <div className="activity-meta-group">
-                    <div className="activity-headline-line">
-                      <span className="activity-module-name" style={{ color: evt.accentColor }}>
-                        {evt.module}
-                      </span>
-                      <span className="activity-time-text">
-                        <Clock size={10} /> {evt.timestamp}
-                      </span>
+                    <div 
+                      className="activity-icon-bubble"
+                      style={{ backgroundColor: `${evt.accentColor}18`, color: evt.accentColor }}
+                    >
+                      <Icon size={15} />
                     </div>
-                    <div className="activity-subject-text">{evt.subject}</div>
-                    <div className="activity-detail-text">{evt.detail}</div>
-                  </div>
 
-                  <ArrowUpRight size={14} className="activity-arrow" />
-                </div>
-              );
-            })}
+                    <div className="activity-meta-group">
+                      <div className="activity-headline-line">
+                        <span className="activity-module-name" style={{ color: evt.accentColor }}>
+                          {evt.module}
+                        </span>
+                        <span className="activity-time-text">
+                          <Clock size={10} /> {evt.timestamp}
+                        </span>
+                      </div>
+                      <div className="activity-subject-text">{evt.subject}</div>
+                      <div className="activity-detail-text">{evt.detail}</div>
+                    </div>
+
+                    <ArrowUpRight size={14} className="activity-arrow" />
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 

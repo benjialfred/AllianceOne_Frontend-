@@ -20,10 +20,12 @@ import {
 import { ModuleRegistry } from '../../../core/modules/registry';
 import type { ModuleManifest } from '../../../core/modules/registry';
 import { ModuleLaunchTransition } from './ModuleLaunchTransition';
+import { useHubStore } from '../../../core/stores/hubStore';
 
 export const MyApplicationsGrid: React.FC = () => {
   const navigate = useNavigate();
   const installedModules = ModuleRegistry.getInstalled();
+  const { metrics } = useHubStore();
 
   // Launch transition state
   const [launchingModule, setLaunchingModule] = useState<{
@@ -61,6 +63,28 @@ export const MyApplicationsGrid: React.FC = () => {
       <div className="hub-app-tiles-grid">
         {installedModules.map((mod) => {
           const Icon = mod.icon;
+          
+          // Override mock metrics with real API metrics
+          let moduleMetrics = mod.metrics;
+          if (metrics) {
+            if (mod.id === 'education') {
+              moduleMetrics = [
+                { label: 'élèves', value: metrics.education.totalStudents.toString() },
+                { label: 'en attente', value: metrics.education.pendingEnrollments.toString() }
+              ];
+            } else if (mod.id === 'finance') {
+              moduleMetrics = [
+                { label: 'trésorerie', value: metrics.finance.totalRevenue.toLocaleString() + ' FCFA' },
+                { label: 'factures attente', value: metrics.finance.pendingInvoices.toString() }
+              ];
+            } else if (mod.id === 'inventory') {
+              moduleMetrics = [
+                { label: 'valeur stock', value: metrics.inventory.totalStockValue.toLocaleString() + ' FCFA' },
+                { label: 'alertes', value: metrics.inventory.criticalAlerts.toString() }
+              ];
+            }
+          }
+          
           return (
             <div
               key={mod.id}
@@ -89,9 +113,9 @@ export const MyApplicationsGrid: React.FC = () => {
               </div>
 
               {/* Live Metric Badges */}
-              {mod.metrics && (
+              {moduleMetrics && (
                 <div className="app-tile-metrics-row">
-                  {mod.metrics.map((m, i) => (
+                  {moduleMetrics.map((m, i) => (
                     <div key={i} className="app-tile-metric">
                       <span className="metric-tag">{m.label}</span>
                       <strong className="metric-num">{m.value}</strong>
