@@ -82,22 +82,30 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     script.async = true;
     script.defer = true;
     script.onload = () => {
-      if ((window as any).google) {
-        (window as any).google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: handleGoogleResponse,
-        });
-        (window as any).google.accounts.id.renderButton(
-          document.getElementById('google-signin-btn'),
-          { 
-            theme: 'outline', 
-            size: 'large', 
-            width: '100%',
-            text: mode === 'login' ? 'signin_with' : 'signup_with',
-            shape: 'rectangular',
-            logo_alignment: 'center'
-          }
-        );
+      try {
+        if ((window as any).google?.accounts?.id) {
+          (window as any).google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            use_fedcm_for_prompt: true,
+            itp_support: true,
+          });
+          (window as any).google.accounts.id.renderButton(
+            document.getElementById('google-signin-btn'),
+            { 
+              theme: 'outline', 
+              size: 'large', 
+              width: '100%',
+              text: mode === 'login' ? 'signin_with' : 'signup_with',
+              shape: 'rectangular',
+              logo_alignment: 'center'
+            }
+          );
+        }
+      } catch (err) {
+        console.warn('Google GSI initialization notice:', err);
       }
     };
     document.head.appendChild(script);
