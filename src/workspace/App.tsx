@@ -1,24 +1,60 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../design-system/components/Button';
-import { Moon, Sun, LayoutDashboard, Users, GraduationCap, BookOpen, Book, FileText, Calendar, BarChart, CreditCard, Edit3, Settings, Library, Search, Package, Warehouse as WarehouseIcon, History, ClipboardList, Truck, ShoppingCart, SlidersHorizontal, Landmark, PieChart, ArrowRightLeft, Factory, FolderKanban, ListTodo, CheckSquare, Layers } from 'lucide-react';
+import { 
+  Moon, 
+  Sun, 
+  LayoutDashboard, 
+  Users, 
+  GraduationCap, 
+  BookOpen, 
+  Book, 
+  FileText, 
+  Calendar, 
+  CreditCard, 
+  Edit3, 
+  Settings, 
+  Library, 
+  Package, 
+  Warehouse as WarehouseIcon, 
+  History, 
+  ClipboardList, 
+  Truck, 
+  ShoppingCart, 
+  Factory, 
+  FolderKanban, 
+  ListTodo, 
+  CheckSquare, 
+  Layers, 
+  Landmark, 
+  PieChart, 
+  ChevronLeft, 
+  ChevronRight,
+  Sparkles
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Workspace } from '../core/workspace-sdk';
 import { ManifestService } from '../core/services/ManifestService';
-import { CommandPalette } from './CommandPalette';
-import { ModuleSelector } from './ModuleSelector';
+import { GlobalNavbar } from './components/GlobalNavbar';
+import { UniversalCommandPalette } from './components/UniversalCommandPalette';
+import { UniversalCreateModal } from './components/UniversalCreateModal';
+import { NotificationsDrawer } from './components/NotificationsDrawer';
+import { AllianceHub } from './hub/AllianceHub';
+import { MarketplacePage } from './pages/MarketplacePage';
+import { DevelopersPage } from './pages/DevelopersPage';
+import { ServicesPage } from './pages/ServicesPage';
+import { CommunityPage } from './pages/CommunityPage';
+import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
 import { usePlatformStore } from '../core/stores/platformStore';
 import { identityApi } from '../core/api/identity';
-import { Logo } from '../design-system/components/Logo';
-import { DynamicDashboard } from '../dashboard-engine/DynamicDashboard';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, NavLink } from 'react-router-dom';
 import EducationModuleRoutes from '../modules/education/App';
 import InventoryModuleRoutes from '../modules/inventory/App';
 import FinanceModuleRoutes from '../modules/finance/App';
 import LibraryModuleRoutes from '../modules/library/App';
 import TasksModuleRoutes from '../modules/tasks/App';
-import { GlobalMenu } from './components/GlobalMenu';
 import './Workspace.css';
 
+// Navigation configurations for specialized module sidebars
 const educationNavigation: any[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/education", icon: LayoutDashboard, shortcut: '⌘ 1' },
@@ -92,7 +128,7 @@ const libraryNavigation: any[] = [
     { label: "Tableau de bord", path: "/library", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'CATALOGUE', items: [
-    { label: "Ouvrages", path: "/library/books", icon: Book },
+    { label: "Ouvrages & Fonds", path: "/library/books", icon: Book },
   ]}
 ];
 
@@ -111,336 +147,219 @@ const tasksNavigation: any[] = [
 ];
 
 export const WorkspaceShell: React.FC = () => {
-  const currentModule = usePlatformStore((s) => s.currentModule);
   const currentOrganization = usePlatformStore((s) => s.currentOrganization);
+  const setOrganization = usePlatformStore((s) => s.setOrganization);
+  const setOrganizations = usePlatformStore((s) => s.setOrganizations);
   const setWorkspaces = usePlatformStore((s) => s.setWorkspaces);
-  const theme = usePlatformStore((s) => s.theme);
-  const toggleTheme = usePlatformStore((s) => s.toggleTheme);
   const sidebarCollapsed = usePlatformStore((s) => s.sidebarCollapsed);
   const toggleSidebar = usePlatformStore((s) => s.toggleSidebar);
-  const navigate = useNavigate();
   const location = useLocation();
 
+  // Modals state
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+
+  // Load organizations on start
   useEffect(() => {
-    if (!currentOrganization) return;
     identityApi
-      .getWorkspaces()
-      .then((data) => setWorkspaces(data))
-      .catch((err) => console.error('Failed to load workspaces:', err));
-  }, [currentOrganization, setWorkspaces]);
+      .getOrganizations()
+      .then((orgs) => {
+        if (orgs && orgs.length > 0) {
+          setOrganizations(orgs);
+          if (!currentOrganization) {
+            setOrganization(orgs[0]);
+          }
+        } else if (!currentOrganization) {
+          // Default fallback organization for seamless experience
+          const defaultOrg = {
+            id: 'b7e52a92-628b-4b14-8f19-35a22d4f820c',
+            name: 'Collège & Lycée Bilingue Émergence',
+            slug: 'emergence-school'
+          };
+          setOrganization(defaultOrg);
+        }
+      })
+      .catch((err) => {
+        console.warn('Backend identity offline, using default organization fallback:', err);
+        if (!currentOrganization) {
+          setOrganization({
+            id: 'b7e52a92-628b-4b14-8f19-35a22d4f820c',
+            name: 'Collège & Lycée Bilingue Émergence',
+            slug: 'emergence-school'
+          });
+        }
+      });
+  }, [currentOrganization, setOrganization, setOrganizations]);
 
+  // Global Keyboard Shortcuts (⌘K / Ctrl+K)
   useEffect(() => {
-    ManifestService.loadModule({
-      id: 'education',
-      name: 'Education',
-      version: '1.0.0',
-      routes: [{ path: '/students', component: 'pages/Students' }],
-      commands: [
-        {
-          id: 'new_student',
-          title: 'Nouveau dossier Étudiant',
-          shortcut: ['⌘', 'N'],
-          action_event: 'Education:OpenNewStudentModal',
-        },
-      ],
-    });
-
-    const unsubscribeEdu = Workspace.events.subscribe(
-      'Education:OpenNewStudentModal',
-      () => {
-        alert("Le module Education a reçu l'événement via l'EventBus !");
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
       }
-    );
-
-    return () => {
-      unsubscribeEdu();
     };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  if (!currentModule || !currentOrganization) {
-    return <ModuleSelector />;
+  // Determine active module from URL
+  const isEdu = location.pathname.startsWith('/education');
+  const isInv = location.pathname.startsWith('/inventory');
+  const isFin = location.pathname.startsWith('/finance');
+  const isLib = location.pathname.startsWith('/library');
+  const isTsk = location.pathname.startsWith('/tasks');
+
+  const isModuleView = isEdu || isInv || isFin || isLib || isTsk;
+
+  let activeNav = educationNavigation;
+  let activeModuleName = 'Éducation Pro';
+  let activeModuleColor = '#4f46e5';
+
+  if (isInv) {
+    activeNav = inventoryNavigation;
+    activeModuleName = 'Stocks & Logistique';
+    activeModuleColor = '#0ea5e9';
+  } else if (isFin) {
+    activeNav = financeNavigation;
+    activeModuleName = 'Finances & Trésorerie';
+    activeModuleColor = '#059669';
+  } else if (isLib) {
+    activeNav = libraryNavigation;
+    activeModuleName = 'Bibliothèque & CDI';
+    activeModuleColor = '#3b82f6';
+  } else if (isTsk) {
+    activeNav = tasksNavigation;
+    activeModuleName = 'Tâches & Projets';
+    activeModuleColor = '#8b5cf6';
   }
 
   return (
-    <div className="workspace-container">
-      {/* Sidebar Ultra Thin */}
-      <motion.aside
-        className={`workspace-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}
-        initial={{ x: -260 }}
-        animate={{ x: 0, width: sidebarCollapsed ? 72 : 240 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-      >
-        <div className="sidebar-logo" style={{ cursor: 'pointer', padding: '0 12px' }} onClick={() => navigate('/')}>
-          {!sidebarCollapsed ? (
-            <Logo size={34} showText showMotto />
-          ) : (
-            <Logo size={32} />
-          )}
-        </div>
+    <div className="alliance-os-app-shell">
+      {/* 1. GLOBAL OS NAVBAR */}
+      <GlobalNavbar
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenCreate={() => setIsCreateOpen(true)}
+        onOpenNotifications={() => setIsNotifOpen(true)}
+        unreadNotificationsCount={3}
+      />
 
-        {!sidebarCollapsed && (
-          <div className="sidebar-org-badge">
-            <span className="sidebar-org-name">{currentOrganization.name}</span>
-            <span className="sidebar-org-label">Espace Actif</span>
-          </div>
+      {/* 2. MAIN BODY AREA */}
+      <div className="os-body-layout">
+        {/* Module Sidebar (Visible only when inside a business module) */}
+        {isModuleView && (
+          <motion.aside 
+            className={`workspace-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}
+            initial={{ width: 260 }}
+            animate={{ width: sidebarCollapsed ? 68 : 260 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            <div className="sidebar-module-header">
+              {!sidebarCollapsed ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span 
+                      style={{ 
+                        width: '10px', 
+                        height: '10px', 
+                        borderRadius: '50%', 
+                        backgroundColor: activeModuleColor 
+                      }}
+                    ></span>
+                    <strong style={{ fontSize: '13px', color: 'var(--color-text-primary)' }}>
+                      {activeModuleName}
+                    </strong>
+                  </div>
+                  <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
+                    <ChevronLeft size={16} />
+                  </button>
+                </div>
+              ) : (
+                <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
+                  <ChevronRight size={16} />
+                </button>
+              )}
+            </div>
+
+            <nav className="sidebar-nav">
+              {activeNav.map((sec, idx) => (
+                <div key={idx} className="sidebar-section">
+                  {!sidebarCollapsed && <div className="sidebar-section-title">{sec.section}</div>}
+                  <ul className="sidebar-nav-list">
+                    {sec.items.map((item: any) => {
+                      const Icon = item.icon;
+                      return (
+                        <li key={item.path}>
+                          <NavLink
+                            to={item.path}
+                            end={item.path === '/education' || item.path === '/inventory' || item.path === '/finance' || item.path === '/library' || item.path === '/tasks'}
+                            className={({ isActive }) => `sidebar-nav-link ${isActive ? 'active' : ''}`}
+                          >
+                            <Icon size={16} className="nav-link-icon" />
+                            {!sidebarCollapsed && (
+                              <span className="nav-link-label">{item.label}</span>
+                            )}
+                            {!sidebarCollapsed && item.badge && (
+                              <span className="nav-link-badge">{item.badge}</span>
+                            )}
+                          </NavLink>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          </motion.aside>
         )}
 
-        <nav className="sidebar-nav" style={{ padding: '0 12px', flex: 1, overflowY: 'auto' }}>
-          {currentModule === 'education' && educationNavigation.map((section, sIdx) => (
-            <div key={sIdx} style={{ marginBottom: '16px' }}>
-              {!sidebarCollapsed && (
-                <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 12px', marginBottom: '4px' }}>
-                  {section.section}
-                </div>
-              )}
-              <ul style={{ gap: '2px', display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, margin: 0 }}>
-                {section.items.map((navItem: any) => {
-                  const Icon = navItem.icon;
-                  const isActive = location.pathname === navItem.path || (navItem.path !== '/education' && location.pathname.startsWith(navItem.path));
-                  return (
-                    <li 
-                      key={navItem.path} 
-                      className={`nav-item ${isActive ? 'active' : ''}`} 
-                      onClick={() => navigate(navItem.path)}
-                      style={{ padding: '6px 12px', margin: 0, borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    >
-                      <Icon size={14} style={{ flexShrink: 0 }} />
-                      {!sidebarCollapsed && (
-                         <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 500 }}>{navItem.label}</span>
-                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                            {navItem.shortcut && (
-                              <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', background: 'var(--color-surface-bg)', padding: '2px 4px', borderRadius: '4px', border: '1px solid var(--color-surface-border)' }}>
-                                {navItem.shortcut}
-                              </span>
-                            )}
-                            {navItem.badge && (
-                              <span style={{ fontSize: '9px', fontWeight: 700, color: '#fff', background: 'var(--color-accent-600)', padding: '2px 6px', borderRadius: '10px' }}>
-                                {navItem.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-
-          {currentModule === 'inventory' && inventoryNavigation.map((section, sIdx) => (
-            <div key={sIdx} style={{ marginBottom: '16px' }}>
-              {!sidebarCollapsed && (
-                <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 12px', marginBottom: '4px' }}>
-                  {section.section}
-                </div>
-              )}
-              <ul style={{ gap: '2px', display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, margin: 0 }}>
-                {section.items.map((navItem: any) => {
-                  const Icon = navItem.icon;
-                  const isActive = location.pathname === navItem.path || (navItem.path !== '/inventory' && location.pathname.startsWith(navItem.path));
-                  return (
-                    <li 
-                      key={navItem.path} 
-                      className={`nav-item ${isActive ? 'active' : ''}`} 
-                      onClick={() => navigate(navItem.path)}
-                      style={{ padding: '6px 12px', margin: 0, borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    >
-                      <Icon size={14} style={{ flexShrink: 0 }} />
-                      {!sidebarCollapsed && (
-                        <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 500 }}>{navItem.label}</span>
-                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                            {navItem.shortcut && (
-                              <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', background: 'var(--color-surface-bg)', padding: '2px 4px', borderRadius: '4px', border: '1px solid var(--color-surface-border)' }}>
-                                {navItem.shortcut}
-                              </span>
-                            )}
-                            {navItem.badge && (
-                              <span style={{ fontSize: '9px', fontWeight: 700, color: '#fff', background: '#f59e0b', padding: '2px 6px', borderRadius: '10px' }}>
-                                {navItem.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-          {currentModule === 'finance' && financeNavigation.map((section, sIdx) => (
-            <div key={sIdx} style={{ marginBottom: '16px' }}>
-              {!sidebarCollapsed && (
-                <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 12px', marginBottom: '4px' }}>
-                  {section.section}
-                </div>
-              )}
-              <ul style={{ gap: '2px', display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, margin: 0 }}>
-                {section.items.map((navItem: any) => {
-                  const Icon = navItem.icon;
-                  const isActive = location.pathname === navItem.path || (navItem.path !== '/finance' && location.pathname.startsWith(navItem.path));
-                  return (
-                    <li 
-                      key={navItem.path} 
-                      className={`nav-item ${isActive ? 'active' : ''}`} 
-                      onClick={() => navigate(navItem.path)}
-                      style={{ padding: '6px 12px', margin: 0, borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    >
-                      <Icon size={14} style={{ flexShrink: 0 }} />
-                      {!sidebarCollapsed && (
-                        <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 500 }}>{navItem.label}</span>
-                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                            {navItem.shortcut && (
-                              <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', background: 'var(--color-surface-bg)', padding: '2px 4px', borderRadius: '4px', border: '1px solid var(--color-surface-border)' }}>
-                                {navItem.shortcut}
-                              </span>
-                            )}
-                            {navItem.badge && (
-                              <span style={{ fontSize: '9px', fontWeight: 700, color: '#fff', background: '#059669', padding: '2px 6px', borderRadius: '10px' }}>
-                                {navItem.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-
-          {currentModule === 'library' && libraryNavigation.map((section, sIdx) => (
-            <div key={sIdx} style={{ marginBottom: '16px' }}>
-              {!sidebarCollapsed && (
-                <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 12px', marginBottom: '4px' }}>
-                  {section.section}
-                </div>
-              )}
-              <ul style={{ gap: '2px', display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, margin: 0 }}>
-                {section.items.map((navItem: any) => {
-                  const Icon = navItem.icon;
-                  const isActive = location.pathname === navItem.path || (navItem.path !== '/library' && location.pathname.startsWith(navItem.path));
-                  return (
-                    <li 
-                      key={navItem.path} 
-                      className={`nav-item ${isActive ? 'active' : ''}`} 
-                      onClick={() => navigate(navItem.path)}
-                      style={{ padding: '6px 12px', margin: 0, borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    >
-                      <Icon size={14} style={{ flexShrink: 0 }} />
-                      {!sidebarCollapsed && (
-                        <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 500 }}>{navItem.label}</span>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-          {currentModule === 'tasks' && tasksNavigation.map((section, sIdx) => (
-            <div key={sIdx} style={{ marginBottom: '16px' }}>
-              {!sidebarCollapsed && (
-                <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 12px', marginBottom: '4px' }}>
-                  {section.section}
-                </div>
-              )}
-              <ul style={{ gap: '2px', display: 'flex', flexDirection: 'column', listStyle: 'none', padding: 0, margin: 0 }}>
-                {section.items.map((navItem: any) => {
-                  const Icon = navItem.icon;
-                  const isActive = location.pathname === navItem.path || (navItem.path !== '/tasks' && location.pathname.startsWith(navItem.path));
-                  return (
-                    <li 
-                      key={navItem.path} 
-                      className={`nav-item ${isActive ? 'active' : ''}`} 
-                      onClick={() => navigate(navItem.path)}
-                      style={{ padding: '6px 12px', margin: 0, borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    >
-                      <Icon size={14} style={{ flexShrink: 0 }} />
-                      {!sidebarCollapsed && (
-                        <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 500 }}>{navItem.label}</span>
-                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                            {navItem.shortcut && (
-                              <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', background: 'var(--color-surface-bg)', padding: '2px 4px', borderRadius: '4px', border: '1px solid var(--color-surface-border)' }}>
-                                {navItem.shortcut}
-                              </span>
-                            )}
-                            {navItem.badge && (
-                              <span style={{ fontSize: '9px', fontWeight: 700, color: '#fff', background: '#4f46e5', padding: '2px 6px', borderRadius: '10px' }}>
-                                {navItem.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </nav>
-
-        {!sidebarCollapsed && (
-          <div style={{ padding: '16px', borderTop: '1px solid var(--color-surface-border)', background: 'var(--color-surface-card)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 0 2px #d1fae5' }}></span>
-              Système Opérationnel
-            </div>
-            <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '4px' }}>Alliance OS v2.0.1</div>
-          </div>
-        )}
-      </motion.aside>
-
-      {/* Main Content */}
-      <main className="workspace-main">
-        {/* Floating Header */}
-        <header className="workspace-header">
-          <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <GlobalMenu />
-            
-            <div className="search-bar-mock">
-              <Search size={14} />
-              <span>Appuyez sur ⌘K pour rechercher...</span>
-            </div>
-          </div>
-          <div className="header-actions">
-            <Button variant="ghost" size="sm" onClick={toggleTheme}>
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </Button>
-          </div>
-        </header>
-
-        <section className="workspace-content" style={{ padding: 0 }}>
+        {/* Dynamic Route Content */}
+        <main className={`os-content-main ${isModuleView ? 'with-sidebar' : 'full-width'}`}>
           <Routes>
-            <Route path="/" element={<DynamicDashboard />} />
+            {/* Primary Entry Point: Alliance Hub */}
+            <Route 
+              path="/" 
+              element={
+                <AllianceHub 
+                  onOpenCreate={() => setIsCreateOpen(true)} 
+                  onOpenSearch={() => setIsSearchOpen(true)} 
+                />
+              } 
+            />
+
+            {/* Ecosystem Pages */}
+            <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/developers" element={<DevelopersPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/help" element={<UnifiedHelpPage />} />
+
+            {/* Business Modules */}
             <Route path="/education/*" element={<EducationModuleRoutes />} />
             <Route path="/inventory/*" element={<InventoryModuleRoutes />} />
             <Route path="/finance/*" element={<FinanceModuleRoutes />} />
             <Route path="/library/*" element={<LibraryModuleRoutes />} />
             <Route path="/tasks/*" element={<TasksModuleRoutes />} />
-            <Route path="/settings" element={
-              <div style={{ padding: '2rem' }}>
-                <h2>Paramètres de l'Organisation</h2>
-                <p>Configuration du Dashboard, des accès et facturation.</p>
-                <div style={{ marginTop: '2rem', padding: '2rem', border: '1px solid var(--color-border)', borderRadius: '12px' }}>
-                  <h3>Gestion du Layout</h3>
-                  <p>Depuis le dashboard, vous pouvez cliquer sur "Personnaliser" pour ajuster la position des widgets.</p>
-                </div>
-              </div>
-            } />
           </Routes>
-        </section>
-      </main>
+        </main>
+      </div>
 
-      <CommandPalette />
+      {/* 3. UNIVERSAL MODALS & DRAWERS */}
+      <UniversalCommandPalette 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
+
+      <UniversalCreateModal 
+        isOpen={isCreateOpen} 
+        onClose={() => setIsCreateOpen(false)} 
+      />
+
+      <NotificationsDrawer 
+        isOpen={isNotifOpen} 
+        onClose={() => setIsNotifOpen(false)} 
+      />
     </div>
   );
 };
