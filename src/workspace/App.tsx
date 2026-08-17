@@ -57,92 +57,92 @@ import './Workspace.css';
 // Navigation configurations for specialized module sidebars
 const educationNavigation: any[] = [
   { section: 'APERÇU', items: [
-    { label: "Tableau de bord", path: "/education", icon: LayoutDashboard, shortcut: '⌘ 1' },
+    { label: "Tableau de bord", path: "/app/education", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'ACADÉMIQUE', items: [
-    { label: "Élèves", path: "/education/students", icon: Users, shortcut: '⌘ 2' },
-    { label: "Enseignants", path: "/education/teachers", icon: GraduationCap },
-    { label: "Classes", path: "/education/classes", icon: BookOpen },
-    { label: "Matières", path: "/education/subjects", icon: Book },
+    { label: "Élèves", path: "/app/education/students", icon: Users, shortcut: '⌘ 2' },
+    { label: "Enseignants", path: "/app/education/teachers", icon: GraduationCap },
+    { label: "Classes", path: "/app/education/classes", icon: BookOpen },
+    { label: "Matières", path: "/app/education/subjects", icon: Book },
   ]},
   { section: 'ÉVALUATION & DOCS', items: [
-    { label: "Notes", path: "/education/grades", icon: Edit3, badge: '3' },
-    { label: "Présences", path: "/education/presences", icon: Users },
-    { label: "Bulletins & Rapports", path: "/education/reports", icon: Library },
-    { label: "Cartes Scolaires", path: "/education/cards", icon: Users },
+    { label: "Notes", path: "/app/education/grades", icon: Edit3, badge: '3' },
+    { label: "Présences", path: "/app/education/presences", icon: Users },
+    { label: "Bulletins & Rapports", path: "/app/education/reports", icon: Library },
+    { label: "Cartes Scolaires", path: "/app/education/cards", icon: Users },
   ]},
   { section: 'GESTION', items: [
-    { label: "Revenus & Finances", path: "/education/finance", icon: CreditCard, badge: 'Nouv.' },
-    { label: "Années scolaires", path: "/education/academic-years", icon: Calendar },
+    { label: "Revenus & Finances", path: "/app/education/finance", icon: CreditCard, badge: 'Nouv.' },
+    { label: "Années scolaires", path: "/app/education/academic-years", icon: Calendar },
   ]},
   { section: 'SYSTÈME', items: [
-    { label: "Paramètres", path: "/education/settings", icon: Settings },
+    { label: "Paramètres", path: "/app/education/settings", icon: Settings },
   ]}
 ];
 
 const inventoryNavigation: any[] = [
   { section: 'APERÇU', items: [
-    { label: "Tableau de bord", path: "/inventory", icon: LayoutDashboard, shortcut: '⌘ 1' },
+    { label: "Tableau de bord", path: "/app/inventory", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'CATALOGUE & STOCKS', items: [
-    { label: "Articles & Stocks", path: "/inventory/products", icon: Package, shortcut: '⌘ 2' },
-    { label: "Entrepôts & Dépôts", path: "/inventory/warehouses", icon: WarehouseIcon },
+    { label: "Articles & Stocks", path: "/app/inventory/products", icon: Package, shortcut: '⌘ 2' },
+    { label: "Entrepôts & Dépôts", path: "/app/inventory/warehouses", icon: WarehouseIcon },
   ]},
   { section: 'TRAÇABILITÉ & AUDITS', items: [
-    { label: "Mouvements de stock", path: "/inventory/stock-movements", icon: History },
-    { label: "Inventaires Physiques", path: "/inventory/audits", icon: ClipboardList },
+    { label: "Mouvements de stock", path: "/app/inventory/stock-movements", icon: History },
+    { label: "Inventaires Physiques", path: "/app/inventory/audits", icon: ClipboardList },
   ]},
   { section: 'APPROVISIONNEMENT', items: [
-    { label: "Fournisseurs", path: "/inventory/suppliers", icon: Truck },
-    { label: "Bons de Commande", path: "/inventory/purchase-orders", icon: ShoppingCart, badge: 'Flux' },
+    { label: "Fournisseurs", path: "/app/inventory/suppliers", icon: Truck },
+    { label: "Bons de Commande", path: "/app/inventory/purchase-orders", icon: ShoppingCart, badge: 'Flux' },
   ]},
   { section: 'PRODUCTION & FABRICATION', items: [
-    { label: "Ordres de Fabrication", path: "/inventory/manufacturing", icon: Factory },
+    { label: "Ordres de Fabrication", path: "/app/inventory/manufacturing", icon: Factory },
   ]},
   { section: 'CONFIGURATION', items: [
-    { label: "Paramètres & Unités", path: "/inventory/settings", icon: Settings },
+    { label: "Paramètres & Unités", path: "/app/inventory/settings", icon: Settings },
   ]}
 ];
 
 const financeNavigation: any[] = [
   { section: 'APERÇU', items: [
-    { label: "Tableau de bord", path: "/finance", icon: LayoutDashboard, shortcut: '⌘ 1' },
+    { label: "Tableau de bord", path: "/app/finance", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'TRÉSORERIE & COMPTES', items: [
-    { label: "Comptes & Caisses", path: "/finance/accounts", icon: Landmark, shortcut: '⌘ 2' },
-    { label: "Journal des Opérations", path: "/finance/transactions", icon: History, badge: 'Flux' },
+    { label: "Comptes & Caisses", path: "/app/finance/accounts", icon: Landmark, shortcut: '⌘ 2' },
+    { label: "Journal des Opérations", path: "/app/finance/transactions", icon: History, badge: 'Flux' },
   ]},
   { section: 'PILOTAGE BUDGÉTAIRE', items: [
-    { label: "Enveloppes & Budgets", path: "/finance/budgets", icon: PieChart },
+    { label: "Enveloppes & Budgets", path: "/app/finance/budgets", icon: PieChart },
   ]},
   { section: 'FACTURATION & TIERS', items: [
-    { label: "Factures & Devis", path: "/finance/invoices", icon: FileText, badge: 'TVA' },
+    { label: "Factures & Devis", path: "/app/finance/invoices", icon: FileText, badge: 'TVA' },
   ]},
   { section: 'CONFIGURATION', items: [
-    { label: "Plan Analytique", path: "/finance/categories", icon: Settings },
+    { label: "Plan Analytique", path: "/app/finance/categories", icon: Settings },
   ]}
 ];
 
 const libraryNavigation: any[] = [
   { section: 'APERÇU', items: [
-    { label: "Tableau de bord", path: "/library", icon: LayoutDashboard, shortcut: '⌘ 1' },
+    { label: "Tableau de bord", path: "/app/library", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'CATALOGUE', items: [
-    { label: "Ouvrages & Fonds", path: "/library/books", icon: Book },
+    { label: "Ouvrages & Fonds", path: "/app/library/books", icon: Book },
   ]}
 ];
 
 const tasksNavigation: any[] = [
   { section: 'APERÇU', items: [
-    { label: "Tableau de bord", path: "/tasks", icon: LayoutDashboard, shortcut: '⌘ 1' },
+    { label: "Tableau de bord", path: "/app/tasks", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
   { section: 'ESPACE TRAVAIL', items: [
-    { label: "Tableau Kanban", path: "/tasks/board", icon: Layers, shortcut: '⌘ 2' },
-    { label: "Liste des Tâches", path: "/tasks/list", icon: ListTodo },
-    { label: "Mes Tâches", path: "/tasks/my-tasks", icon: CheckSquare, badge: 'Moi' },
+    { label: "Tableau Kanban", path: "/app/tasks/board", icon: Layers, shortcut: '⌘ 2' },
+    { label: "Liste des Tâches", path: "/app/tasks/list", icon: ListTodo },
+    { label: "Mes Tâches", path: "/app/tasks/my-tasks", icon: CheckSquare, badge: 'Moi' },
   ]},
   { section: 'PROJETS & JALONS', items: [
-    { label: "Portefeuille Projets", path: "/tasks/projects", icon: FolderKanban },
+    { label: "Portefeuille Projets", path: "/app/tasks/projects", icon: FolderKanban },
   ]}
 ];
 
@@ -205,11 +205,11 @@ export const WorkspaceShell: React.FC = () => {
   }, []);
 
   // Determine active module from URL
-  const isEdu = location.pathname.startsWith('/education');
-  const isInv = location.pathname.startsWith('/inventory');
-  const isFin = location.pathname.startsWith('/finance');
-  const isLib = location.pathname.startsWith('/library');
-  const isTsk = location.pathname.startsWith('/tasks');
+  const isEdu = location.pathname.startsWith('/app/education');
+  const isInv = location.pathname.startsWith('/app/inventory');
+  const isFin = location.pathname.startsWith('/app/finance');
+  const isLib = location.pathname.startsWith('/app/library');
+  const isTsk = location.pathname.startsWith('/app/tasks');
 
   const isModuleView = isEdu || isInv || isFin || isLib || isTsk;
 
@@ -293,7 +293,7 @@ export const WorkspaceShell: React.FC = () => {
                         <li key={item.path}>
                           <NavLink
                             to={item.path}
-                            end={item.path === '/education' || item.path === '/inventory' || item.path === '/finance' || item.path === '/library' || item.path === '/tasks'}
+                            end={item.path === '/app/education' || item.path === '/app/inventory' || item.path === '/app/finance' || item.path === '/app/library' || item.path === '/app/tasks'}
                             className={({ isActive }) => `sidebar-nav-link ${isActive ? 'active' : ''}`}
                           >
                             <Icon size={16} className="nav-link-icon" />
