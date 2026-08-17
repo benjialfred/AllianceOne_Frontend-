@@ -21,9 +21,9 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../../core/stores/authStore';
 import logoSrc from '../../assets/logo.png';
-import campusVideo from '../../assets/Campus_Hero_Dashboard_prin.mp4';
-import schoolVideo from '../../assets/Cour_d_ecole_Duration_s.mp4';
-import corpVideo from '../../assets/Create_an_ultra_realistic_corp.mp4';
+import authVideo1 from '../../assets/animation (2).mp4';
+import authVideo2 from '../../assets/animation (3).mp4';
+import authVideo3 from '../../assets/animation (4).mp4';
 import './AuthPage.css';
 
 const GOOGLE_CLIENT_ID = '596917773675-hdbgpl1ftu0hok87imssjndmt9vtvdqs.apps.googleusercontent.com';
@@ -46,11 +46,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Video carousel
-  const videos = [campusVideo, schoolVideo, corpVideo];
+  const videos = [authVideo1, authVideo2, authVideo3];
   const videoLabels = [
     'Alliance Hub — Votre cockpit opérationnel',
-    'Éducation — Gestion complète d\'établissement',
-    'Entreprise — Infrastructure cloud moderne'
+    'Applications Métier — Finance, Stocks, Éducation',
+    'Écosystème — IA, Automation & Cloud'
   ];
   const [activeVideo, setActiveVideo] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -162,6 +162,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
             transition={{ duration: 1.2, ease: 'easeInOut' }}
           />
         </AnimatePresence>
+
+        {/* Watermark mask — covers Gemini filigrane with AO branding */}
+        <div className="auth-watermark-mask">
+          <img src={logoSrc} alt="AO" className="auth-watermark-logo" />
+        </div>
 
         {/* Showcase content */}
         <div className="auth-showcase-content">
