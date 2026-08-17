@@ -24,6 +24,9 @@ interface PlatformState {
   theme: 'light' | 'dark';
   sidebarCollapsed: boolean;
 
+  // Global Context (Education)
+  currentSchoolClass: any | null;
+
   // Actions
   setOrganization: (org: Organization) => void;
   setOrganizations: (orgs: Organization[]) => void;
@@ -33,6 +36,7 @@ interface PlatformState {
   toggleSidebar: () => void;
   setLoadedModules: (modules: ModuleManifest[]) => void;
   setCurrentModule: (mod: string | null) => void;
+  setCurrentSchoolClass: (schoolClass: any | null) => void;
 }
 
 export const usePlatformStore = create<PlatformState>((set, get) => ({
@@ -44,6 +48,7 @@ export const usePlatformStore = create<PlatformState>((set, get) => ({
   sidebarCollapsed: false,
   loadedModules: [],
   currentModule: null,
+  currentSchoolClass: null,
 
   setOrganization: (org) => {
     set({ currentOrganization: org });
@@ -64,6 +69,7 @@ export const usePlatformStore = create<PlatformState>((set, get) => ({
   toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
   setLoadedModules: (modules) => set({ loadedModules: modules }),
   setCurrentModule: (mod) => set({ currentModule: mod }),
+  setCurrentSchoolClass: (schoolClass) => set({ currentSchoolClass: schoolClass }),
 }));
 
 // Enregistrer le resolver de tenant dans le client API

@@ -142,8 +142,8 @@ export const AcademicCalendarPage = () => {
             accessor: 'impacts',
             render: (item) => (
                 <div style={{ display: 'flex', gap: 'var(--spacing-1)' }}>
-                    {item.suspends_attendance && <Badge label="Appels Suspendus" variant="error" />}
-                    {item.locks_grades && <Badge label="Notes Bloquées" variant="error" />}
+                    {item.suspends_attendance && <Badge label="Appels Suspendus" variant="danger" />}
+                    {item.locks_grades && <Badge label="Notes Bloquées" variant="danger" />}
                     {!item.suspends_attendance && !item.locks_grades && <span style={{color: 'var(--color-text-tertiary)', fontSize: 'var(--font-size-sm)'}}>-</span>}
                 </div>
             )

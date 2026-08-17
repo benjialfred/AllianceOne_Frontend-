@@ -4,11 +4,12 @@ import {
     LayoutDashboard, Users, GraduationCap, 
     BookOpen, BookMarked, FileText, 
     Calendar, Settings, Search, LogOut, Library, HelpCircle, DollarSign,
-    Bell, Command
+    Bell, Command, UserCheck, Book
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import logoUrl from '../assets/LOGO.bmp';
 
-const navItems = [
+const navItems: any[] = [
     { section: 'APERÇU', items: [
         { path: '/', label: 'Tableau de bord', icon: LayoutDashboard, shortcut: '⌘ 1' }
     ]},
@@ -20,6 +21,7 @@ const navItems = [
     ]},
     { section: 'ÉVALUATION & DOCS', items: [
         { path: '/grades', label: 'Notes', icon: FileText, badge: '3' },
+        { path: '/presences', label: 'Présences', icon: UserCheck },
         { path: '/reports', label: 'Bulletins & Rapports', icon: FileText },
         { path: '/cards', label: 'Cartes Scolaires', icon: Users },
     ]},
@@ -36,12 +38,14 @@ export const Layout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+    const { activeModules, logout } = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        logout();
         window.location.href = '/login';
     };
+
+    const dynamicNavItems = navItems;
 
     const getBreadcrumbs = () => {
         const path = location.pathname;
@@ -73,7 +77,7 @@ export const Layout = () => {
                 </div>
                 
                 <nav className="nav-list">
-                    {navItems.map((group, idx) => (
+                    {dynamicNavItems.map((group, idx) => (
                         <div key={idx}>
                             <div className="nav-section-title">{group.section}</div>
                             {group.items.map(item => {

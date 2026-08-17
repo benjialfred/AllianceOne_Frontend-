@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Download, Printer, Trash2, DollarSign, X, Users, Upload } from 'lucide-react';
-import { Button, Table, Badge, Input, PageHeader, Card, Modal } from '../components';
+import { Plus, Download, Printer, Trash2, DollarSign, Users, Upload, ArrowLeft, BookOpen } from 'lucide-react';
+import { Button, Table, Badge, Input, PageHeader, Card, Modal, ClassActivityFeed } from '../components';
 import type { Column, TableAction } from '../components';
 import { motion } from 'framer-motion';
 import { api } from '../services/api';
 import * as XLSX from 'xlsx';
+import { usePlatformStore } from '../../../core/stores/platformStore';
 
 export const StudentsPage = () => {
     const navigate = useNavigate();
+    
+    // Global Context
+    const currentSchoolClass = usePlatformStore(s => s.currentSchoolClass);
+    const setCurrentSchoolClass = usePlatformStore(s => s.setCurrentSchoolClass);
+
     const [students, setStudents] = useState<any[]>([]);
     const [classes, setClasses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,15 +27,17 @@ export const StudentsPage = () => {
     const [paymentAmount, setPaymentAmount] = useState('');
     const [activeYearId, setActiveYearId] = useState<number | null>(null);
 
-    const [selectedClassId, setSelectedClassId] = useState<number | 'all'>('all');
-
     useEffect(() => {
         fetchClasses();
     }, []);
 
     useEffect(() => {
-        fetchStudents();
-    }, [showArchived, selectedClassId]);
+        if (currentSchoolClass) {
+            fetchStudents();
+        } else {
+            setLoading(false);
+        }
+    }, [showArchived, currentSchoolClass]);
 
     const fetchClasses = async () => {
         try {
@@ -48,8 +56,8 @@ export const StudentsPage = () => {
         setLoading(true);
         try {
             let url = `/students/?is_archived=${showArchived}`;
-            if (selectedClassId !== 'all') {
-                url += `&school_class=${selectedClassId}`;
+            if (currentSchoolClass) {
+                url += `&school_class=${currentSchoolClass.id}`;
             }
             const data = await api.get(url);
             setStudents(data);
@@ -100,7 +108,7 @@ export const StudentsPage = () => {
                 console.error("Erreurs d'import:", response.errors);
                 alert(`Il y a eu ${response.errors.length} erreur(s). Voir la console pour les détails.`);
             }
-            await fetchStudents();
+            if (currentSchoolClass) await fetchStudents();
         } catch (error: any) {
             console.error('Erreur import:', error);
             alert(error.response?.data?.error || "Erreur lors de l'import.");
@@ -114,7 +122,7 @@ export const StudentsPage = () => {
         { header: 'Matricule', accessor: 'matricule', width: '120px' },
         { 
             header: 'Nom complet', 
-            accessor: 'first_name', // Used for internal sorting/searching
+            accessor: 'first_name',
             render: (item) => (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
                     <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-surface-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-primary)', overflow: 'hidden' }}>
@@ -132,11 +140,6 @@ export const StudentsPage = () => {
             ) 
         },
         { 
-            header: 'Classe', 
-            accessor: 'current_enrollment',
-            render: (item) => <Badge label={getClassName(item)} variant={getClassName(item) === 'Non Inscrit' ? 'warning' : 'info'} /> 
-        },
-        { 
             header: 'Responsable', 
             accessor: 'parent_name',
             render: (item) => (
@@ -152,7 +155,7 @@ export const StudentsPage = () => {
         if (!window.confirm("Voulez-vous restaurer cet élève ?")) return;
         try {
             await api.post(`/students/${id}/restore/`, {});
-            await fetchStudents();
+            if (currentSchoolClass) await fetchStudents();
             alert("Élève restauré avec succès.");
         } catch (error) {
             console.error(error);
@@ -166,7 +169,7 @@ export const StudentsPage = () => {
             for (const s of selected) {
                 await api.delete(`/students/${s.id}/`);
             }
-            await fetchStudents();
+            if (currentSchoolClass) await fetchStudents();
             alert("Suppression effectuée.");
         } catch (error) {
             console.error(error);
@@ -245,13 +248,81 @@ export const StudentsPage = () => {
         }
     ];
 
+    // --- Render logic: Switch between Class Selector and Class Detail ---
+    if (!currentSchoolClass) {
+        return (
+            <motion.div className="page-transition-wrapper">
+                <PageHeader
+                    title="Classes & Salles"
+                    subtitle="Sélectionnez une salle pour accéder à ses élèves et à l'activité correspondante."
+                    icon={BookOpen}
+                    actions={
+                        <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                            <Button variant="outline" icon={Users} onClick={() => navigate('/students/all')}>Vue globale (Tous les élèves)</Button>
+                        </div>
+                    }
+                />
+
+                {loading ? (
+                    <div style={{ padding: 'var(--spacing-12)', textAlign: 'center', color: 'var(--color-text-muted)' }}>Chargement des classes...</div>
+                ) : (
+                    <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+                        gap: 'var(--spacing-6)' 
+                    }}>
+                        {classes.map(c => (
+                            <motion.div 
+                                key={c.id}
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setCurrentSchoolClass(c)}
+                                style={{
+                                    backgroundColor: 'var(--color-surface-bg)',
+                                    borderRadius: 'var(--radius-xl)',
+                                    padding: 'var(--spacing-6)',
+                                    border: '1px solid var(--color-surface-border)',
+                                    boxShadow: 'var(--shadow-sm)',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 'var(--spacing-4)',
+                                    transition: 'border-color var(--transition-fast)'
+                                }}
+                            >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <h3 style={{ margin: 0, fontSize: 'var(--font-size-xl)', color: 'var(--color-text-primary)' }}>{c.name}</h3>
+                                    <div style={{ padding: 'var(--spacing-2)', backgroundColor: 'var(--color-primary-bg)', borderRadius: 'var(--radius-md)', color: 'var(--color-primary)' }}>
+                                        <BookOpen size={20} />
+                                    </div>
+                                </div>
+                                <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}>
+                                    Capacité : {c.capacity || 'Non définie'}
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <Button variant="ghost" size="sm">Entrer &rarr;</Button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+            </motion.div>
+        );
+    }
+
     return (
         <motion.div className="page-transition-wrapper">
+            <div style={{ marginBottom: 'var(--spacing-6)' }}>
+                <Button variant="ghost" icon={ArrowLeft} onClick={() => setCurrentSchoolClass(null)} style={{ paddingLeft: 0 }}>
+                    Retour aux classes
+                </Button>
+            </div>
+
             <PageHeader
-                title="Élèves"
-                subtitle="Gestion des inscriptions, dossiers et effectifs."
+                title={`Salle : ${currentSchoolClass.name}`}
+                subtitle={`Gestion des élèves de la classe et journal d'activité de la salle.`}
                 icon={Users}
-                badge={`${students.length} Élèves (Année Active)`}
+                badge={`${students.length} Élèves`}
                 actions={
                     <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
                         <Button variant="outline" onClick={() => setShowArchived(!showArchived)}>
@@ -273,42 +344,26 @@ export const StudentsPage = () => {
                 }
             />
 
-            <Card style={{ marginBottom: 'var(--spacing-6)', padding: 'var(--spacing-4)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
-                <span style={{ fontWeight: 'var(--font-weight-medium)', fontSize: 'var(--font-size-sm)' }}>Filtrer par classe :</span>
-                <select 
-                    value={selectedClassId} 
-                    onChange={e => setSelectedClassId(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                    style={{ 
-                        padding: 'var(--spacing-2) var(--spacing-4)', 
-                        borderRadius: 'var(--radius-md)', 
-                        border: '1px solid var(--color-surface-border)',
-                        backgroundColor: 'var(--color-surface-bg)',
-                        color: 'var(--color-text-primary)',
-                        fontSize: 'var(--font-size-sm)',
-                        minWidth: '200px',
-                        outline: 'none'
-                    }}
-                >
-                    <option value="all">Toutes les classes</option>
-                    {classes.map(c => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                </select>
-            </Card>
-
-            <Table 
-                columns={columns} 
-                data={students} 
-                keyExtractor={(item) => item.id}
-                loading={loading}
-                searchable={true}
-                searchPlaceholder="Rechercher par matricule, nom, responsable..."
-                selectable={true}
-                actions={actions}
-                onRowClick={(item) => navigate(`/students/${item.id}`)}
-                emptyMessage="Aucun élève trouvé."
-                pageSize={15}
-            />
+            <div style={{ display: 'flex', gap: 'var(--spacing-6)', alignItems: 'flex-start' }}>
+                <div style={{ flex: 3 }}>
+                    <Table 
+                        columns={columns} 
+                        data={students} 
+                        keyExtractor={(item) => item.id}
+                        loading={loading}
+                        searchable={true}
+                        searchPlaceholder="Rechercher par matricule, nom, responsable..."
+                        selectable={true}
+                        actions={actions}
+                        onRowClick={(item) => navigate(`/students/${item.id}`)}
+                        emptyMessage="Aucun élève trouvé dans cette classe."
+                        pageSize={15}
+                    />
+                </div>
+                <div style={{ flex: 1, minWidth: '300px', position: 'sticky', top: '24px' }}>
+                    <ClassActivityFeed classId={currentSchoolClass.id} className={currentSchoolClass.name} />
+                </div>
+            </div>
 
             <Modal
                 isOpen={paymentModalOpen}

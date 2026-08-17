@@ -1,0 +1,9 @@
+{
+  "name": "alliancefrontend",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

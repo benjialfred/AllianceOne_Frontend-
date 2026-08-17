@@ -4,7 +4,7 @@
  * Le header X-Tenant-ID est injecté automatiquement depuis le store.
  */
 
-export const API_BASE_URL = 'http://localhost:8000/api';
+export const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000/api';
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string>;
@@ -31,10 +31,11 @@ class ApiClient {
     return url.toString();
   }
 
-  private getHeaders(): HeadersInit {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
+  private getHeaders(isFormData: boolean = false): HeadersInit {
+    const headers: Record<string, string> = {};
+    if (!isFormData) {
+      headers['Content-Type'] = 'application/json';
+    }
     const tenantId = this.getTenantId?.();
     if (tenantId) {
       headers['X-Tenant-ID'] = tenantId;
@@ -53,10 +54,11 @@ class ApiClient {
   }
 
   async post<T>(path: string, body: unknown, options?: RequestOptions): Promise<T> {
+    const isFormData = body instanceof FormData;
     const res = await fetch(this.buildUrl(path, options?.params), {
       method: 'POST',
-      headers: this.getHeaders(),
-      body: JSON.stringify(body),
+      headers: this.getHeaders(isFormData),
+      body: isFormData ? (body as FormData) : JSON.stringify(body),
       ...options,
     });
     if (!res.ok) throw new Error(`API Error ${res.status}: ${res.statusText}`);
@@ -64,10 +66,11 @@ class ApiClient {
   }
 
   async put<T>(path: string, body: unknown, options?: RequestOptions): Promise<T> {
+    const isFormData = body instanceof FormData;
     const res = await fetch(this.buildUrl(path, options?.params), {
       method: 'PUT',
-      headers: this.getHeaders(),
-      body: JSON.stringify(body),
+      headers: this.getHeaders(isFormData),
+      body: isFormData ? (body as FormData) : JSON.stringify(body),
       ...options,
     });
     if (!res.ok) throw new Error(`API Error ${res.status}: ${res.statusText}`);
@@ -75,10 +78,11 @@ class ApiClient {
   }
 
   async patch<T>(path: string, body: unknown, options?: RequestOptions): Promise<T> {
+    const isFormData = body instanceof FormData;
     const res = await fetch(this.buildUrl(path, options?.params), {
       method: 'PATCH',
-      headers: this.getHeaders(),
-      body: JSON.stringify(body),
+      headers: this.getHeaders(isFormData),
+      body: isFormData ? (body as FormData) : JSON.stringify(body),
       ...options,
     });
     if (!res.ok) throw new Error(`API Error ${res.status}: ${res.statusText}`);

@@ -29,7 +29,7 @@ export const AuditLogPage = () => {
         switch (action) {
             case 'CREATE': return <Badge label="Création" variant="success" />;
             case 'UPDATE': return <Badge label="Modification" variant="warning" />;
-            case 'DELETE': return <Badge label="Suppression" variant="error" />;
+            case 'DELETE': return <Badge label="Suppression" variant="danger" />;
             case 'LOGIN': return <Badge label="Connexion" variant="accent" />;
             default: return <Badge label={action} variant="default" />;
         }

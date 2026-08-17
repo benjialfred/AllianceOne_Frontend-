@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Input, Table, Badge, Modal, PageHeader } from '../components';
+import { Card, Button, Input, Table, Badge, Modal, PageHeader, SeriesManagerModal } from '../components';
 import type { Column } from '../components';
 import { api } from '../services/api';
-import { Edit2, Trash2, BookOpen, Save, X, ArrowRight, Users, Library } from 'lucide-react';
+import { Edit2, Trash2, BookOpen, Save, X, ArrowRight, Users, Library, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const ClassesPage = () => {
@@ -12,6 +12,8 @@ export const ClassesPage = () => {
     const [allSubjects, setAllSubjects] = useState<any[]>([]);
     const [levels, setLevels] = useState<any[]>([]);
     const [sections, setSections] = useState<any[]>([]);
+    const [series, setSeries] = useState<any[]>([]);
+    const [showSeriesModal, setShowSeriesModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -21,9 +23,11 @@ export const ClassesPage = () => {
         name: '',
         level: '',
         section: '',
+        series: '',
         academic_year: '',
         head_teacher: '',
         capacity: 30,
+        tuition_fee: '0',
         subjects: [] as number[]
     });
 
@@ -37,7 +41,7 @@ export const ClassesPage = () => {
     useEffect(() => {
         if (promoSourceClass) {
             api.get('/students/').then(res => {
-                const students = res.filter((s: any) => String(s.school_class) === promoSourceClass);
+                const students = res.filter((s: any) => String(s.current_enrollment?.school_class_details?.id) === promoSourceClass);
                 setPromoStudents(students);
                 setPromoSelectedStudents(students.map((s: any) => s.id));
             });
@@ -84,13 +88,14 @@ export const ClassesPage = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [clsData, yearData, teacherData, subjectData, levelData, sectionData] = await Promise.all([
+            const [clsData, yearData, teacherData, subjectData, levelData, sectionData, seriesData] = await Promise.all([
                 api.get('/classes/'),
                 api.get('/academic-years/'),
                 api.get('/teachers/'),
                 api.get('/subjects/'),
                 api.get('/levels/').catch(() => []),
-                api.get('/sections/').catch(() => [])
+                api.get('/sections/').catch(() => []),
+                api.get('/series/').catch(() => [])
             ]);
             setClasses(clsData);
             setAcademicYears(yearData);
@@ -98,6 +103,7 @@ export const ClassesPage = () => {
             setAllSubjects(subjectData);
             setLevels(levelData);
             setSections(sectionData);
+            setSeries(seriesData);
         } catch (error) {
             console.error(error);
         } finally {
@@ -124,16 +130,18 @@ export const ClassesPage = () => {
             name: cls.name || '',
             level: cls.level ? String(cls.level) : '',
             section: cls.section ? String(cls.section) : '',
+            series: cls.series ? String(cls.series) : '',
             academic_year: cls.academic_year ? String(cls.academic_year) : '',
             head_teacher: cls.head_teacher ? String(cls.head_teacher) : '',
             capacity: cls.capacity || 30,
+            tuition_fee: cls.tuition_fee ? String(cls.tuition_fee) : '0',
             subjects: cls.subjects || []
         });
     };
 
     const handleCancelEdit = () => {
         setEditingId(null);
-        setFormData({ name: '', level: '', section: '', academic_year: '', head_teacher: '', capacity: 30, subjects: [] });
+        setFormData({ name: '', level: '', section: '', series: '', academic_year: '', head_teacher: '', capacity: 30, tuition_fee: '0', subjects: [] });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -146,6 +154,9 @@ export const ClassesPage = () => {
             }
             if (!payload.section) {
                 payload.section = null as any;
+            }
+            if (!payload.series) {
+                payload.series = null as any;
             }
             if (editingId) {
                 await api.put(`/classes/${editingId}/`, payload);
@@ -191,6 +202,12 @@ export const ClassesPage = () => {
             accessor: 'section',
             render: (item) => <Badge label={item.section_details?.name || '-'} variant="default" /> 
         },
+        { 
+            header: 'Série', 
+            accessor: 'series',
+            render: (item) => <Badge label={item.series_details ? `${item.series_details.name} (${item.series_details.group_details?.name || ''})` : '-'} variant="accent" /> 
+        },
+        { header: 'Pension', accessor: 'tuition_fee', render: (item) => <strong style={{color: 'var(--color-success)'}}>{item.tuition_fee} F</strong> },
         { header: 'Titulaire', accessor: 'head_teacher', render: (item) => getTeacherName(item.head_teacher) },
         { 
             header: 'Matières', 
@@ -217,13 +234,22 @@ export const ClassesPage = () => {
                 subtitle="Définissez l'architecture pédagogique de l'établissement."
                 icon={Library}
                 actions={
-                    <Button 
-                        variant="primary"
-                        icon={Users} 
-                        onClick={() => setShowPromotionModal(true)}
-                    >
-                        Assistant Promotion
-                    </Button>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                        <Button 
+                            variant="outline"
+                            icon={Layers} 
+                            onClick={() => setShowSeriesModal(true)}
+                        >
+                            Gérer Groupes & Séries
+                        </Button>
+                        <Button 
+                            variant="primary"
+                            icon={Users} 
+                            onClick={() => setShowPromotionModal(true)}
+                        >
+                            Assistant Promotion
+                        </Button>
+                    </div>
                 }
             />
 
@@ -316,6 +342,12 @@ export const ClassesPage = () => {
                 </div>
             </Modal>
 
+            <SeriesManagerModal 
+                isOpen={showSeriesModal} 
+                onClose={() => setShowSeriesModal(false)} 
+                onUpdate={fetchData} 
+            />
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--spacing-8)' }}>
                 <Card>
                     <h3 className="t-h3" style={{ marginBottom: 'var(--spacing-6)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
@@ -330,12 +362,19 @@ export const ClassesPage = () => {
                             ...sections.map(s => ({ value: String(s.id), label: s.name }))
                         ]} />
 
+                        <Input name="series" label="Série (Optionnel)" type="select" value={formData.series} onChange={handleChange} options={[
+                            {value: '', label: '-- Aucune --'},
+                            ...series.map(s => ({ value: String(s.id), label: `${s.name} (${s.group_details?.name || ''})` }))
+                        ]} />
+
                         <Input name="level" label="Niveau" type="select" value={formData.level} onChange={handleChange} required options={[
                             {value: '', label: '-- Sélectionner --'},
                             ...levels.map(l => ({ value: String(l.id), label: l.name }))
                         ]} />
                         
                         <Input name="capacity" label="Capacité d'accueil" type="number" value={String(formData.capacity)} onChange={handleChange} required />
+                        
+                        <Input name="tuition_fee" label="Frais de scolarité (Pension)" type="number" value={String(formData.tuition_fee)} onChange={handleChange} required />
                         
                         <Input name="academic_year" label="Année académique" type="select" value={formData.academic_year} onChange={handleChange} required options={[
                             {value: '', label: '-- Sélectionner --'},

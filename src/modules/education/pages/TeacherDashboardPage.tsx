@@ -139,7 +139,7 @@ export const TeacherDashboardPage = () => {
 
     const saveAttendance = async () => {
         setLoading(true);
-        const currentClassStudents = students.filter(s => String(s.school_class) === selectedClass);
+        const currentClassStudents = students.filter(s => String(s.current_enrollment?.school_class_details?.id) === selectedClass);
         const payload = currentClassStudents.map(student => ({
             student: student.id,
             date: selectedDate,
@@ -163,7 +163,7 @@ export const TeacherDashboardPage = () => {
             return;
         }
         setBulletinLoading(true);
-        const currentClassStudents = students.filter(s => String(s.school_class) === selectedClass);
+        const currentClassStudents = students.filter(s => String(s.current_enrollment?.school_class_details?.id) === selectedClass);
         try {
             const results = await Promise.all(
                 currentClassStudents.map(async (student) => {
@@ -181,7 +181,7 @@ export const TeacherDashboardPage = () => {
         }
     };
 
-    const currentClassStudents = selectedClass ? students.filter(s => String(s.school_class) === selectedClass) : [];
+    const currentClassStudents = selectedClass ? students.filter(s => String(s.current_enrollment?.school_class_details?.id) === selectedClass) : [];
     const selectedClassObj = classes.find(c => String(c.id) === selectedClass);
 
     return (

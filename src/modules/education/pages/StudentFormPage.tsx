@@ -16,7 +16,6 @@ export const StudentFormPage = () => {
     const [photoFile, setPhotoFile] = useState<File | null>(null);
 
     const [formData, setFormData] = useState({
-        matricule: '',
         first_name: '',
         last_name: '',
         sex: 'M',
@@ -37,13 +36,12 @@ export const StudentFormPage = () => {
                 if (isEditing) {
                     const student = await api.get(`/students/${id}/`);
                     setFormData({
-                        matricule: student.matricule || '',
                         first_name: student.first_name || '',
                         last_name: student.last_name || '',
                         sex: student.sex || 'M',
                         date_of_birth: student.date_of_birth || '',
                         place_of_birth: student.place_of_birth || '',
-                        school_class: student.school_class ? String(student.school_class) : '',
+                        school_class: student.current_enrollment?.school_class_details?.id ? String(student.current_enrollment.school_class_details.id) : '',
                         parent_name: student.parent_name || '',
                         parent_phone: student.parent_phone || '',
                         parent_address: student.parent_address || ''
@@ -126,7 +124,6 @@ export const StudentFormPage = () => {
                 <div>
                     <h3 className="t-h3" style={{ marginBottom: 'var(--space-6)' }}>Informations Scolaires</h3>
                     <div className="grid-2">
-                        <Input name="matricule" label="Matricule (Généré auto.)" value={formData.matricule} onChange={handleChange} disabled placeholder="Généré à l'enregistrement" />
                         <Input name="school_class" label="Classe d'affectation" type="select" value={formData.school_class} onChange={handleChange} required options={[
                             { value: '', label: '-- Sélectionner la classe --' },
                             ...classes.map(c => ({ value: String(c.id), label: c.name }))
@@ -185,7 +182,6 @@ export const StudentFormPage = () => {
                         </div>
                         <div>
                             <p className="t-label">Scolarité</p>
-                            <p className="t-title">Matricule : {formData.matricule}</p>
                             <p className="t-body">Classe : {getClassName(formData.school_class)}</p>
                         </div>
                         <div style={{ marginTop: 'var(--space-4)' }}>

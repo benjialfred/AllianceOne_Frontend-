@@ -6,6 +6,7 @@ import { api } from '../services/api';
 import { FileText, Download, Users, User, Loader, Eye, Printer } from 'lucide-react';
 import { PageHeader } from '../components';
 import { motion } from 'framer-motion';
+import { usePlatformStore } from '../../../core/stores/platformStore';
 
 export function ReportsPage() {
     const [classes, setClasses] = useState<any[]>([]);
@@ -18,9 +19,11 @@ export function ReportsPage() {
     const [previewData, setPreviewData] = useState<any>(null);
     const [loadingPreview, setLoadingPreview] = useState(false);
     
+    const currentSchoolClass = usePlatformStore(s => s.currentSchoolClass);
+
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedSection, setSelectedSection] = useState('COLLEGE');
-    const [selectedClass, setSelectedClass] = useState('');
+    const [selectedClass, setSelectedClass] = useState(currentSchoolClass ? String(currentSchoolClass.id) : '');
     const [selectedSequence, setSelectedSequence] = useState('trim1');
     const [selectedStudent, setSelectedStudent] = useState('');
 
@@ -60,6 +63,13 @@ export function ReportsPage() {
         }
     };
 
+    // Sync with global class context
+    useEffect(() => {
+        if (currentSchoolClass) {
+            setSelectedClass(String(currentSchoolClass.id));
+        }
+    }, [currentSchoolClass]);
+
     const loadPreview = async () => {
         setLoadingPreview(true);
         try {
@@ -74,7 +84,7 @@ export function ReportsPage() {
     };
 
     const currentSectionClasses = classes.filter(c => c.section === selectedSection);
-    const currentClassStudents = selectedClass ? students.filter(s => String(s.school_class) === selectedClass) : [];
+    const currentClassStudents = selectedClass ? students.filter(s => String(s.current_enrollment?.school_class_details?.id) === selectedClass) : [];
 
     const handleDownload = async (path: string, label: string) => {
         setDownloading(label);
@@ -328,7 +338,7 @@ export function ReportsPage() {
                                 </div>
                                 <Badge 
                                     label={previewData.mention} 
-                                    variant={previewData.general_average >= 14 ? 'success' : previewData.general_average >= 10 ? 'warning' : 'error'} 
+                                    variant={previewData.general_average >= 14 ? 'success' : previewData.general_average >= 10 ? 'warning' : 'danger'} 
                                 />
                             </div>
 

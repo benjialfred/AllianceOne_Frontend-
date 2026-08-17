@@ -14,16 +14,7 @@ import campusVideo from '../../../assets/Campus_Hero_Dashboard_prin.mp4';
 import adVideo1 from '../../../assets/Cour_d_ecole_Duration_s.mp4';
 import adVideo2 from '../../../assets/Create_an_ultra_realistic_corp.mp4';
 
-// Données fictives pour le graphique financier
-const mockFinancialData = [
-    { name: 'Jan', revenue: 4000 },
-    { name: 'Fév', revenue: 3000 },
-    { name: 'Mar', revenue: 2000 },
-    { name: 'Avr', revenue: 2780 },
-    { name: 'Mai', revenue: 1890 },
-    { name: 'Juin', revenue: 2390 },
-    { name: 'Juil', revenue: 3490 },
-];
+// Les données financières seront calculées à partir de l'API
 
 export const DashboardPage = () => {
     const navigate = useNavigate();
@@ -32,20 +23,35 @@ export const DashboardPage = () => {
     const [kpis, setKpis] = useState<any>(null);
     const [alerts, setAlerts] = useState<AlertItem[]>([]);
     const [activities, setActivities] = useState<ActivityItem[]>([]);
+    const [financialData, setFinancialData] = useState<{ name: string; revenue: number }[]>([]);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             setLoading(true);
             try {
-                const [kpiRes, intelligenceRes, timelineRes] = await Promise.all([
+                const [kpiRes, intelligenceRes, timelineRes, paymentsRes] = await Promise.all([
                     api.get('/dashboard-stats/kpis/'),
                     api.get('/dashboard-stats/intelligence/'),
-                    api.get('/dashboard-stats/timeline/')
+                    api.get('/dashboard-stats/timeline/'),
+                    api.get('/payments/')
                 ]);
 
                 setKpis(kpiRes);
                 setAlerts(intelligenceRes.alerts || []);
                 setActivities(timelineRes.activities || []);
+
+                // Compute monthly financial data from real payments
+                const monthNames = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+                const monthlyTotals: Record<number, number> = {};
+                if (Array.isArray(paymentsRes)) {
+                    paymentsRes.forEach((p: any) => {
+                        const d = new Date(p.date || p.created_at);
+                        const month = d.getMonth();
+                        monthlyTotals[month] = (monthlyTotals[month] || 0) + parseFloat(p.amount || 0);
+                    });
+                }
+                const chartData = monthNames.map((name, idx) => ({ name, revenue: monthlyTotals[idx] || 0 }));
+                setFinancialData(chartData);
             } catch (error) {
                 console.error("Erreur lors du chargement du dashboard", error);
             } finally {
@@ -154,7 +160,7 @@ export const DashboardPage = () => {
                         </div>
                         <div style={{ height: '300px', width: '100%' }}>
                             <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={mockFinancialData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <AreaChart data={financialData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                     <defs>
                                         <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                                             <stop offset="5%" stopColor="var(--color-accent-500)" stopOpacity={0.3}/>

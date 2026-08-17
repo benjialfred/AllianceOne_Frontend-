@@ -4,10 +4,13 @@ export * from './Badge';
 export * from './Input';
 export * from './Layout';
 export * from './Table';
+export * from './Sparkline';
+export * from './VideoHero';
 export * from './TeacherLayout';
 export * from './Wizard';
 export * from './Tabs';
 export * from './DashboardGrid';
+export * from './ClassActivityFeed';
 export * from './StatCard';
 export * from './ActivityChart';
 // New components are imported directly to avoid isolatedModules type export issues
@@ -18,3 +21,4 @@ export * from './ActivityChart';
 export * from './PageHeader';
 export * from './EmptyState';
 export * from './Modal';
+export * from './SeriesManagerModal';

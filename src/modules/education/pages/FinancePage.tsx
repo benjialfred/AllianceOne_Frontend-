@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Table, Modal, Input } from '../components';
+import { Card, Button, Table, Modal, Input, Tabs } from '../components';
 import type { Column, TableAction } from '../components';
 import { api, API_BASE_URL } from '../services/api';
-import { FileText, X, CreditCard, Download, Plus } from 'lucide-react';
+import { FileText, X, CreditCard, Download, Plus, Bell } from 'lucide-react';
 import { PageHeader } from '../components';
 import { motion } from 'framer-motion';
 
@@ -23,7 +23,10 @@ export const FinancePage = () => {
     // Payment Modal State
     const [paymentModalOpen, setPaymentModalOpen] = useState(false);
     const [paymentAmount, setPaymentAmount] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('ESP');
+    const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentSubmitting, setPaymentSubmitting] = useState(false);
+    const [activeTab, setActiveTab] = useState('ALL');
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -97,6 +100,8 @@ export const FinancePage = () => {
     const openPaymentModal = (profile: any) => {
         setSelectedProfile(profile);
         setPaymentAmount('');
+        setPaymentMethod('ESP');
+        setReferenceNumber('');
         setPaymentModalOpen(true);
     };
 
@@ -111,7 +116,9 @@ export const FinancePage = () => {
         try {
             const res = await api.post('/payments/', {
                 tuition_profile: selectedProfile.id,
-                amount: Number(paymentAmount)
+                amount: Number(paymentAmount),
+                payment_method: paymentMethod,
+                reference_number_trans: referenceNumber
             });
             
             setPaymentModalOpen(false);
@@ -127,6 +134,23 @@ export const FinancePage = () => {
             setPaymentSubmitting(false);
         }
     };
+
+    const handleSendReminder = async (profileId: number) => {
+        if (!window.confirm("Êtes-vous sûr de vouloir envoyer une relance de paiement (Simulation) ?")) return;
+        try {
+            const res = await api.post(`/tuition-profiles/${profileId}/send_reminder/`);
+            alert(res.success || "Relance envoyée");
+        } catch(e: any) {
+            alert(e.message || "Erreur lors de l'envoi de la relance");
+        }
+    };
+
+    const filteredProfiles = profiles.filter(p => {
+        const remaining = parseFloat(p.remaining_amount);
+        if (activeTab === 'PAID') return remaining <= 0;
+        if (activeTab === 'UNPAID') return remaining > 0;
+        return true;
+    });
 
     const columns: Column<any>[] = [
         {
@@ -198,6 +222,21 @@ export const FinancePage = () => {
                 if(selected.length === 1) openHistory(selected[0]);
                 else alert("Sélectionnez un seul élève à la fois pour voir l'historique.");
             }
+        },
+        {
+            label: "Relancer",
+            icon: Bell,
+            variant: "ghost",
+            onClick: (selected) => {
+                if(selected.length === 1) {
+                    if (parseFloat(selected[0].remaining_amount) > 0) {
+                        handleSendReminder(selected[0].id);
+                    } else {
+                        alert("Cet élève est déjà en règle.");
+                    }
+                }
+                else alert("Sélectionnez un seul élève pour envoyer une relance.");
+            }
         }
     ];
 
@@ -236,9 +275,19 @@ export const FinancePage = () => {
                     <p>Veuillez choisir une classe ci-dessus pour afficher l'état financier de ses élèves.</p>
                 </div>
             ) : (
-                <Table 
-                    columns={columns}
-                    data={profiles}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
+                    <Tabs
+                        tabs={[
+                            { id: 'ALL', label: 'Tous les profils' },
+                            { id: 'PAID', label: 'En Règle (Soldé)' },
+                            { id: 'UNPAID', label: 'Impayés' }
+                        ]}
+                        activeTab={activeTab}
+                        onChange={setActiveTab}
+                    />
+                    <Table 
+                        columns={columns}
+                        data={filteredProfiles}
                     keyExtractor={(item) => item.id}
                     loading={loading}
                     searchable={true}
@@ -248,6 +297,7 @@ export const FinancePage = () => {
                     onRowClick={(item) => openHistory(item)}
                     pageSize={20}
                 />
+                </div>
             )}
 
             <Modal
@@ -338,8 +388,33 @@ export const FinancePage = () => {
                                     placeholder="Ex: 50000"
                                     min="1"
                                     max={selectedProfile.remaining_amount > 0 ? selectedProfile.remaining_amount : undefined}
-                                    style={{ width: '100%', padding: 'var(--spacing-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-surface-border)', fontSize: 'var(--font-size-base)', backgroundColor: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', outline: 'none' }}
+                                    style={{ width: '100%', padding: 'var(--spacing-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-surface-border)', fontSize: 'var(--font-size-base)', backgroundColor: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', outline: 'none', marginBottom: 'var(--spacing-4)' }}
                                     required
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="t-label" style={{ display: 'block', marginBottom: 'var(--spacing-2)' }}>Moyen de Paiement</label>
+                                <select 
+                                    value={paymentMethod}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    style={{ width: '100%', padding: 'var(--spacing-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-surface-border)', fontSize: 'var(--font-size-base)', backgroundColor: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', outline: 'none', marginBottom: 'var(--spacing-4)' }}
+                                >
+                                    <option value="ESP">Espèces</option>
+                                    <option value="MOMO">Mobile Money</option>
+                                    <option value="VIR">Virement Bancaire</option>
+                                    <option value="CHQ">Chèque</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="t-label" style={{ display: 'block', marginBottom: 'var(--spacing-2)' }}>Référence (Optionnel)</label>
+                                <input 
+                                    type="text" 
+                                    value={referenceNumber}
+                                    onChange={(e) => setReferenceNumber(e.target.value)}
+                                    placeholder="N° Transaction MoMo, N° Chèque..."
+                                    style={{ width: '100%', padding: 'var(--spacing-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-surface-border)', fontSize: 'var(--font-size-base)', backgroundColor: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', outline: 'none' }}
                                 />
                             </div>
                         </form>

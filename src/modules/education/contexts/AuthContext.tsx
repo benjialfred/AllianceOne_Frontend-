@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiClient } from '../../../core/api/client';
 import { api } from '../services/api';
 
 export type UserRole = 'secretaire' | 'enseignant' | 'admin' | null;
@@ -18,18 +19,27 @@ interface AuthContextType {
     login: (access: string, refresh: string) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
+    activeModules: string[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [activeModules, setActiveModules] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchUser = async () => {
         try {
             const data = await api.get('/auth/me/');
             setUser(data);
+            try {
+                const modules = await apiClient.get<any[]>('/core/identity/modules/');
+                setActiveModules(modules.map(m => m.id));
+            } catch(e) {
+                // Fallback si l'endpoint n'est pas dispo
+                setActiveModules(['education', 'library']);
+            }
         } catch (error) {
             console.error('Erreur lors de la récupération du profil utilisateur', error);
             logout();
@@ -60,7 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated: !!user, activeModules }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Input, PageHeader } from '../components';
-import { api } from '../services/api';
+import { api, API_BASE_URL } from '../services/api';
 import { Save, Download, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -55,7 +55,7 @@ export const SettingsPage = () => {
     const handleBackup = async () => {
         try {
             const token = localStorage.getItem('access_token');
-            const response = await fetch('http://localhost:8000/api/core/backup/', {
+            const response = await fetch(`${API_BASE_URL}/core/backup/`, {
                 headers: token ? { 'Authorization': `Bearer ${token}` } : {}
             });
             if (!response.ok) throw new Error('Erreur HTTP');

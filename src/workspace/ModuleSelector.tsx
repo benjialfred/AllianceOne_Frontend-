@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Stethoscope, Package, Building2, Landmark, GraduationCap } from 'lucide-react';
+import { BookOpen, Stethoscope, Package, Building2, Landmark, GraduationCap, FolderKanban } from 'lucide-react';
 import { usePlatformStore } from '../core/stores/platformStore';
 import type { Organization } from '../core/api/types';
 import { useNavigate } from 'react-router-dom';
@@ -24,28 +24,36 @@ const MODULES = [
     active: false,
   },
   {
-    id: 'logistics',
-    name: 'Logistique',
-    description: 'Gestion des stocks, entrepôts, flotte et approvisionnement.',
+    id: 'inventory',
+    name: 'Stocks & Logistique',
+    description: 'Gestion multi-dépôts, valorisation PMP, flux, approvisionnements et inventaires.',
     icon: <Package size={32} />,
-    color: '#F59E0B',
-    active: false,
+    color: '#0e121b',
+    active: true,
   },
   {
-    id: 'real_estate',
-    name: 'Immobilier',
-    description: 'Gestion de biens, locations, syndic et transactions.',
-    icon: <Building2 size={32} />,
-    color: '#6366F1',
-    active: false,
+    id: 'tasks',
+    name: 'Tâches & Projets',
+    description: 'Tableaux Kanban, gestion de projets, jalons, sous-tâches et suivi du temps.',
+    icon: <FolderKanban size={32} />,
+    color: '#4f46e5',
+    active: true,
+  },
+  {
+    id: 'library',
+    name: 'Bibliothèque & CDI',
+    description: 'Gestion du fonds documentaire, des prêts et des retards.',
+    icon: <BookOpen size={32} />,
+    color: '#3B82F6',
+    active: true,
   },
   {
     id: 'finance',
-    name: 'Finance',
-    description: 'Comptabilité avancée, trésorerie et rapprochement bancaire.',
+    name: 'Finance & Trésorerie',
+    description: 'Gestion multi-devises, trésorerie, budgets prévisionnels et facturation.',
     icon: <Landmark size={32} />,
-    color: '#EC4899',
-    active: false,
+    color: '#059669',
+    active: true,
   }
 ];
 
@@ -66,6 +74,12 @@ export const ModuleSelector: React.FC = () => {
     // 3. Naviguer vers le namespace correspondant si défini
     if (modId === 'education') {
       navigate('/education');
+    } else if (modId === 'inventory') {
+      navigate('/inventory');
+    } else if (modId === 'tasks') {
+      navigate('/tasks');
+    } else if (modId === 'finance') {
+      navigate('/finance');
     } else {
       navigate('/');
     }

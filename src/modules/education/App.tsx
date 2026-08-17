@@ -17,6 +17,7 @@ import { ReportsPage } from './pages/ReportsPage';
 import { AcademicYearsPage } from './pages/AcademicYearsPage';
 import { AcademicYearEventsPage } from './pages/AcademicYearEventsPage';
 import { AcademicCalendarPage } from './pages/AcademicCalendarPage';
+import { PresencesPage } from './pages/PresencesPage';
 import { AuditLogPage } from './pages/AuditLogPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { HelpPage } from './pages/HelpPage';
@@ -45,6 +46,7 @@ export default function EducationModuleRoutes() {
                 <Route path="/academic-years" element={<AcademicYearsPage />} />
                 <Route path="/academic-calendar" element={<AcademicCalendarPage />} />
                 <Route path="/academic-years/:id/events" element={<AcademicYearEventsPage />} />
+                <Route path="/presences" element={<PresencesPage />} />
                 <Route path="/audit" element={<AuditLogPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/help" element={<HelpPage />} />

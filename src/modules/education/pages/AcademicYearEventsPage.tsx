@@ -140,7 +140,7 @@ export const AcademicYearEventsPage = () => {
                                         <td style={{ padding: 'var(--spacing-4) var(--spacing-6)', color: 'var(--color-text-secondary)' }}>{new Date(log.timestamp).toLocaleString()}</td>
                                         <td style={{ padding: 'var(--spacing-4) var(--spacing-6)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-primary)' }}>{log.user_details ? log.user_details.username : 'Système'}</td>
                                         <td style={{ padding: 'var(--spacing-4) var(--spacing-6)' }}>
-                                            <Badge label={log.action} variant={log.action === 'CREATE' ? 'success' : log.action === 'DELETE' ? 'error' : 'default'} />
+                                            <Badge label={log.action} variant={log.action === 'CREATE' ? 'success' : log.action === 'DELETE' ? 'danger' : 'default'} />
                                         </td>
                                         <td style={{ padding: 'var(--spacing-4) var(--spacing-6)', color: 'var(--color-text-primary)' }}>{log.model_name}: {log.object_repr}</td>
                                         <td style={{ padding: 'var(--spacing-4) var(--spacing-6)', fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)' }}>

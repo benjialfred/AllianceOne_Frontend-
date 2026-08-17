@@ -14,6 +14,11 @@ export const GradesPage = () => {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     
+    // Import state
+    const [showImportModal, setShowImportModal] = useState(false);
+    const [importFile, setImportFile] = useState<File | null>(null);
+    const [importing, setImporting] = useState(false);
+    
     const [historyData, setHistoryData] = useState<{ [gradeId: number]: any[] }>({});
     const [loadingHistoryId, setLoadingHistoryId] = useState<number | null>(null);
     
@@ -180,6 +185,40 @@ export const GradesPage = () => {
         XLSX.writeFile(workbook, "Liste_Notes.xlsx");
     };
 
+    const handleImportSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!importFile) return;
+        
+        setImporting(true);
+        try {
+            const fd = new FormData();
+            fd.append('file', importFile);
+            fd.append('academic_year', formData.academic_year);
+            // student is not needed since the file contains identifiers
+            fd.append('subject', formData.subject);
+            fd.append('teacher', formData.teacher);
+            fd.append('sequence', formData.sequence);
+            fd.append('evaluation_type', formData.evaluation_type);
+            // we need the class ID too, so we'll need the user to select a class, or we can just pass the class ID of a selected student
+            // Wait, in GradesPage, we don't have a direct class selector. Let's ask for the class.
+            // Oh, the user selects a student... That's not ideal for importing a whole class. 
+            // In TeacherGradesPage it's easier. Here, let's just make the user select a class for import.
+            const clsId = prompt("Veuillez entrer l'ID de la classe pour cet import (ex: 1) :");
+            if (!clsId) { setImporting(false); return; }
+            fd.append('school_class', clsId);
+
+            const res = await api.post('/grades/import_grades/', fd);
+            alert(res.message || 'Import terminé');
+            setShowImportModal(false);
+            setImportFile(null);
+            fetchData();
+        } catch (err: any) {
+            alert(err.message || 'Erreur lors de l\'importation');
+        } finally {
+            setImporting(false);
+        }
+    };
+
     return (
         <motion.div className="page-transition-wrapper">
             <PageHeader
@@ -187,9 +226,28 @@ export const GradesPage = () => {
                 subtitle="Enregistrement et gestion des notes d'évaluations."
                 icon={FileSignature}
                 actions={
-                    <Button variant="outline" icon={Download} onClick={handleExportExcel}>Exporter Excel</Button>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+                        <Button variant="outline" icon={Download} onClick={() => setShowImportModal(true)}>Importer Notes</Button>
+                        <Button variant="outline" icon={Download} onClick={handleExportExcel}>Exporter Excel</Button>
+                    </div>
                 }
             />
+
+            {showImportModal && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Card style={{ width: '400px', backgroundColor: 'var(--color-surface-bg)' }}>
+                        <h3>Importer des notes (Excel/Word)</h3>
+                        <p style={{ fontSize: '13px', color: 'gray' }}>Format attendu : Matricule (ou Nom/Prénom) en première colonne, et la note dans une autre colonne.</p>
+                        <form onSubmit={handleImportSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                            <input type="file" accept=".xlsx,.docx" onChange={(e) => setImportFile(e.target.files?.[0] || null)} required />
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                                <Button variant="ghost" onClick={() => setShowImportModal(false)}>Annuler</Button>
+                                <Button type="submit" disabled={importing || !importFile}>{importing ? 'Importation...' : 'Importer'}</Button>
+                            </div>
+                        </form>
+                    </Card>
+                </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--spacing-8)' }}>
                 <Card>
