@@ -71,7 +71,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Ouvrir le tableau de bord académique et scolaire',
       icon: GraduationCap,
       accentColor: '#4f46e5',
-      action: () => navigate('/education'),
+      action: () => navigate('/app/education'),
       shortcut: '⌘ 1'
     },
     {
@@ -81,7 +81,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Articles, dépôts, valorisation PMP et approvisionnements',
       icon: Package,
       accentColor: '#0ea5e9',
-      action: () => navigate('/inventory'),
+      action: () => navigate('/app/inventory'),
       shortcut: '⌘ 2'
     },
     {
@@ -91,7 +91,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Comptes, factures, transactions et budgets',
       icon: Landmark,
       accentColor: '#059669',
-      action: () => navigate('/finance'),
+      action: () => navigate('/app/finance'),
       shortcut: '⌘ 3'
     },
     {
@@ -101,7 +101,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Tableaux Kanban, jalons et gestion d’équipe',
       icon: FolderKanban,
       accentColor: '#8b5cf6',
-      action: () => navigate('/tasks'),
+      action: () => navigate('/app/tasks'),
       shortcut: '⌘ 4'
     },
     {
@@ -111,7 +111,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Fonds documentaire, prêts et retards',
       icon: BookOpen,
       accentColor: '#3b82f6',
-      action: () => navigate('/library'),
+      action: () => navigate('/app/library'),
       shortcut: '⌘ 5'
     },
 
@@ -123,7 +123,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Créer une fiche élève complète avec classe et tuteurs',
       icon: UserPlus,
       accentColor: '#4f46e5',
-      action: () => navigate('/education/students/new')
+      action: () => navigate('/app/education/students/new')
     },
     {
       id: 'act-new-payment',
@@ -132,7 +132,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Entrée ou sortie de fonds avec reçu instantané',
       icon: Receipt,
       accentColor: '#059669',
-      action: () => navigate('/finance/transactions')
+      action: () => navigate('/app/finance/transactions')
     },
     {
       id: 'act-new-product',
@@ -141,7 +141,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Référence SKU, code-barres et prix unitaire',
       icon: ShoppingCart,
       accentColor: '#0ea5e9',
-      action: () => navigate('/inventory/products')
+      action: () => navigate('/app/inventory/products')
     },
     {
       id: 'act-new-task',
@@ -150,7 +150,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       subtitle: 'Ajouter au tableau Kanban avec niveau de priorité',
       icon: CheckSquare,
       accentColor: '#8b5cf6',
-      action: () => navigate('/tasks/board')
+      action: () => navigate('/app/tasks/board')
     },
 
     // Navigation & Écosystème
@@ -168,7 +168,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       title: 'Marketplace d’applications',
       subtitle: 'Découvrir et installer des connecteurs et extensions',
       icon: Store,
-      action: () => navigate('/marketplace')
+      action: () => navigate('/app/marketplace')
     },
     {
       id: 'nav-dev',
@@ -176,7 +176,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       title: 'Developer Hub & API Keys',
       subtitle: 'Documentation technique, SDK et bac à sable REST',
       icon: Code2,
-      action: () => navigate('/developers')
+      action: () => navigate('/app/developers')
     },
     {
       id: 'nav-help',
@@ -184,7 +184,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       title: 'Centre d’Aide & Documentation',
       subtitle: 'Guides interactifs, tutoriels et assistance technique',
       icon: HelpCircle,
-      action: () => navigate('/help')
+      action: () => navigate('/app/help')
     },
 
     // Système

@@ -274,7 +274,7 @@ export const DashboardPage: React.FC = () => {
                 </p>
               </div>
               <button
-                onClick={() => navigate('/tasks/board')}
+                onClick={() => navigate('/app/tasks/board')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -401,7 +401,7 @@ export const DashboardPage: React.FC = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button
-                onClick={() => navigate('/tasks/board')}
+                onClick={() => navigate('/app/tasks/board')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -421,7 +421,7 @@ export const DashboardPage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => navigate('/tasks/projects')}
+                onClick={() => navigate('/app/tasks/projects')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -441,7 +441,7 @@ export const DashboardPage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => navigate('/tasks/my-tasks')}
+                onClick={() => navigate('/app/tasks/my-tasks')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',

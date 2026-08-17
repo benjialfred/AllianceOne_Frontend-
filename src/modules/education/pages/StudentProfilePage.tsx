@@ -234,7 +234,7 @@ export const StudentProfilePage = () => {
                         <div style={{ padding: 'var(--spacing-10)', textAlign: 'center', color: 'var(--color-text-secondary)', backgroundColor: 'var(--color-surface-bg)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-surface-border)' }}>
                             Aucun profil financier trouvé pour cette année. 
                             <br/><br/>
-                            <Button variant="outline" onClick={() => navigate('/finance')}>Gérer dans Finances</Button>
+                            <Button variant="outline" onClick={() => navigate('/app/finance')}>Gérer dans Finances</Button>
                         </div>
                     )}
                 </Card>

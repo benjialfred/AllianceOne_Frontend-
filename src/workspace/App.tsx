@@ -319,7 +319,7 @@ export const WorkspaceShell: React.FC = () => {
           <Routes>
             {/* Primary Entry Point: Alliance Hub */}
             <Route 
-              path="/" 
+              path="/app" 
               element={
                 <AllianceHub 
                   onOpenCreate={() => setIsCreateOpen(true)} 
@@ -329,18 +329,18 @@ export const WorkspaceShell: React.FC = () => {
             />
 
             {/* Ecosystem Pages */}
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/developers" element={<DevelopersPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/help" element={<UnifiedHelpPage />} />
+            <Route path="/app/marketplace" element={<MarketplacePage />} />
+            <Route path="/app/developers" element={<DevelopersPage />} />
+            <Route path="/app/services" element={<ServicesPage />} />
+            <Route path="/app/community" element={<CommunityPage />} />
+            <Route path="/app/help" element={<UnifiedHelpPage />} />
 
             {/* Business Modules */}
-            <Route path="/education/*" element={<EducationModuleRoutes />} />
-            <Route path="/inventory/*" element={<InventoryModuleRoutes />} />
-            <Route path="/finance/*" element={<FinanceModuleRoutes />} />
-            <Route path="/library/*" element={<LibraryModuleRoutes />} />
-            <Route path="/tasks/*" element={<TasksModuleRoutes />} />
+            <Route path="/app/education/*" element={<EducationModuleRoutes />} />
+            <Route path="/app/inventory/*" element={<InventoryModuleRoutes />} />
+            <Route path="/app/finance/*" element={<FinanceModuleRoutes />} />
+            <Route path="/app/library/*" element={<LibraryModuleRoutes />} />
+            <Route path="/app/tasks/*" element={<TasksModuleRoutes />} />
           </Routes>
         </main>
       </div>

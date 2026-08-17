@@ -80,7 +80,7 @@ export const DashboardPage: React.FC = () => {
               Transfert Inter-Dépôts
             </button>
             <button
-              onClick={() => navigate('/inventory/products?new=1')}
+              onClick={() => navigate('/app/inventory/products?new=1')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -165,7 +165,7 @@ export const DashboardPage: React.FC = () => {
           padding: '1.25rem',
           boxShadow: '0 1px 3px rgba(14, 18, 27, 0.05)',
           cursor: 'pointer'
-        }} onClick={() => navigate('/inventory/products?status=LOW_STOCK')}>
+        }} onClick={() => navigate('/app/inventory/products?status=LOW_STOCK')}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <span style={{ fontSize: '12px', fontWeight: 600, color: '#868c98', textTransform: 'uppercase' }}>
               Ruptures & Alertes
@@ -195,7 +195,7 @@ export const DashboardPage: React.FC = () => {
           padding: '1.25rem',
           boxShadow: '0 1px 3px rgba(14, 18, 27, 0.05)',
           cursor: 'pointer'
-        }} onClick={() => navigate('/inventory/purchase-orders')}>
+        }} onClick={() => navigate('/app/inventory/purchase-orders')}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <span style={{ fontSize: '12px', fontWeight: 600, color: '#868c98', textTransform: 'uppercase' }}>
               Commandes d'Achat en cours
@@ -283,7 +283,7 @@ export const DashboardPage: React.FC = () => {
               if (alert.product_id) {
                 navigate(`/inventory/products/${alert.product_id}`);
               } else if (alert.order_id) {
-                navigate('/inventory/purchase-orders');
+                navigate('/app/inventory/purchase-orders');
               }
             }}
           />
@@ -303,7 +303,7 @@ export const DashboardPage: React.FC = () => {
               Répartition par Entrepôt
             </h3>
             <button
-              onClick={() => navigate('/inventory/warehouses')}
+              onClick={() => navigate('/app/inventory/warehouses')}
               style={{ fontSize: '12px', color: '#6366f1', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
             >
               Gérer
@@ -389,7 +389,7 @@ export const DashboardPage: React.FC = () => {
               Flux Logistiques Récents
             </h3>
             <button
-              onClick={() => navigate('/inventory/stock-movements')}
+              onClick={() => navigate('/app/inventory/stock-movements')}
               style={{ fontSize: '12px', color: '#6366f1', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
             >
               Historique complet

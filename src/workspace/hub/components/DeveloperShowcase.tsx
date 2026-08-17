@@ -26,11 +26,11 @@ export const DeveloperShowcase: React.FC = () => {
           </p>
 
           <div className="hub-dev-actions">
-            <button className="dev-primary-btn" onClick={() => navigate('/developers')}>
+            <button className="dev-primary-btn" onClick={() => navigate('/app/developers')}>
               <span>Accéder au Developer Hub</span>
               <ArrowRight size={14} />
             </button>
-            <button className="dev-secondary-btn" onClick={() => navigate('/developers')}>
+            <button className="dev-secondary-btn" onClick={() => navigate('/app/developers')}>
               <Terminal size={14} />
               <span>Consulter la documentation API</span>
             </button>

@@ -464,7 +464,7 @@ export const DashboardPage: React.FC = () => {
               Dépenses par Poste
             </h3>
             <button
-              onClick={() => navigate('/finance/categories')}
+              onClick={() => navigate('/app/finance/categories')}
               style={{ border: 'none', background: 'transparent', color: '#2563eb', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}
             >
               Gérer
@@ -524,7 +524,7 @@ export const DashboardPage: React.FC = () => {
               Enveloppes Budgétaires
             </h3>
             <button
-              onClick={() => navigate('/finance/budgets')}
+              onClick={() => navigate('/app/finance/budgets')}
               style={{ border: 'none', background: 'transparent', color: '#2563eb', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}
             >
               Tous les budgets
@@ -584,7 +584,7 @@ export const DashboardPage: React.FC = () => {
               Dernières Opérations
             </h3>
             <button
-              onClick={() => navigate('/finance/transactions')}
+              onClick={() => navigate('/app/finance/transactions')}
               style={{ border: 'none', background: 'transparent', color: '#2563eb', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}
             >
               Voir le journal complet

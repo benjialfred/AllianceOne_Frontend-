@@ -223,7 +223,7 @@ export const SpatialActivityAndStory: React.FC = () => {
 
               <button 
                 className="story-explore-link" 
-                onClick={(e) => { e.stopPropagation(); navigate('/education'); }}
+                onClick={(e) => { e.stopPropagation(); navigate('/app/education'); }}
               >
                 <span>Découvrir l'Espace Éducation</span>
                 <ArrowRight size={13} />

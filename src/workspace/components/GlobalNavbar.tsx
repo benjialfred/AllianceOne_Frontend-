@@ -78,17 +78,17 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
   };
 
   const isModuleActive = 
-    location.pathname.startsWith('/education') || 
-    location.pathname.startsWith('/inventory') || 
-    location.pathname.startsWith('/finance') || 
-    location.pathname.startsWith('/library') || 
-    location.pathname.startsWith('/tasks');
+    location.pathname.startsWith('/app/education') || 
+    location.pathname.startsWith('/app/inventory') || 
+    location.pathname.startsWith('/app/finance') || 
+    location.pathname.startsWith('/app/library') || 
+    location.pathname.startsWith('/app/tasks');
 
   const isEcosystemActive = 
-    location.pathname.startsWith('/marketplace') || 
-    location.pathname.startsWith('/developers') || 
-    location.pathname.startsWith('/services') || 
-    location.pathname.startsWith('/community');
+    location.pathname.startsWith('/app/marketplace') || 
+    location.pathname.startsWith('/app/developers') || 
+    location.pathname.startsWith('/app/services') || 
+    location.pathname.startsWith('/app/community');
 
   return (
     <header className="global-navbar-root" ref={navRef}>
@@ -97,7 +97,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
         <div className="navbar-left">
           <button 
             className="navbar-brand-btn" 
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/app')}
             title="Alliance One Hub"
           >
             <Logo size={28} showText showMotto={false} />
@@ -108,7 +108,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
         {/* CENTER: 3 Core Navigation Entries */}
         <nav className="navbar-center-nav">
           <NavLink
-            to="/"
+            to="/app"
             end
             className={({ isActive }) => `navbar-nav-item ${isActive ? 'active' : ''}`}
           >
@@ -174,7 +174,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
           {/* Help Center Shortcut (?) */}
           <button 
             className="navbar-tool-btn icon-only help-trigger-btn"
-            onClick={() => navigate('/help')}
+            onClick={() => navigate('/app/help')}
             title="Centre d'aide & Documentation"
           >
             <HelpCircle size={15} />
@@ -230,11 +230,11 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                       <Home size={14} />
                       <span>Alliance Hub Cockpit</span>
                     </button>
-                    <button className="user-dropdown-item" onClick={() => { setUserDropdownOpen(false); navigate('/developers'); }}>
+                    <button className="user-dropdown-item" onClick={() => { setUserDropdownOpen(false); navigate('/app/developers'); }}>
                       <Zap size={14} />
                       <span>Console Développeur</span>
                     </button>
-                    <button className="user-dropdown-item" onClick={() => { setUserDropdownOpen(false); navigate('/help'); }}>
+                    <button className="user-dropdown-item" onClick={() => { setUserDropdownOpen(false); navigate('/app/help'); }}>
                       <HelpCircle size={14} />
                       <span>Centre d'aide & Documentation</span>
                     </button>
@@ -309,41 +309,41 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                   <Home size={18} />
                   <span>Alliance Hub</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/education'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/education'); }}>
                   <Boxes size={18} color="#4f46e5" />
                   <span>Éducation Pro</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/inventory'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/inventory'); }}>
                   <Boxes size={18} color="#0ea5e9" />
                   <span>Stocks & Logistique</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/finance'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/finance'); }}>
                   <Boxes size={18} color="#059669" />
                   <span>Finances & Trésorerie</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/tasks'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/tasks'); }}>
                   <Boxes size={18} color="#8b5cf6" />
                   <span>Tâches & Projets</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/library'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/library'); }}>
                   <Boxes size={18} color="#3b82f6" />
                   <span>Bibliothèque & CDI</span>
                 </button>
 
                 <div className="mobile-section-label" style={{ marginTop: '1.5rem' }}>ÉCOSYSTÈME</div>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/marketplace'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/marketplace'); }}>
                   <Compass size={18} />
                   <span>Marketplace</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/developers'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/developers'); }}>
                   <Zap size={18} />
                   <span>Developer Platform</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/services'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/services'); }}>
                   <Building2 size={18} />
                   <span>Alliance Studio</span>
                 </button>
-                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/help'); }}>
+                <button className="mobile-nav-link" onClick={() => { setMobileDrawerOpen(false); navigate('/app/help'); }}>
                   <HelpCircle size={18} />
                   <span>Centre d'Aide</span>
                 </button>

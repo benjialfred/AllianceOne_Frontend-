@@ -43,43 +43,35 @@ export const UniversalCreateModal: React.FC<UniversalCreateModalProps> = ({ isOp
       icon: GraduationCap,
       color: '#4f46e5',
       items: [
-        { label: 'Inscrire un nouvel élève', desc: 'Dossier académique, classe et tuteurs', path: '/education/students/new', icon: UserPlus },
-        { label: 'Enregistrer une note', desc: 'Saisie des évaluations trimestrielles', path: '/education/grades', icon: FileText },
+        { label: 'Inscrire un nouvel élève', desc: 'Dossier académique, classe et tuteurs', path: '/app/education/students/new', icon: UserPlus },
+        { label: 'Enregistrer une note', desc: 'Saisie des évaluations trimestrielles', path: '/app/education/grades', icon: FileText },
       ]
     },
     {
-      module: 'Finance & Trésorerie',
-      icon: Landmark,
-      color: '#059669',
+      category: 'FINANCE & COMPTABILITÉ',
       items: [
-        { label: 'Enregistrer un paiement / recette', desc: 'Scolarité, vente ou apport de caisse', path: '/finance/transactions', icon: Receipt },
-        { label: 'Créer une facture client', desc: 'Facture électronique avec TVA', path: '/finance/invoices', icon: FileText },
+        { label: 'Enregistrer un paiement / recette', desc: 'Scolarité, vente ou apport de caisse', path: '/app/finance/transactions', icon: Receipt },
+        { label: 'Créer une facture client', desc: 'Facture électronique avec TVA', path: '/app/finance/invoices', icon: FileText },
       ]
     },
     {
-      module: 'Stocks & Logistique',
-      icon: Package,
-      color: '#0ea5e9',
+      category: 'LOGISTIQUE & ACHATS',
       items: [
-        { label: 'Créer un article au catalogue', desc: 'SKU, prix d’achat, seuils et valorisation PMP', path: '/inventory/products', icon: PlusCircle },
-        { label: 'Émettre un bon de commande', desc: 'Commande fournisseur et approvisionnement', path: '/inventory/purchase-orders', icon: ShoppingCart },
+        { label: 'Créer un article au catalogue', desc: 'SKU, prix d’achat, seuils et valorisation PMP', path: '/app/inventory/products', icon: PlusCircle },
+        { label: 'Émettre un bon de commande', desc: 'Commande fournisseur et approvisionnement', path: '/app/inventory/purchase-orders', icon: ShoppingCart },
       ]
     },
     {
-      module: 'Tâches & Projets',
-      icon: FolderKanban,
-      color: '#8b5cf6',
+      category: 'COLLABORATION & TÂCHES',
       items: [
-        { label: 'Créer une tâche urgente', desc: 'Attribution, priorité et date limite', path: '/tasks/board', icon: CheckSquare },
-        { label: 'Initialiser un projet', desc: 'Jalons d’équipe et enveloppe temps', path: '/tasks/projects', icon: FolderKanban },
+        { label: 'Créer une tâche urgente', desc: 'Attribution, priorité et date limite', path: '/app/tasks/board', icon: CheckSquare },
+        { label: 'Initialiser un projet', desc: 'Jalons d’équipe et enveloppe temps', path: '/app/tasks/projects', icon: FolderKanban },
       ]
     },
     {
-      module: 'Bibliothèque',
-      icon: BookOpen,
-      color: '#3b82f6',
+      category: 'DOCUMENTATION',
       items: [
-        { label: 'Enregistrer un prêt de livre', desc: 'Attribution d’ouvrage à un emprunteur', path: '/library', icon: BookOpen },
+        { label: 'Enregistrer un prêt de livre', desc: 'Attribution d’ouvrage à un emprunteur', path: '/app/library', icon: BookOpen },
       ]
     }
   ];

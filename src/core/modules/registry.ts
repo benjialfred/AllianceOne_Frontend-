@@ -52,7 +52,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'vertical',
     icon: GraduationCap,
     accentColor: '#4f46e5',
-    routePath: '/education',
+    routePath: '/app/education',
     version: '2.4.0',
     developer: {
       name: 'Alliance Core Team',
@@ -80,7 +80,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'operations',
     icon: Package,
     accentColor: '#0ea5e9',
-    routePath: '/inventory',
+    routePath: '/app/inventory',
     version: '2.1.0',
     developer: {
       name: 'Alliance Core Team',
@@ -108,7 +108,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'finance',
     icon: Landmark,
     accentColor: '#059669',
-    routePath: '/finance',
+    routePath: '/app/finance',
     version: '2.3.1',
     developer: {
       name: 'Alliance Core Team',
@@ -136,7 +136,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'productivity',
     icon: FolderKanban,
     accentColor: '#8b5cf6',
-    routePath: '/tasks',
+    routePath: '/app/tasks',
     version: '1.9.0',
     developer: {
       name: 'Alliance Core Team',
@@ -164,7 +164,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'operations',
     icon: BookOpen,
     accentColor: '#3b82f6',
-    routePath: '/library',
+    routePath: '/app/library',
     version: '1.4.0',
     developer: {
       name: 'Alliance Core Team',
@@ -191,7 +191,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'vertical',
     icon: Stethoscope,
     accentColor: '#10b981',
-    routePath: '/healthcare',
+    routePath: '/app/healthcare',
     version: '0.9.0',
     developer: {
       name: 'Alliance Health Labs',
@@ -218,7 +218,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'productivity',
     icon: Users2,
     accentColor: '#f59e0b',
-    routePath: '/crm',
+    routePath: '/app/crm',
     version: '1.0.0-rc',
     developer: {
       name: 'Alliance Studio',
@@ -245,7 +245,7 @@ export const ALLIANCE_MODULES: ModuleManifest[] = [
     category: 'ai',
     icon: Bot,
     accentColor: '#ec4899',
-    routePath: '/ai-assistant',
+    routePath: '/app/ai-assistant',
     version: '1.2.0',
     developer: {
       name: 'Alliance AI Lab',

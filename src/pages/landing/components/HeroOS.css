@@ -1,0 +1,451 @@
+/**
+ * ALLIANCE ONE — HERO OS STYLES (Light Mode Reference)
+ * Institutional, calm, technological, crisp elevations.
+ */
+
+.hero-os-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+/* ── Ambient Radial Glows ── */
+.hero-os-ambient-glow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 360px;
+  background: radial-gradient(ellipse at center, rgba(11, 43, 92, 0.04) 0%, rgba(250, 250, 248, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-os-gold-glow {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Neural Lines Canvas ── */
+.hero-os-neural-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Tiers Container ── */
+.hero-os-tier {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════
+   TIER 1: APEX (Alliance One Badge)
+   ═══════════════════════════════════════════════ */
+.tier-apex {
+  margin-bottom: 8px;
+}
+
+.apex-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px 8px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(11, 43, 92, 0.1);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(11, 43, 92, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.apex-pill:hover {
+  border-color: rgba(11, 43, 92, 0.25);
+  box-shadow: 0 6px 20px rgba(11, 43, 92, 0.08);
+}
+
+.apex-monogram {
+  height: 24px;
+  width: auto;
+}
+
+.apex-text-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.apex-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  color: #0B2B5C;
+}
+
+.apex-sub {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: -0.01em;
+}
+
+.apex-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.12);
+  color: #b45309;
+  letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════════════
+   TIER 2: ALLIANCE CORE (Nervous Engine)
+   ═══════════════════════════════════════════════ */
+.tier-core {
+  margin: 12px 0 20px 0;
+}
+
+.core-engine-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  background: #ffffff;
+  border: 1.5px solid rgba(11, 43, 92, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(11, 43, 92, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.core-engine-card:hover {
+  transform: translateY(-2px);
+  border-color: #0B2B5C;
+  box-shadow: 0 12px 32px rgba(11, 43, 92, 0.1);
+}
+
+.core-icon-orb {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(11, 43, 92, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.core-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.core-headline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.core-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  color: #0B2B5C;
+}
+
+.core-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.core-sub {
+  font-size: 10.5px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.core-telemetry-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #065f46;
+  margin-left: 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   TIER 3: BUSINESS APPLICATIONS GRID
+   ═══════════════════════════════════════════════ */
+.tier-apps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin: 10px 0 20px 0;
+}
+
+.app-node-card {
+  background: #ffffff;
+  border: 1.25px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.app-node-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: var(--app-accent, #4f46e5);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.app-node-card:hover,
+.app-node-card.is-active {
+  transform: translateY(-4px);
+  border-color: var(--app-accent, #4f46e5);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+.app-node-card:hover::before,
+.app-node-card.is-active::before {
+  opacity: 1;
+}
+
+.app-node-card.is-pulsing {
+  border-color: var(--app-accent, #4f46e5);
+  box-shadow: 0 0 0 2px rgba(11, 43, 92, 0.04), 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.app-node-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-node-icon-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-node-category {
+  font-size: 8px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65px;
+}
+
+.app-node-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.app-node-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1a1f24;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-node-val {
+  font-size: 9px;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-node-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.ribbon-bullet {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--app-accent, #4f46e5);
+  flex-shrink: 0;
+}
+
+.ribbon-text {
+  font-size: 8.5px;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════════════════════
+   TIER 4: INFRASTRUCTURE & INTELLIGENCE
+   ═══════════════════════════════════════════════ */
+.tier-infra {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.infra-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(11, 43, 92, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.infra-pill:hover {
+  background: #ffffff;
+  border-color: rgba(11, 43, 92, 0.2);
+  transform: translateY(-1px);
+}
+
+.infra-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #334155;
+  letter-spacing: -0.01em;
+}
+
+/* ═══════════════════════════════════════════════
+   INSPECTOR FLOATING MODAL
+   ═══════════════════════════════════════════════ */
+.hero-os-inspector {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 440px;
+  background: #ffffff;
+  border: 1.5px solid rgba(11, 43, 92, 0.15);
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 12px 32px rgba(11, 43, 92, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inspector-badge {
+  font-size: 10.5px;
+  font-weight: 750;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.inspector-text {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #475569;
+}
+
+.inspector-text strong {
+  color: #0f172a;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-os-stage {
+    min-height: auto;
+    padding: 16px 8px;
+  }
+
+  .hero-os-neural-lines {
+    display: none;
+  }
+
+  .tier-apps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .tier-infra {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .infra-pill {
+    width: 100%;
+    justify-content: center;
+  }
+}

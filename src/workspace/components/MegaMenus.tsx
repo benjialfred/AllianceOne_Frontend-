@@ -89,7 +89,7 @@ export const ModulesMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
               <button
                 key={mod.id}
                 className="mega-menu-item subtle"
-                onClick={() => handleGo('/marketplace')}
+                onClick={() => handleGo('/app/marketplace')}
               >
                 <div className="mega-item-icon" style={{ backgroundColor: `${mod.accentColor}18`, color: mod.accentColor }}>
                   <Icon size={18} />
@@ -105,7 +105,7 @@ export const ModulesMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
             );
           })}
 
-          <button className="mega-quick-action-card" onClick={() => handleGo('/marketplace')}>
+          <button className="mega-quick-action-card" onClick={() => handleGo('/app/marketplace')}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
               <Store size={15} color="#d97706" />
               <strong style={{ fontSize: '12px', color: '#b45309' }}>Marketplace Alliance</strong>
@@ -136,7 +136,7 @@ export const EcosystemMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
           <span className="mega-section-title">PLATEFORME & EXTENSIONS</span>
         </div>
         <div className="mega-links-vertical">
-          <button className="mega-text-link highlight" onClick={() => handleGo('/marketplace')}>
+          <button className="mega-text-link highlight" onClick={() => handleGo('/app/marketplace')}>
             <Store size={16} color="#d97706" />
             <div>
               <div className="link-title">Marketplace d'Applications</div>
@@ -144,7 +144,7 @@ export const EcosystemMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
             </div>
           </button>
 
-          <button className="mega-text-link highlight" onClick={() => handleGo('/developers')}>
+          <button className="mega-text-link highlight" onClick={() => handleGo('/app/developers')}>
             <Code2 size={16} color="#4f46e5" />
             <div>
               <div className="link-title">Developer Hub & SDK</div>
@@ -160,7 +160,7 @@ export const EcosystemMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
           <span className="mega-section-title">SERVICES & CRÉATEURS</span>
         </div>
         <div className="mega-links-vertical">
-          <button className="mega-text-link highlight" onClick={() => handleGo('/services')}>
+          <button className="mega-text-link highlight" onClick={() => handleGo('/app/services')}>
             <Building2 size={16} color="#059669" />
             <div>
               <div className="link-title">Alliance Studio & Portfolio</div>
@@ -168,7 +168,7 @@ export const EcosystemMegaMenu: React.FC<MegaMenuProps> = ({ onClose }) => {
             </div>
           </button>
 
-          <button className="mega-text-link highlight" onClick={() => handleGo('/community')}>
+          <button className="mega-text-link highlight" onClick={() => handleGo('/app/community')}>
             <MessageSquare size={16} color="#8b5cf6" />
             <div>
               <div className="link-title">Communauté & Showcase</div>

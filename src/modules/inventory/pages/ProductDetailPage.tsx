@@ -71,7 +71,7 @@ export const ProductDetailPage: React.FC = () => {
   return (
     <div style={{ padding: '1.5rem 2rem' }}>
       <button
-        onClick={() => navigate('/inventory/products')}
+        onClick={() => navigate('/app/inventory/products')}
         style={{
           display: 'flex',
           alignItems: 'center',

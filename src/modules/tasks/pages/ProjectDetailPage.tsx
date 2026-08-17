@@ -99,7 +99,7 @@ export const ProjectDetailPage: React.FC = () => {
     <div style={{ padding: '1.5rem 2rem' }}>
       {/* Top navigation back button */}
       <button
-        onClick={() => navigate('/tasks/projects')}
+        onClick={() => navigate('/app/tasks/projects')}
         style={{
           display: 'flex',
           alignItems: 'center',

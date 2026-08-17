@@ -72,15 +72,15 @@ export const ModuleSelector: React.FC = () => {
     } as Organization);
     
     if (modId === 'education') {
-      navigate('/education');
+      navigate('/app/education');
     } else if (modId === 'inventory') {
-      navigate('/inventory');
+      navigate('/app/inventory');
     } else if (modId === 'tasks') {
-      navigate('/tasks');
+      navigate('/app/tasks');
     } else if (modId === 'finance') {
-      navigate('/finance');
+      navigate('/app/finance');
     } else if (modId === 'library') {
-      navigate('/library');
+      navigate('/app/library');
     } else {
       navigate('/');
     }

@@ -1,157 +1,187 @@
 /**
- * ALLIANCE ONE — LANDING PAGE (PUBLIC)
- * Placeholder structure for the public-facing landing page.
- * This will be fully built out after the Hero is validated.
+ * ALLIANCE ONE — LANDING PAGE PUBLIQUE
+ * 
+ * Mode Référence : Light Mode institutionnel & technologique.
+ * Palette : Ivoire/Blanc cassé (#FAF9F6), Graphite (#0F172A), Bleu Nuit Alliance (#0B2B5C), Or discret (#D4AF37).
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowRight, 
+  ChevronRight, 
+  ShieldCheck, 
+  Zap, 
+  Globe, 
+  Menu, 
+  X,
+  Sparkles,
+  Lock,
+  Boxes,
+  Cpu,
+  Layers
+} from 'lucide-react';
+import { HeroOS } from './components/HeroOS';
 import logoSrc from '../../assets/logo.png';
 import './LandingPage.css';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="landing-page">
-      {/* ═══════ PUBLIC NAVBAR ═══════ */}
-      <nav className="landing-nav">
+      {/* ═══════════════════════════════════════════════
+          1. PUBLIC OS NAVBAR
+          ═══════════════════════════════════════════════ */}
+      <header className="landing-nav">
         <div className="landing-nav-inner">
+          {/* Brand */}
           <div className="landing-nav-brand" onClick={() => navigate('/')}>
             <img src={logoSrc} alt="Alliance One" className="landing-nav-logo" />
+            <span className="landing-brand-badge">BUSINESS OS</span>
           </div>
 
-          <div className="landing-nav-links">
-            <a href="#modules" className="landing-nav-link">Modules</a>
-            <a href="#ecosystem" className="landing-nav-link">Écosystème</a>
+          {/* Links (Desktop) */}
+          <nav className="landing-nav-links">
+            <a href="#vision" className="landing-nav-link">Vision</a>
+            <a href="#modules" className="landing-nav-link">Applications</a>
+            <a href="#universal-data" className="landing-nav-link">Données Unifiées</a>
+            <a href="#ai" className="landing-nav-link">Intelligence</a>
             <a href="#developers" className="landing-nav-link">Développeurs</a>
-            <a href="#services" className="landing-nav-link">Services</a>
-          </div>
+          </nav>
 
+          {/* Action CTAs */}
           <div className="landing-nav-actions">
             <button
-              className="landing-nav-login"
+              className="landing-nav-login-btn"
               onClick={() => navigate('/login')}
             >
               Se connecter
             </button>
             <button
-              className="landing-nav-cta"
+              className="landing-nav-cta-btn"
               onClick={() => navigate('/register')}
             >
-              Créer mon environnement
+              <span>Créer mon environnement</span>
               <ArrowRight size={14} />
+            </button>
+
+            {/* Mobile Hamburger Toggle */}
+            <button 
+              className="landing-mobile-menu-btn"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
-      </nav>
 
-      {/* ═══════ HERO SECTION ═══════ */}
+        {/* Mobile Dropdown */}
+        {mobileMenuOpen && (
+          <motion.div 
+            className="landing-mobile-drawer"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <a href="#vision" onClick={() => setMobileMenuOpen(false)}>Vision</a>
+            <a href="#modules" onClick={() => setMobileMenuOpen(false)}>Applications</a>
+            <a href="#universal-data" onClick={() => setMobileMenuOpen(false)}>Données Unifiées</a>
+            <a href="#ai" onClick={() => setMobileMenuOpen(false)}>Intelligence</a>
+            <a href="#developers" onClick={() => setMobileMenuOpen(false)}>Développeurs</a>
+            <div className="mobile-drawer-actions">
+              <button className="mobile-login" onClick={() => navigate('/login')}>Se connecter</button>
+              <button className="mobile-cta" onClick={() => navigate('/register')}>Créer mon environnement</button>
+            </div>
+          </motion.div>
+        )}
+      </header>
+
+      {/* ═══════════════════════════════════════════════
+          2. HERO SECTION (CORE VALUE PROPOSITION)
+          ═══════════════════════════════════════════════ */}
       <section className="landing-hero">
         <div className="landing-hero-inner">
-          <div className="landing-hero-content">
-            <div className="hero-label">
-              <span className="hero-label-dot" />
-              ALLIANCE ONE · BUSINESS OPERATING SYSTEM
+          {/* Left Column: Value Proposition & CTAs */}
+          <motion.div 
+            className="landing-hero-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* Precision Kicker Label */}
+            <div className="hero-kicker-pill">
+              <span className="kicker-pulse-dot" />
+              <span className="kicker-text">ALLIANCE ONE · THE OPERATING SYSTEM FOR ORGANIZATIONS</span>
             </div>
 
+            {/* Headline */}
             <h1 className="landing-hero-title">
               Un seul environnement.<br />
               <span className="hero-title-accent">Tout votre écosystème.</span>
             </h1>
 
+            {/* Narrative Subtitle */}
             <p className="landing-hero-subtitle">
-              Alliance One réunit vos applications métier, vos données, vos équipes,
-              vos automatisations et vos services dans un environnement unifié
-              conçu pour faire évoluer votre organisation.
+              Alliance One réunit vos applications métier, vos données, vos équipes, 
+              vos automatisations et vos services dans un environnement unifié conçu 
+              pour faire évoluer votre organisation.
             </p>
 
+            {/* Dual CTAs */}
             <div className="landing-hero-actions">
               <button
-                className="hero-cta-primary"
+                className="hero-primary-cta"
                 onClick={() => navigate('/register')}
               >
-                Créer mon environnement
+                <span>Créer mon environnement</span>
                 <ArrowRight size={16} />
               </button>
+
               <button
-                className="hero-cta-secondary"
+                className="hero-secondary-cta"
                 onClick={() => {
-                  const el = document.getElementById('modules');
+                  const el = document.getElementById('vision');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Découvrir Alliance One
-                <ChevronRight size={16} />
+                <span>Découvrir Alliance One</span>
+                <ChevronRight size={15} />
               </button>
             </div>
 
-            <div className="landing-hero-login-link">
-              Déjà membre ?{' '}
-              <a onClick={() => navigate('/login')}>Se connecter</a>
+            {/* Discreet Login Anchor */}
+            <div className="landing-hero-login-anchor">
+              <span>Déjà membre ?</span>
+              <button onClick={() => navigate('/login')} className="login-link-btn">
+                Se connecter
+                <ChevronRight size={13} />
+              </button>
             </div>
-          </div>
 
-          {/* HeroOS visual placeholder — will be built as interactive SVG animation */}
-          <div className="landing-hero-visual">
-            <div className="hero-os-diagram">
-              {/* Core node */}
-              <div className="hero-node hero-node-core">
-                <span className="hero-node-label">Alliance Core</span>
+            {/* Institutional Trust Footprint */}
+            <div className="hero-trust-bar">
+              <div className="trust-badge">
+                <ShieldCheck size={14} color="#0B2B5C" />
+                <span>Sécurité Certifiée Core</span>
               </div>
-
-              {/* Application nodes */}
-              <div className="hero-node hero-node-app" style={{ '--node-delay': '0.8s', '--node-color': '#4f46e5' } as React.CSSProperties}>
-                <span className="hero-node-icon">📚</span>
-                <span className="hero-node-label">Éducation</span>
+              <div className="trust-badge">
+                <Zap size={14} color="#d4af37" />
+                <span>Offline First & Synchro Locale</span>
               </div>
-              <div className="hero-node hero-node-app" style={{ '--node-delay': '1.2s', '--node-color': '#059669' } as React.CSSProperties}>
-                <span className="hero-node-icon">💰</span>
-                <span className="hero-node-label">Finance</span>
+              <div className="trust-badge">
+                <Globe size={14} color="#059669" />
+                <span>Infrastructure Panafricaine & Mondiale</span>
               </div>
-              <div className="hero-node hero-node-app" style={{ '--node-delay': '1.6s', '--node-color': '#0ea5e9' } as React.CSSProperties}>
-                <span className="hero-node-icon">📦</span>
-                <span className="hero-node-label">Inventaire</span>
-              </div>
-              <div className="hero-node hero-node-app" style={{ '--node-delay': '2.0s', '--node-color': '#8b5cf6' } as React.CSSProperties}>
-                <span className="hero-node-icon">📋</span>
-                <span className="hero-node-label">Projets</span>
-              </div>
-
-              {/* Infrastructure nodes */}
-              <div className="hero-node hero-node-infra" style={{ '--node-delay': '2.8s' } as React.CSSProperties}>
-                <span className="hero-node-label">AI</span>
-              </div>
-              <div className="hero-node hero-node-infra" style={{ '--node-delay': '3.2s' } as React.CSSProperties}>
-                <span className="hero-node-label">Automation</span>
-              </div>
-              <div className="hero-node hero-node-infra" style={{ '--node-delay': '3.6s' } as React.CSSProperties}>
-                <span className="hero-node-label">Cloud</span>
-              </div>
-
-              {/* Connectors (will be SVG lines in final version) */}
-              <svg className="hero-connectors" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="250" y1="100" x2="100" y2="200" className="hero-connector-line" style={{ '--line-delay': '1.5s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="200" y2="200" className="hero-connector-line" style={{ '--line-delay': '1.8s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="300" y2="200" className="hero-connector-line" style={{ '--line-delay': '2.1s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="400" y2="200" className="hero-connector-line" style={{ '--line-delay': '2.4s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="150" y2="320" className="hero-connector-line" style={{ '--line-delay': '3.0s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="250" y2="320" className="hero-connector-line" style={{ '--line-delay': '3.3s' } as React.CSSProperties} />
-                <line x1="250" y1="100" x2="350" y2="320" className="hero-connector-line" style={{ '--line-delay': '3.6s' } as React.CSSProperties} />
-              </svg>
             </div>
-          </div>
-        </div>
-      </section>
+          </motion.div>
 
-      {/* ═══════ MODULES SECTION (placeholder) ═══════ */}
-      <section id="modules" className="landing-section">
-        <div className="landing-section-inner">
-          <span className="section-kicker">MODULES</span>
-          <h2 className="section-title">
-            Les outils dont votre organisation a besoin.<br />
-            <span className="section-title-accent">Dans un seul environnement.</span>
-          </h2>
+          {/* Right Column: HeroOS Ecosystem Interactive Canvas */}
+          <div className="landing-hero-visual-wrapper">
+            <HeroOS />
+          </div>
         </div>
       </section>
     </div>

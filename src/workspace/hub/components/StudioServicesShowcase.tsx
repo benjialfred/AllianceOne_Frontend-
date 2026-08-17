@@ -46,7 +46,7 @@ export const StudioServicesShowcase: React.FC = () => {
           <div className="hub-section-pretitle">ALLIANCE STUDIO & SERVICES</div>
           <h2 className="hub-section-title">Ingénierie & Solutions sur Mesure</h2>
         </div>
-        <button className="hub-header-link" onClick={() => navigate('/services')}>
+        <button className="hub-header-link" onClick={() => navigate('/app/services')}>
           <span>Voir tout le portfolio</span>
           <ArrowRight size={14} />
         </button>
@@ -56,7 +56,7 @@ export const StudioServicesShowcase: React.FC = () => {
         {services.map((srv, i) => {
           const Icon = srv.icon;
           return (
-            <div key={i} className="service-feature-card" onClick={() => navigate('/services')}>
+            <div key={i} className="service-feature-card" onClick={() => navigate('/app/services')}>
               <div 
                 className="service-icon-box"
                 style={{ backgroundColor: `${srv.color}15`, color: srv.color }}

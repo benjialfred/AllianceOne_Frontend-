@@ -53,7 +53,7 @@ export const MyApplicationsGrid: React.FC = () => {
           <span className="hub-section-kicker">APPLICATIONS INSTALLÉES</span>
           <h2 className="hub-section-title-spatial">Votre Environnement Métier</h2>
         </div>
-        <button className="hub-discover-link" onClick={() => navigate('/marketplace')}>
+        <button className="hub-discover-link" onClick={() => navigate('/app/marketplace')}>
           <span>Marketplace</span>
           <ChevronRight size={14} />
         </button>
@@ -145,7 +145,7 @@ export const MyApplicationsGrid: React.FC = () => {
         {/* Discover / Add Module Tile */}
         <div 
           className="os-app-tile discover-tile"
-          onClick={() => navigate('/marketplace')}
+          onClick={() => navigate('/app/marketplace')}
         >
           <div className="discover-tile-icon">
             <Store size={22} color="#d97706" />
