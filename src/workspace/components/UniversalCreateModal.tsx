@@ -48,30 +48,38 @@ export const UniversalCreateModal: React.FC<UniversalCreateModalProps> = ({ isOp
       ]
     },
     {
-      category: 'FINANCE & COMPTABILITÉ',
+      module: 'Finance & Trésorerie',
+      icon: Landmark,
+      color: '#059669',
       items: [
         { label: 'Enregistrer un paiement / recette', desc: 'Scolarité, vente ou apport de caisse', path: '/app/finance/transactions', icon: Receipt },
         { label: 'Créer une facture client', desc: 'Facture électronique avec TVA', path: '/app/finance/invoices', icon: FileText },
       ]
     },
     {
-      category: 'LOGISTIQUE & ACHATS',
+      module: 'Stocks & Logistique',
+      icon: Package,
+      color: '#0ea5e9',
       items: [
-        { label: 'Créer un article au catalogue', desc: 'SKU, prix d’achat, seuils et valorisation PMP', path: '/app/inventory/products', icon: PlusCircle },
+        { label: 'Créer un article au catalogue', desc: "SKU, prix d'achat, seuils et valorisation PMP", path: '/app/inventory/products', icon: PlusCircle },
         { label: 'Émettre un bon de commande', desc: 'Commande fournisseur et approvisionnement', path: '/app/inventory/purchase-orders', icon: ShoppingCart },
       ]
     },
     {
-      category: 'COLLABORATION & TÂCHES',
+      module: 'Tâches & Projets',
+      icon: FolderKanban,
+      color: '#8b5cf6',
       items: [
         { label: 'Créer une tâche urgente', desc: 'Attribution, priorité et date limite', path: '/app/tasks/board', icon: CheckSquare },
-        { label: 'Initialiser un projet', desc: 'Jalons d’équipe et enveloppe temps', path: '/app/tasks/projects', icon: FolderKanban },
+        { label: 'Initialiser un projet', desc: "Jalons d'équipe et enveloppe temps", path: '/app/tasks/projects', icon: FolderKanban },
       ]
     },
     {
-      category: 'DOCUMENTATION',
+      module: 'Bibliothèque',
+      icon: BookOpen,
+      color: '#3b82f6',
       items: [
-        { label: 'Enregistrer un prêt de livre', desc: 'Attribution d’ouvrage à un emprunteur', path: '/app/library', icon: BookOpen },
+        { label: 'Enregistrer un prêt de livre', desc: "Attribution d'ouvrage à un emprunteur", path: '/app/library', icon: BookOpen },
       ]
     }
   ];
