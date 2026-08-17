@@ -170,14 +170,11 @@ export const WorkspaceShell: React.FC = () => {
         animate={{ x: 0, width: sidebarCollapsed ? 72 : 240 }}
         transition={{ type: 'spring', stiffness: 400, damping: 35 }}
       >
-        <div className="sidebar-logo">
+        <div className="sidebar-logo" style={{ cursor: 'pointer', padding: '0 12px' }} onClick={() => navigate('/')}>
           {!sidebarCollapsed ? (
-            <>
-              <Logo size={28} />
-              <h2 style={{ fontSize: '1rem', fontWeight: 600, letterSpacing: '-0.02em', margin: 0 }}>Alliance One</h2>
-            </>
+            <Logo size={34} showText showMotto />
           ) : (
-            <Logo size={28} />
+            <Logo size={32} />
           )}
         </div>
 

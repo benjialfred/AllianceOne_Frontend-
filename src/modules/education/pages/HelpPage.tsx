@@ -416,7 +416,7 @@ export const HelpPage = () => {
         <motion.div className="page-transition-wrapper">
             <PageHeader
                 title="Centre d'Aide"
-                subtitle="Guide complet pour comprendre et maîtriser chaque fonctionnalité de la plateforme Emergence."
+                subtitle="Guide complet pour comprendre et maîtriser chaque fonctionnalité de la plateforme Alliance One."
                 icon={HelpCircle}
             />
 
@@ -434,7 +434,7 @@ export const HelpPage = () => {
                     <div>
                         <h3 style={{ margin: '0 0 var(--space-2) 0' }}>Bienvenue dans le Centre d'Aide</h3>
                         <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: '1.6' }}>
-                            Cette page vous explique le fonctionnement de chaque module de la plateforme Emergence ERP. 
+                            Cette page vous explique le fonctionnement de chaque module de la plateforme Alliance One ERP. 
                             Cliquez sur une section ci-dessous pour découvrir <strong>pourquoi</strong> elle existe, 
                             <strong> comment</strong> elle fonctionne et <strong>comment</strong> elle est connectée aux autres parties du système.
                             L'ordre des sections suit le flux logique de configuration d'un établissement.
@@ -507,7 +507,7 @@ export const HelpPage = () => {
             <Card>
                 <div style={{ textAlign: 'center', padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>
                     <p style={{ margin: 0 }}>
-                        <strong>Emergence ERP</strong> — Plateforme de Gestion Scolaire · v1.0
+                        <strong>Alliance One ERP</strong> — Plateforme Intégrée d'Entreprise · Unis pour exceller
                     </p>
                     <p style={{ margin: 'var(--space-1) 0 0 0' }}>
                         Pour toute question technique, contactez l'administrateur de votre établissement.

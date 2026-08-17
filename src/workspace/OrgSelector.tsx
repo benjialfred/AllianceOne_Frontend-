@@ -46,9 +46,8 @@ export const OrgSelector: React.FC = () => {
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
         <div className="org-selector-header">
-          <div className="org-selector-logo">
-            <Logo size={40} />
-            <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: '1.1rem', color: 'var(--color-text-primary)' }}>Alliance One</span>
+          <div className="org-selector-logo" style={{ justifyContent: 'center', marginBottom: '1.25rem' }}>
+            <Logo size={52} showText showMotto />
           </div>
           <h1>Sélectionnez votre espace</h1>
           <p>Choisissez l'organisation dans laquelle vous souhaitez travailler aujourd'hui.</p>

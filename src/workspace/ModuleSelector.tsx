@@ -4,6 +4,7 @@ import { BookOpen, Stethoscope, Package, Building2, Landmark, GraduationCap, Fol
 import { usePlatformStore } from '../core/stores/platformStore';
 import type { Organization } from '../core/api/types';
 import { useNavigate } from 'react-router-dom';
+import { Logo } from '../design-system/components/Logo';
 import './ModuleSelector.css';
 
 const MODULES = [
@@ -13,7 +14,7 @@ const MODULES = [
     description: 'Gestion scolaire complète (inscriptions, notes, emplois du temps).',
     icon: <GraduationCap size={32} />,
     color: 'var(--color-primary-500)',
-    active: true, // Seul ce module est cliquable pour l'instant
+    active: true,
   },
   {
     id: 'healthcare',
@@ -63,7 +64,6 @@ export const ModuleSelector: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSelect = (modId: string) => {
-    // 1. Sélectionner le module
     setCurrentModule(modId);
     
     setOrganization({
@@ -71,7 +71,6 @@ export const ModuleSelector: React.FC = () => {
       name: 'Alliance One Default',
     } as Organization);
     
-    // 3. Naviguer vers le namespace correspondant si défini
     if (modId === 'education') {
       navigate('/education');
     } else if (modId === 'inventory') {
@@ -80,6 +79,8 @@ export const ModuleSelector: React.FC = () => {
       navigate('/tasks');
     } else if (modId === 'finance') {
       navigate('/finance');
+    } else if (modId === 'library') {
+      navigate('/library');
     } else {
       navigate('/');
     }
@@ -92,9 +93,12 @@ export const ModuleSelector: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2rem' }}
       >
-        <h1>Bienvenue sur Alliance One</h1>
-        <p>Sélectionnez le module d'exploitation pour démarrer votre session.</p>
+        <Logo size={72} showText showMotto />
+        <p style={{ margin: '8px 0 0', color: 'var(--color-text-secondary)', fontSize: '15px' }}>
+          Sélectionnez le module d'exploitation pour démarrer votre session.
+        </p>
       </motion.div>
 
       <motion.div 

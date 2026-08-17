@@ -33,11 +33,11 @@ export const LoginPage = () => {
             <div className="login-card">
                 <div className="login-header">
                     <div className="login-logo">
-                        <img src={logoUrl} alt="Emergence Logo" />
+                        <img src={logoUrl} alt="Alliance One Logo" style={{ width: '64px', height: '64px', objectFit: 'contain', borderRadius: '12px' }} />
                     </div>
-                    <h2 className="login-title">Emergence</h2>
-                    <p className="login-subtitle" style={{ color: 'var(--color-accent)', fontWeight: 'var(--font-medium)', marginBottom: 'var(--space-1)' }}>(COPOBILE)</p>
-                    <p className="login-subtitle">Espace Institutionnel</p>
+                    <h2 className="login-title" style={{ fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.02em', margin: '0.5rem 0 0.2rem' }}>Alliance One</h2>
+                    <p className="login-subtitle" style={{ color: '#d97706', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.8rem', margin: 0 }}>Unis pour exceller</p>
+                    <p className="login-subtitle" style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.35rem' }}>Espace Institutionnel Sécurisé</p>
                 </div>
                 
                 {errorMsg && (

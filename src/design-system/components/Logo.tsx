@@ -1,44 +1,76 @@
 import React from 'react';
+import logoImg from '../../assets/logo.png';
 
-interface LogoProps {
+export interface LogoProps {
   size?: number;
   className?: string;
+  showText?: boolean;
+  showMotto?: boolean;
+  style?: React.CSSProperties;
 }
 
-export const Logo: React.FC<LogoProps> = ({ size = 40, className }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 100 100" 
-    width={size} 
-    height={size} 
-    className={className}
-  >
-    <defs>
-      <linearGradient id="smart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="var(--color-primary-500, #6366f1)" />
-        <stop offset="100%" stopColor="var(--color-primary-700, #4338ca)" />
-      </linearGradient>
-    </defs>
-    
-    {/* 
-      "Intelligent Simple Art" :
-      L'Okinawa Monogram. Les jambes du 'A' s'écartent pour enlacer parfaitement 
-      le cercle 'O' qui fait office de barre transversale.
-      Les proportions sont calculées pour que les traits fusionnent géométriquement.
-    */}
-    <g stroke="url(#smart-grad)" strokeWidth="12" fill="none">
-      {/* Les jambes du 'A' */}
-      <path 
-        d="M 15 90 L 50 15 L 85 90" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+export const Logo: React.FC<LogoProps> = ({ 
+  size = 36, 
+  className = '', 
+  showText = false, 
+  showMotto = false,
+  style 
+}) => {
+  return (
+    <div 
+      className={`brand-logo-container ${className}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '10px',
+        userSelect: 'none',
+        ...style
+      }}
+    >
+      <img 
+        src={logoImg} 
+        alt="Alliance One" 
+        width={size} 
+        height={size}
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+          objectFit: 'contain',
+          borderRadius: '8px',
+          flexShrink: 0,
+          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08))',
+          display: 'block'
+        }}
       />
-      {/* Le cercle 'O' agissant comme barre centrale, fusionnant avec l'intérieur des jambes */}
-      <circle 
-        cx="50" 
-        cy="60" 
-        r="19" 
-      />
-    </g>
-  </svg>
-);
+      {(showText || showMotto) && (
+        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15, justifyContent: 'center' }}>
+          {showText && (
+            <span style={{ 
+              fontWeight: 800, 
+              fontSize: `${Math.max(13, size * 0.42)}px`, 
+              letterSpacing: '0.04em', 
+              color: 'var(--color-text-primary, #0f172a)',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}>
+              ALLIANCE ONE
+            </span>
+          )}
+          {showMotto && (
+            <span style={{ 
+              fontSize: `${Math.max(9, size * 0.26)}px`, 
+              fontWeight: 700, 
+              letterSpacing: '0.12em', 
+              color: '#d97706', 
+              textTransform: 'uppercase',
+              marginTop: '1px'
+            }}>
+              Unis pour exceller
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Logo;

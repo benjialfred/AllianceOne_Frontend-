@@ -68,11 +68,11 @@ export const Layout = () => {
         <div className="app-shell">
             {/* Sidebar */}
             <aside className="sidebar">
-                <div className="sidebar-header">
-                    <img src={logoUrl} alt="Emergence Logo" />
+                <div className="sidebar-header" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
+                    <img src={logoUrl} alt="Alliance One Logo" style={{ width: '36px', height: '36px', objectFit: 'contain', borderRadius: '8px' }} />
                     <div>
-                        <h1>Alliance One</h1>
-                        <p>Workspace</p>
+                        <h1 style={{ fontSize: '15px', fontWeight: 800, letterSpacing: '0.02em', margin: 0 }}>Alliance One</h1>
+                        <p style={{ fontSize: '9px', fontWeight: 700, color: '#d97706', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>Unis pour exceller</p>
                     </div>
                 </div>
                 
