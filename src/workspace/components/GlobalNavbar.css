@@ -47,6 +47,17 @@
   opacity: 0.9;
 }
 
+.navbar-os-version-pill {
+  font-size: 9px;
+  font-weight: 700;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  letter-spacing: 0.04em;
+}
+
 /* Center 7 Primary Nav Items */
 .navbar-center-nav {
   display: flex;

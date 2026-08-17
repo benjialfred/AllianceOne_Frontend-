@@ -1,15 +1,12 @@
 /**
- * ALLIANCE HUB — COCKPIT CENTRAL DU BUSINESS OPERATING SYSTEM
- * La porte d'entrée unifiée d'Alliance One.
+ * ALLIANCE HUB V2 — LE COCKPIT DU BUSINESS OPERATING SYSTEM
+ * Architecture Spatiale : Contexte → Intelligence & Alertes → Applications OS → Activité & Story → Écosystème.
  */
 import React from 'react';
 import { HeroCockpit } from './components/HeroCockpit';
-import { SmartOnboarding } from './components/SmartOnboarding';
 import { MyApplicationsGrid } from './components/MyApplicationsGrid';
-import { UniversalActivityStream } from './components/UniversalActivityStream';
-import { ProductStories } from './components/ProductStories';
-import { DeveloperShowcase } from './components/DeveloperShowcase';
-import { StudioServicesShowcase } from './components/StudioServicesShowcase';
+import { SpatialActivityAndStory } from './components/SpatialActivityAndStory';
+import { EcosystemDiscoverySection } from './components/EcosystemDiscoverySection';
 import './AllianceHub.css';
 
 interface AllianceHubProps {
@@ -19,28 +16,19 @@ interface AllianceHubProps {
 
 export const AllianceHub: React.FC<AllianceHubProps> = ({ onOpenCreate, onOpenSearch }) => {
   return (
-    <div className="alliance-hub-root">
-      {/* 1. Hero Cockpit & Telemetry */}
-      <HeroCockpit onOpenCreate={onOpenCreate} />
+    <div className="alliance-spatial-hub-root">
+      {/* 1. Contexte, État de Santé et Commandes "À traiter maintenant" */}
+      <HeroCockpit />
 
-      <div className="alliance-hub-body-container">
-        {/* 2. Smart Onboarding & Interactive Tips */}
-        <SmartOnboarding />
-
-        {/* 3. My Installed Business Modules */}
+      <div className="alliance-spatial-container">
+        {/* 2. Applications Métier Installées (OS App Tiles avec transition cinématique) */}
         <MyApplicationsGrid />
 
-        {/* 4. Universal Activity Stream */}
-        <UniversalActivityStream />
+        {/* 3. Flux d'Activité Universel + Product Story Cinématique en double colonne */}
+        <SpatialActivityAndStory />
 
-        {/* 5. Cinematic Product Stories */}
-        <ProductStories />
-
-        {/* 6. Developer Platform Spotlight */}
-        <DeveloperShowcase />
-
-        {/* 7. Alliance Studio & Services Portfolio */}
-        <StudioServicesShowcase />
+        {/* 4. Écosystème & Extensions de la Plateforme */}
+        <EcosystemDiscoverySection />
       </div>
     </div>
   );
