@@ -1,36 +1,49 @@
 /**
- * ALLIANCE HUB — ENTERPRISE DASHBOARD
- * Clean, professional, and elegant starting point for the user.
+ * ALLIANCE OS — HUB ROOT
+ * The entry point of the Business Operating System.
  */
 import React from 'react';
-import { HeroCockpit } from './components/HeroCockpit';
-import { MyApplicationsGrid } from './components/MyApplicationsGrid';
-import { ActivityStream } from './components/ActivityStream';
-import './AllianceHub.css';
+import { WelcomeHeader } from './components/WelcomeHeader';
+import { HeroOperational } from './components/HeroOperational';
+import { ModulesSpaces } from './components/ModulesSpaces';
+import { IntelligentActions } from './components/IntelligentActions';
+import { AllianceIntelligence } from './components/AllianceIntelligence';
+import { UniversalTimeline } from './components/UniversalTimeline';
+import './OsHub.css';
 
 interface AllianceHubProps {
   onOpenCreate: () => void;
   onOpenSearch: () => void;
 }
 
-export const AllianceHub: React.FC<AllianceHubProps> = ({ onOpenCreate, onOpenSearch }) => {
+export const AllianceHub: React.FC<AllianceHubProps> = () => {
   return (
-    <div className="ent-hub-root">
-      {/* Top Section: Greeting and High-Level Metrics */}
-      <HeroCockpit onOpenCreate={onOpenCreate} />
-
-      <div className="ent-hub-container">
-        <div className="ent-hub-grid">
-          {/* Main Column: Applications */}
-          <div className="ent-hub-main">
-            <MyApplicationsGrid />
-          </div>
-
-          {/* Side Column: Recent Activity */}
-          <div className="ent-hub-sidebar">
-            <ActivityStream />
-          </div>
+    <div className="os-hub-root">
+      <div className="os-hub-container">
+        
+        {/* Top: Welcome & Hero */}
+        <div>
+          <WelcomeHeader />
+          <HeroOperational />
         </div>
+
+        {/* Main OS Layout Split */}
+        <div className="os-split-layout">
+          
+          {/* LEFT COLUMN: Operations & Modules */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+            <ModulesSpaces />
+            <IntelligentActions />
+          </div>
+
+          {/* RIGHT COLUMN: Intelligence & Activity */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+            <AllianceIntelligence />
+            <UniversalTimeline />
+          </div>
+
+        </div>
+        
       </div>
     </div>
   );

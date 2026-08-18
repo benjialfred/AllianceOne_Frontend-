@@ -1,0 +1,107 @@
+/* =========================================
+   ALLIANCE OS HUB — CORE STYLES
+   Titanium Dark & Ivory Light themes
+   ========================================= */
+
+/* --- THEME VARIABLES (Scoped to Hub) --- */
+.os-hub-root {
+  /* LIGHT THEME (Ivory/Graphite) */
+  --os-bg: #fdfdfc; /* Ivory */
+  --os-panel-bg: #ffffff;
+  --os-panel-hover: #fafafa;
+  --os-border: #eaeaea;
+  --os-text-primary: #111827;
+  --os-text-secondary: #6b7280;
+  --os-text-muted: #9ca3af;
+  --os-accent: #2563eb;
+  
+  /* Semantic Colors Light */
+  --os-edu: #4f46e5;
+  --os-fin: #059669;
+  --os-inv: #0ea5e9;
+  --os-task: #f59e0b;
+
+  min-height: calc(100vh - 56px);
+  background-color: var(--os-bg);
+  color: var(--os-text-primary);
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+[data-theme='dark'] .os-hub-root {
+  /* DARK THEME (Titanium / Obsidian) */
+  --os-bg: #0a0a0b; /* Very deep warm black */
+  --os-panel-bg: #121214; /* Graphite 1 */
+  --os-panel-hover: #18181b; /* Graphite 2 */
+  --os-border: rgba(255, 255, 255, 0.04); /* Nearly invisible */
+  --os-text-primary: #f4f4f5;
+  --os-text-secondary: #a1a1aa;
+  --os-text-muted: #52525b;
+  --os-accent: #3b82f6;
+
+  /* Semantic Colors Dark */
+  --os-edu: #818cf8;
+  --os-fin: #34d399;
+  --os-inv: #38bdf8;
+  --os-task: #fbbf24;
+}
+
+/* --- LAYOUT GRID --- */
+.os-hub-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Main Two-Column Split for OS sections */
+.os-split-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .os-split-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* --- UTILITIES --- */
+.os-panel {
+  background: var(--os-panel-bg);
+  border: 1px solid var(--os-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='dark'] .os-panel {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.os-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--os-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Scrollbar styling for panels */
+.os-scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+.os-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+.os-scrollable::-webkit-scrollbar-thumb {
+  background: var(--os-border);
+  border-radius: 4px;
+}
