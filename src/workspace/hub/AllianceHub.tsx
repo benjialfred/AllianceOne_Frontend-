@@ -1,12 +1,11 @@
 /**
- * ALLIANCE HUB V2 — LE COCKPIT DU BUSINESS OPERATING SYSTEM
- * Architecture Spatiale : Contexte → Intelligence & Alertes → Applications OS → Activité & Story → Écosystème.
+ * ALLIANCE HUB — ENTERPRISE DASHBOARD
+ * Clean, professional, and elegant starting point for the user.
  */
 import React from 'react';
 import { HeroCockpit } from './components/HeroCockpit';
 import { MyApplicationsGrid } from './components/MyApplicationsGrid';
-import { SpatialActivityAndStory } from './components/SpatialActivityAndStory';
-import { EcosystemDiscoverySection } from './components/EcosystemDiscoverySection';
+import { ActivityStream } from './components/ActivityStream';
 import './AllianceHub.css';
 
 interface AllianceHubProps {
@@ -16,19 +15,22 @@ interface AllianceHubProps {
 
 export const AllianceHub: React.FC<AllianceHubProps> = ({ onOpenCreate, onOpenSearch }) => {
   return (
-    <div className="alliance-spatial-hub-root">
-      {/* 1. Contexte, État de Santé et Commandes "À traiter maintenant" */}
-      <HeroCockpit />
+    <div className="ent-hub-root">
+      {/* Top Section: Greeting and High-Level Metrics */}
+      <HeroCockpit onOpenCreate={onOpenCreate} />
 
-      <div className="alliance-spatial-container">
-        {/* 2. Applications Métier Installées (OS App Tiles avec transition cinématique) */}
-        <MyApplicationsGrid />
+      <div className="ent-hub-container">
+        <div className="ent-hub-grid">
+          {/* Main Column: Applications */}
+          <div className="ent-hub-main">
+            <MyApplicationsGrid />
+          </div>
 
-        {/* 3. Flux d'Activité Universel + Product Story Cinématique en double colonne */}
-        <SpatialActivityAndStory />
-
-        {/* 4. Écosystème & Extensions de la Plateforme */}
-        <EcosystemDiscoverySection />
+          {/* Side Column: Recent Activity */}
+          <div className="ent-hub-sidebar">
+            <ActivityStream />
+          </div>
+        </div>
       </div>
     </div>
   );

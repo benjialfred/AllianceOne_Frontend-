@@ -1,0 +1,274 @@
+/* =========================================
+   ALLIANCE HUB — COMPONENTS STYLES
+   Clean, premium SaaS aesthetic.
+   ========================================= */
+
+/* --- GENERAL SECTION --- */
+.ent-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.ent-section-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.ent-btn-link {
+  background: transparent;
+  border: none;
+  color: var(--color-primary-600);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ent-btn-link:hover { text-decoration: underline; }
+
+[data-theme='dark'] .ent-btn-link { color: var(--color-primary-400); }
+
+/* --- HERO COCKPIT --- */
+.ent-hero-cockpit {
+  padding: 2.5rem 1.5rem;
+  background: var(--color-surface-card);
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.ent-hero-header {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.ent-greeting {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.ent-greeting span {
+  font-weight: 600;
+}
+
+.ent-date {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.ent-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ent-btn-primary:hover {
+  background: #1e293b;
+}
+
+[data-theme='dark'] .ent-btn-primary {
+  background: #f8fafc;
+  color: #0f172a;
+}
+[data-theme='dark'] .ent-btn-primary:hover {
+  background: #e2e8f0;
+}
+
+/* --- METRICS GRID --- */
+.ent-metrics-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.ent-metric-card {
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.metric-icon.blue { background: rgba(79, 70, 229, 0.1); color: #4f46e5; }
+.metric-icon.green { background: rgba(5, 150, 105, 0.1); color: #059669; }
+.metric-icon.amber { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.metric-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.metric-trend.positive { background: #d1fae5; color: #059669; }
+.metric-trend.negative { background: #fee2e2; color: #dc2626; }
+
+[data-theme='dark'] .metric-trend.positive { background: rgba(5, 150, 105, 0.2); color: #34d399; }
+[data-theme='dark'] .metric-trend.negative { background: rgba(220, 38, 38, 0.2); color: #f87171; }
+
+/* --- APPLICATIONS GRID --- */
+.ent-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.ent-app-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.ent-app-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--color-text-muted);
+}
+
+[data-theme='dark'] .ent-app-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ent-app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ent-app-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.ent-app-info p {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* --- ACTIVITY STREAM --- */
+.ent-activity-section {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.ent-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ent-activity-item {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.ent-activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.ent-activity-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.2rem 0;
+}
+
+.ent-activity-content p {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.4rem 0;
+}
+
+.ent-activity-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+  .ent-hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

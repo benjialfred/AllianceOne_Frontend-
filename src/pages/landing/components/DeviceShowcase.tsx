@@ -5,8 +5,8 @@
  */
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import desktopScreen from '../../../assets/screen-desktop.jpg';
-import mobileScreen from '../../../assets/screen-mobile.jpg';
+import desktopScreen from '../../../assets/screen-desktop.png';
+import mobileScreen from '../../../assets/screen-mobile.png';
 import './DeviceShowcase.css';
 
 export const DeviceShowcase: React.FC = () => {

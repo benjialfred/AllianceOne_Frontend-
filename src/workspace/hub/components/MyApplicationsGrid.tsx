@@ -1,175 +1,47 @@
 /**
- * ALLIANCE ONE — VOTRE ENVIRONNEMENT (OS APP TILES)
- * Tuiles d'applications vivantes avec profondeur spatiale et transition cinématique vers le module.
+ * ALLIANCE HUB — APPLICATIONS GRID
+ * Clean, modern app launcher.
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  ArrowRight, 
-  GraduationCap, 
-  Package, 
-  Landmark, 
-  FolderKanban, 
-  BookOpen, 
-  Sparkles, 
-  Store,
-  ChevronRight,
-  ShieldCheck
-} from 'lucide-react';
-import { ModuleRegistry } from '../../../core/modules/registry';
-import type { ModuleManifest } from '../../../core/modules/registry';
-import { ModuleLaunchTransition } from './ModuleLaunchTransition';
-import { useHubStore } from '../../../core/stores/hubStore';
+import { Boxes, Activity, Users, Settings } from 'lucide-react';
+
+const apps = [
+  { id: 'education', name: 'Éducation Pro', desc: 'Gestion scolaire, notes et présences.', icon: Users, color: '#4f46e5', route: '/app/education' },
+  { id: 'finance', name: 'Finances', desc: 'Trésorerie, factures et paie.', icon: Activity, color: '#059669', route: '/app/finance' },
+  { id: 'inventory', name: 'Stocks', desc: 'Logistique et inventaires.', icon: Boxes, color: '#0ea5e9', route: '/app/inventory' },
+  { id: 'library', name: 'Bibliothèque', desc: 'Ouvrages et prêts.', icon: Boxes, color: '#8b5cf6', route: '/app/library' },
+  { id: 'tasks', name: 'Projets', desc: 'Tâches et collaboration.', icon: Activity, color: '#f59e0b', route: '/app/tasks' },
+  { id: 'settings', name: 'Paramètres', desc: 'Configuration du système.', icon: Settings, color: '#64748b', route: '/app/settings' },
+];
 
 export const MyApplicationsGrid: React.FC = () => {
   const navigate = useNavigate();
-  const installedModules = ModuleRegistry.getInstalled();
-  const { metrics } = useHubStore();
-
-  // Launch transition state
-  const [launchingModule, setLaunchingModule] = useState<{
-    name: string;
-    color: string;
-    icon?: React.ComponentType<{ size?: number; color?: string }>;
-  } | null>(null);
-
-  const handleLaunch = (mod: ModuleManifest) => {
-    setLaunchingModule({
-      name: mod.name,
-      color: mod.accentColor,
-      icon: mod.icon
-    });
-
-    setTimeout(() => {
-      navigate(mod.routePath);
-    }, 450);
-  };
 
   return (
-    <section className="hub-spatial-section">
-      <div className="hub-section-headline-row">
-        <div>
-          <span className="hub-section-kicker">APPLICATIONS INSTALLÉES</span>
-          <h2 className="hub-section-title-spatial">Votre Environnement Métier</h2>
-        </div>
-        <button className="hub-discover-link" onClick={() => navigate('/app/marketplace')}>
-          <span>Marketplace</span>
-          <ChevronRight size={14} />
-        </button>
+    <section className="ent-apps-section">
+      <div className="ent-section-header">
+        <h2>Vos Applications</h2>
+        <button className="ent-btn-link" onClick={() => navigate('/app/marketplace')}>Découvrir plus d'apps</button>
       </div>
 
-      {/* Grid of OS App Tiles */}
-      <div className="hub-app-tiles-grid">
-        {installedModules.map((mod) => {
-          const Icon = mod.icon;
-          
-          // Construct real API metrics
-          let moduleMetrics: { label: string; value: string }[] | null = null;
-          
-          if (metrics) {
-            if (mod.id === 'education') {
-              moduleMetrics = [
-                { label: 'élèves actifs', value: metrics.education.totalStudents.toString() },
-                { label: 'en attente', value: metrics.education.pendingEnrollments.toString() }
-              ];
-            } else if (mod.id === 'finance') {
-              moduleMetrics = [
-                { label: 'trésorerie nette', value: metrics.finance.totalRevenue.toLocaleString() + ' FCFA' },
-                { label: 'factures attente', value: metrics.finance.pendingInvoices.toString() }
-              ];
-            } else if (mod.id === 'inventory') {
-              moduleMetrics = [
-                { label: 'valeur stock', value: metrics.inventory.totalStockValue.toLocaleString() + ' FCFA' },
-                { label: 'alertes stock', value: metrics.inventory.criticalAlerts.toString() }
-              ];
-            }
-          }
-          
-          return (
-            <div
-              key={mod.id}
-              className="os-app-tile"
-              style={{ '--module-accent': mod.accentColor } as React.CSSProperties}
-              onClick={() => handleLaunch(mod)}
-            >
-              {/* Tile Header: Module Icon + Status */}
-              <div className="app-tile-header">
-                <div 
-                  className="app-tile-icon-frame"
-                  style={{ backgroundColor: `${mod.accentColor}18`, color: mod.accentColor }}
-                >
-                  <Icon size={22} />
-                </div>
-                <div className="app-tile-badges">
-                  <span className="app-tile-status-dot"></span>
-                  <span className="app-tile-version">v{mod.version}</span>
-                </div>
-              </div>
-
-              {/* Title & Tagline */}
-              <div className="app-tile-content">
-                <h3 className="app-tile-title">{mod.name}</h3>
-                <p className="app-tile-tagline">{mod.tagline}</p>
-              </div>
-
-              {/* Live Metric Badges (or Skeletons if loading) */}
-              <div className="app-tile-metrics-row">
-                {moduleMetrics ? (
-                  moduleMetrics.map((m, i) => (
-                    <div key={i} className="app-tile-metric">
-                      <span className="metric-tag">{m.label}</span>
-                      <strong className="metric-num">{m.value}</strong>
-                    </div>
-                  ))
-                ) : (
-                  <>
-                    <div className="app-tile-metric skeleton-metric"></div>
-                    <div className="app-tile-metric skeleton-metric"></div>
-                  </>
-                )}
-              </div>
-
-              {/* Hover Expansion Footer */}
-              <div className="app-tile-footer">
-                <span className="app-tile-open-btn">
-                  <span>Ouvrir l'application</span>
-                  <ArrowRight size={13} />
-                </span>
-                <span className="app-tile-core-badge">Certifié Core</span>
-              </div>
+      <div className="ent-apps-grid">
+        {apps.map((app) => (
+          <button 
+            key={app.id} 
+            className="ent-app-card"
+            onClick={() => navigate(app.route)}
+          >
+            <div className="ent-app-icon" style={{ backgroundColor: `${app.color}15`, color: app.color }}>
+              <app.icon size={24} strokeWidth={2} />
             </div>
-          );
-        })}
-
-        {/* Discover / Add Module Tile */}
-        <div 
-          className="os-app-tile discover-tile"
-          onClick={() => navigate('/app/marketplace')}
-        >
-          <div className="discover-tile-icon">
-            <Store size={22} color="#d97706" />
-          </div>
-          <div className="app-tile-content">
-            <h3 className="app-tile-title" style={{ marginTop: '8px' }}>Explorer le Store</h3>
-            <p className="app-tile-tagline">
-              Ajoutez des extensions de santé, paie, CRM WhatsApp et connecteurs Mobile Money.
-            </p>
-          </div>
-          <div className="discover-tile-action">
-            <span>Parcourir le catalogue</span>
-            <ChevronRight size={14} />
-          </div>
-        </div>
+            <div className="ent-app-info">
+              <h3>{app.name}</h3>
+              <p>{app.desc}</p>
+            </div>
+          </button>
+        ))}
       </div>
-
-      {/* Cinematic Fullscreen Transition Modal */}
-      <ModuleLaunchTransition
-        isLaunching={!!launchingModule}
-        moduleName={launchingModule?.name || ''}
-        moduleColor={launchingModule?.color || '#4f46e5'}
-        moduleIcon={launchingModule?.icon}
-      />
     </section>
   );
 };
