@@ -1,0 +1,307 @@
+/**
+ * DEVICE SHOWCASE — CINEMATIC DEVICE MOCKUPS
+ * Pure CSS laptop + phone frames with parallax, glow, and scan animations.
+ */
+
+/* ═══════════════════════════════════════════════
+   SECTION CONTAINER
+   ═══════════════════════════════════════════════ */
+.device-showcase {
+  position: relative;
+  padding: 120px 0 100px;
+  overflow: hidden;
+  background: #060a12;
+}
+
+.device-showcase-bg {
+  position: absolute; inset: 0; overflow: hidden;
+}
+
+/* Ambient glow orbs */
+.showcase-glow {
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); opacity: 0.35;
+  animation: glowFloat 12s ease-in-out infinite;
+}
+.showcase-glow-1 {
+  width: 500px; height: 500px; top: -100px; left: 10%;
+  background: radial-gradient(circle, #0B2B5C 0%, transparent 70%);
+}
+.showcase-glow-2 {
+  width: 400px; height: 400px; bottom: -50px; right: 15%;
+  background: radial-gradient(circle, #d4af37 0%, transparent 70%);
+  animation-delay: -4s; opacity: 0.15;
+}
+.showcase-glow-3 {
+  width: 350px; height: 350px; top: 40%; left: 50%;
+  background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+  animation-delay: -8s; opacity: 0.12;
+}
+@keyframes glowFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.05); }
+  66% { transform: translate(-15px, 10px) scale(0.95); }
+}
+
+.device-showcase-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  position: relative; z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════ */
+.showcase-header {
+  text-align: center; margin-bottom: 72px;
+}
+.showcase-kicker {
+  display: inline-block; font-size: 11px; font-weight: 750;
+  letter-spacing: 0.14em; color: #d4af37; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.showcase-heading {
+  font-size: 3.2rem; font-weight: 850; line-height: 1.06;
+  letter-spacing: -0.04em; color: #ffffff; margin: 0 0 20px;
+}
+.showcase-heading-glow {
+  background: linear-gradient(135deg, #d4af37 0%, #ffffff 60%, #d4af37 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: shimmerGlow 4s ease-in-out infinite;
+}
+@keyframes shimmerGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.showcase-sub {
+  font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.5);
+  max-width: 560px; margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════
+   DEVICE STAGE
+   ═══════════════════════════════════════════════ */
+.device-stage {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; min-height: 560px;
+  perspective: 1200px;
+}
+
+/* ═══════════════════════════════════════════════
+   LAPTOP FRAME (CSS-only MacBook style)
+   ═══════════════════════════════════════════════ */
+.device-laptop {
+  position: relative; z-index: 2;
+  transform-style: preserve-3d;
+}
+
+.laptop-frame {
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.laptop-screen {
+  width: 580px; height: 370px;
+  background: #111827;
+  border: 2.5px solid rgba(255,255,255,0.12);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden; position: relative;
+  box-shadow: 
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.laptop-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 140px; height: 20px;
+  background: #111827; border-radius: 0 0 10px 10px;
+  z-index: 3; display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: none;
+}
+.laptop-camera {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #1e293b; border: 1px solid rgba(255,255,255,0.1);
+}
+
+.laptop-screen-content {
+  width: 100%; height: 100%; position: relative; overflow: hidden;
+}
+
+.laptop-base {
+  width: 640px; height: 14px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 0 0 2px 2px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: none;
+}
+.laptop-trackpad {
+  width: 80px; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.08);
+}
+.laptop-bottom-edge {
+  width: 700px; height: 4px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  border-radius: 0 0 8px 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   PHONE FRAME (CSS-only iPhone style)
+   ═══════════════════════════════════════════════ */
+.device-phone {
+  position: absolute; right: -20px; bottom: -30px; z-index: 3;
+  transform-style: preserve-3d;
+}
+
+.phone-frame {
+  width: 200px; height: 420px;
+  background: #0a0f18;
+  border: 2.5px solid rgba(255,255,255,0.15);
+  border-radius: 28px;
+  overflow: hidden; position: relative;
+  box-shadow: 
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 25px 70px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.phone-dynamic-island {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 72px; height: 20px; border-radius: 12px;
+  background: #000000; z-index: 3;
+  box-shadow: inset 0 0 2px rgba(255,255,255,0.05);
+}
+
+.phone-screen-content {
+  width: 100%; height: 100%; position: relative; overflow: hidden;
+}
+
+.phone-home-indicator {
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.2); z-index: 3;
+}
+
+/* ═══════════════════════════════════════════════
+   SHARED DEVICE STYLES
+   ═══════════════════════════════════════════════ */
+.device-screenshot {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+}
+
+/* Animated scan line */
+.screen-scanline {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.3) 50%, transparent 100%);
+  animation: scanMove 4s linear infinite;
+  z-index: 2; pointer-events: none;
+}
+@keyframes scanMove {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Screen reflection overlay */
+.laptop-screen-content::after,
+.phone-screen-content::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.03) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255,255,255,0.015) 100%
+  );
+  pointer-events: none; z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════
+   FLOATING LABELS
+   ═══════════════════════════════════════════════ */
+.device-float-label {
+  position: absolute;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  font-size: 11.5px; font-weight: 650; color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  animation: labelFloat 6s ease-in-out infinite;
+}
+.label-left { top: 30%; left: -140px; animation-delay: 0s; }
+.label-top { top: -30px; right: 40px; animation-delay: -2s; }
+.label-right { top: 20%; right: -120px; animation-delay: -1s; }
+.label-bottom-right { bottom: 30px; right: -100px; animation-delay: -3s; }
+
+@keyframes labelFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.float-label-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #0ea5e9; flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(14,165,233,0.5);
+}
+.float-label-dot.green { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+.float-label-dot.amber { background: #d4af37; box-shadow: 0 0 6px rgba(212,175,55,0.5); }
+.float-label-dot.purple { background: #8b5cf6; box-shadow: 0 0 6px rgba(139,92,246,0.5); }
+
+/* ═══════════════════════════════════════════════
+   STATS BAR
+   ═══════════════════════════════════════════════ */
+.showcase-stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-top: 64px;
+  padding: 24px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; text-align: center;
+}
+.showcase-stat {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-val {
+  font-size: 1.3rem; font-weight: 800; color: #ffffff;
+  letter-spacing: -0.02em;
+}
+.stat-lbl { font-size: 11px; font-weight: 550; color: rgba(255,255,255,0.4); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .showcase-heading { font-size: 2.4rem; }
+  .laptop-screen { width: 440px; height: 280px; }
+  .laptop-base { width: 490px; }
+  .laptop-bottom-edge { width: 540px; }
+  .device-phone { right: -10px; bottom: -20px; }
+  .phone-frame { width: 160px; height: 340px; }
+  .label-left { display: none; }
+  .label-right { display: none; }
+  .showcase-stats-bar { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .device-showcase { padding: 80px 0 60px; }
+  .showcase-heading { font-size: 1.8rem; }
+  .showcase-sub { font-size: 0.9rem; }
+  .device-stage { flex-direction: column; min-height: auto; gap: 32px; }
+  .laptop-screen { width: 300px; height: 190px; }
+  .laptop-base { width: 330px; }
+  .laptop-bottom-edge { width: 360px; }
+  .device-phone { position: relative; right: auto; bottom: auto; }
+  .phone-frame { width: 180px; height: 380px; }
+  .device-float-label { display: none; }
+  .showcase-stats-bar { grid-template-columns: 1fr 1fr; }
+}

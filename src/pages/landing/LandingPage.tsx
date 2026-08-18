@@ -55,6 +55,7 @@ import {
   Phone
 } from 'lucide-react';
 import { HeroOS } from './components/HeroOS';
+import { DeviceShowcase } from './components/DeviceShowcase';
 import logoSrc from '../../assets/logo.png';
 import heroVideo from '../../assets/animation (1).mp4';
 import ctaVideo from '../../assets/animation (5).mp4';
@@ -244,6 +245,11 @@ export const LandingPage: React.FC = () => {
           <ChevronDown size={20} />
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════════
+          2.5. DEVICE SHOWCASE (Cinematic Mockups)
+          ═══════════════════════════════════════════════ */}
+      <DeviceShowcase />
 
       {/* ═══════════════════════════════════════════════
           3. VISION — "PLUS QU'UN LOGICIEL. UN ÉCOSYSTÈME."
