@@ -8,7 +8,7 @@
  */
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   ArrowRight, 
   ChevronRight, 
@@ -78,6 +78,32 @@ const FadeSection: React.FC<{ children: React.ReactNode; className?: string; id?
   );
 };
 
+/* ── FAQ Accordion Item ── */
+const FAQItem: React.FC<{ question: string; answer: string }> = ({ question, answer }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`faq-item ${open ? 'faq-open' : ''}`} onClick={() => setOpen(!open)}>
+      <div className="faq-question">
+        <span>{question}</span>
+        <ChevronDown size={16} className={`faq-chevron ${open ? 'rotated' : ''}`} />
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="faq-answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p>{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 /* ── Module Card Data ── */
 const MODULES = [
   { icon: GraduationCap, name: 'Éducation Pro', desc: 'Inscriptions, notes, bulletins, présences, cartes scolaires, revenus — tout dans un seul espace.', color: '#4f46e5', tag: 'Installé' },
@@ -115,12 +141,12 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <nav className="landing-nav-links">
-            <a href="#vision" className="landing-nav-link">Vision</a>
             <a href="#modules" className="landing-nav-link">Applications</a>
-            <a href="#universal-data" className="landing-nav-link">Données</a>
+            <a href="#use-cases" className="landing-nav-link">Cas d'usage</a>
             <a href="#ai" className="landing-nav-link">Intelligence</a>
-            <a href="#developers" className="landing-nav-link">Développeurs</a>
-            <a href="#africa" className="landing-nav-link">Afrique</a>
+            <a href="#pricing" className="landing-nav-link">Tarifs</a>
+            <a href="#faq" className="landing-nav-link">FAQ</a>
+            <a href="#contact" className="landing-nav-link">Contact</a>
           </nav>
 
           <div className="landing-nav-actions">
@@ -569,7 +595,299 @@ export const LandingPage: React.FC = () => {
       </FadeSection>
 
       {/* ═══════════════════════════════════════════════
-          11. CTA FINAL — VIDEO BACKGROUND (animation 5)
+          11. COMMENT ÇA MARCHE — 3 ÉTAPES
+          ═══════════════════════════════════════════════ */}
+      <FadeSection className="landing-section section-how">
+        <div className="section-inner">
+          <span className="section-kicker">COMMENT ÇA MARCHE</span>
+          <h2 className="section-heading">
+            Opérationnel en 3 minutes.<br />
+            <span className="heading-muted">Pas en 3 mois.</span>
+          </h2>
+
+          <div className="how-steps-row">
+            {[
+              { step: '01', title: 'Créez votre environnement', desc: "Inscrivez-vous gratuitement. Choisissez le nom de votre organisation, invitez vos premiers collaborateurs. Aucune carte bancaire requise.", icon: Users },
+              { step: '02', title: 'Activez vos modules', desc: "Sélectionnez les applications dont vous avez besoin : Éducation, Finance, Stocks, Tâches… Chaque module est prêt à l'emploi.", icon: Boxes },
+              { step: '03', title: 'Travaillez immédiatement', desc: "Vos données circulent entre les modules. Votre équipe collabore. Vos processus s'automatisent. Tout est connecté dès le premier jour.", icon: Zap },
+            ].map((s, idx) => {
+              const Icon = s.icon;
+              return (
+                <motion.div
+                  key={s.step}
+                  className="how-step-card"
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15, duration: 0.7 }}
+                >
+                  <span className="how-step-number">{s.step}</span>
+                  <div className="how-step-icon"><Icon size={22} /></div>
+                  <h3>{s.title}</h3>
+                  <p>{s.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          12. CAS D'USAGE — "POUR QUI ?"
+          ═══════════════════════════════════════════════ */}
+      <FadeSection id="use-cases" className="landing-section section-usecases">
+        <div className="section-inner">
+          <span className="section-kicker">CAS D'USAGE</span>
+          <h2 className="section-heading">
+            Conçu pour votre réalité.<br />
+            <span className="heading-muted">Pas pour un monde idéal.</span>
+          </h2>
+
+          <div className="usecases-grid">
+            {[
+              { icon: GraduationCap, title: 'Écoles & Universités', desc: "Inscriptions, notes, bulletins, présences, paiements de scolarité, cartes d'étudiant — le tout interconnecté dans un seul environnement.", color: '#4f46e5' },
+              { icon: Stethoscope, title: 'Cliniques & Centres de Santé', desc: "Dossiers patients, consultations, prescriptions, laboratoire, facturation médicale et suivi épidémiologique.", color: '#10b981' },
+              { icon: Building2, title: 'PME & Entreprises', desc: "Gestion commerciale, stocks multi-dépôts, trésorerie, projets internes, RH et automatisation des processus.", color: '#0ea5e9' },
+              { icon: Store, title: 'ONG & Associations', desc: "Suivi de programmes, gestion des bénéficiaires, rapports bailleurs, comptabilité par projet et transparence.", color: '#f59e0b' },
+            ].map((uc, idx) => {
+              const Icon = uc.icon;
+              return (
+                <motion.div
+                  key={uc.title}
+                  className="usecase-card"
+                  style={{ '--uc-color': uc.color } as React.CSSProperties}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <div className="uc-icon" style={{ background: `${uc.color}12`, color: uc.color }}>
+                    <Icon size={24} />
+                  </div>
+                  <h3>{uc.title}</h3>
+                  <p>{uc.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          13. SOCIAL PROOF — CHIFFRES & CRÉDIBILITÉ
+          ═══════════════════════════════════════════════ */}
+      <FadeSection className="landing-section section-proof">
+        <div className="section-inner">
+          <div className="proof-metrics-row">
+            {[
+              { value: '5+', label: 'Modules métier natifs' },
+              { value: '99.9%', label: 'Disponibilité garantie' },
+              { value: '0', label: 'Données perdues' },
+              { value: '< 3 min', label: 'Pour créer votre environnement' },
+              { value: '∞', label: 'Utilisateurs par organisation' },
+              { value: '100%', label: 'Offline-first compatible' },
+            ].map((m, idx) => (
+              <motion.div
+                key={m.label}
+                className="proof-metric"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.08 }}
+              >
+                <span className="proof-value">{m.value}</span>
+                <span className="proof-label">{m.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          14. TARIFICATION — PLANS
+          ═══════════════════════════════════════════════ */}
+      <FadeSection id="pricing" className="landing-section section-pricing">
+        <div className="section-inner">
+          <span className="section-kicker">TARIFICATION</span>
+          <h2 className="section-heading">
+            Commencez gratuitement.<br />
+            <span className="heading-muted">Évoluez sans limites.</span>
+          </h2>
+
+          <div className="pricing-grid">
+            {/* Free */}
+            <div className="pricing-card">
+              <span className="pricing-tier">Découverte</span>
+              <div className="pricing-amount"><span className="pricing-currency">Gratuit</span></div>
+              <p className="pricing-desc">Pour découvrir Alliance One et tester avec votre équipe.</p>
+              <ul className="pricing-features">
+                <li><Check size={14} /> 1 organisation</li>
+                <li><Check size={14} /> 3 utilisateurs</li>
+                <li><Check size={14} /> 2 modules actifs</li>
+                <li><Check size={14} /> Support communautaire</li>
+                <li><Check size={14} /> 500 Mo stockage</li>
+              </ul>
+              <button className="pricing-cta" onClick={() => navigate('/register')}>Commencer gratuitement</button>
+            </div>
+
+            {/* Pro */}
+            <div className="pricing-card pricing-featured">
+              <span className="pricing-badge">POPULAIRE</span>
+              <span className="pricing-tier">Professionnel</span>
+              <div className="pricing-amount">
+                <span className="pricing-price">15 000</span>
+                <span className="pricing-unit">FCFA / mois</span>
+              </div>
+              <p className="pricing-desc">Pour les organisations en croissance qui veulent tout connecter.</p>
+              <ul className="pricing-features">
+                <li><Check size={14} /> Utilisateurs illimités</li>
+                <li><Check size={14} /> Tous les modules</li>
+                <li><Check size={14} /> Alliance AI intégré</li>
+                <li><Check size={14} /> Automatisations</li>
+                <li><Check size={14} /> Support prioritaire</li>
+                <li><Check size={14} /> 50 Go stockage</li>
+                <li><Check size={14} /> API & Webhooks</li>
+              </ul>
+              <button className="pricing-cta featured-cta" onClick={() => navigate('/register')}>
+                Choisir Professionnel <ArrowRight size={14} />
+              </button>
+            </div>
+
+            {/* Enterprise */}
+            <div className="pricing-card">
+              <span className="pricing-tier">Entreprise</span>
+              <div className="pricing-amount"><span className="pricing-currency">Sur devis</span></div>
+              <p className="pricing-desc">Pour les grandes organisations avec des besoins spécifiques.</p>
+              <ul className="pricing-features">
+                <li><Check size={14} /> Multi-organisations</li>
+                <li><Check size={14} /> Modules personnalisés</li>
+                <li><Check size={14} /> SLA dédié 99.99%</li>
+                <li><Check size={14} /> Déploiement on-premise</li>
+                <li><Check size={14} /> Formation & accompagnement</li>
+                <li><Check size={14} /> Stockage illimité</li>
+              </ul>
+              <button className="pricing-cta" onClick={() => navigate('/register')}>Contacter les ventes</button>
+            </div>
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          15. FAQ — QUESTIONS FRÉQUENTES
+          ═══════════════════════════════════════════════ */}
+      <FadeSection id="faq" className="landing-section section-faq">
+        <div className="section-inner">
+          <span className="section-kicker">FAQ</span>
+          <h2 className="section-heading">
+            Questions fréquentes.
+          </h2>
+
+          <div className="faq-list">
+            {/* <FAQItem
+              question="Qu'est-ce qu'Alliance One exactement ?"
+              answer="Alliance One est un Business Operating System (OS métier). C'est un environnement unifié qui réunit vos applications professionnelles (éducation, finances, stocks, tâches, bibliothèque, etc.), vos données et vos processus dans une seule plateforme. Contrairement à un logiciel classique, Alliance One fonctionne comme un système d'exploitation pour votre organisation."
+            />
+            <FAQItem
+              question="Est-ce adapté à mon école / ma PME / ma clinique ?"
+              answer="Oui. Alliance One est conçu pour servir tous types d'organisations : écoles, universités, cliniques, PME, ONG, associations et entreprises. Les modules sont activables selon vos besoins — vous n'installez que ce dont vous avez besoin."
+            />
+            <FAQItem
+              question="Faut-il une connexion Internet permanente ?"
+              answer="Non. Alliance One est conçu en mode Offline-First. Vous pouvez travailler sans connexion — vos données se synchronisent automatiquement dès que le réseau revient. C'est une exigence fondamentale pour les réalités africaines et les zones à faible connectivité."
+            />
+            <FAQItem
+              question="Combien coûte Alliance One ?"
+              answer="Alliance One propose un plan Découverte entièrement gratuit pour commencer. Le plan Professionnel démarre à 15 000 FCFA/mois avec utilisateurs illimités et tous les modules. Un plan Entreprise sur devis est disponible pour les grandes organisations."
+            />
+            <FAQItem
+              question="Mes données sont-elles sécurisées ?"
+              answer="Absolument. Vos données sont chiffrées (AES-256), protégées par un contrôle d'accès granulaire (RBAC/ABAC), sauvegardées automatiquement et auditées. Alliance One respecte les normes de sécurité internationales et garantit une disponibilité de 99.9%."
+            />
+            <FAQItem
+              question="Puis-je migrer depuis mon système actuel ?"
+              answer="Oui. Alliance One propose des outils d'import (Excel, CSV) et une équipe d'accompagnement pour faciliter la migration depuis vos outils existants. Vos données historiques peuvent être intégrées."
+            />
+            <FAQItem
+              question="Est-ce que je peux développer mes propres modules ?"
+              answer="Oui. La Developer Platform d'Alliance One offre un SDK, une CLI, des API REST, des Webhooks et un environnement Sandbox pour créer, tester et publier vos propres modules sur la Marketplace."
+            />
+            <FAQItem
+              question="Comment contacter le support ?"
+              answer="Le plan Découverte inclut le support communautaire. Les plans Professionnel et Entreprise bénéficient d'un support prioritaire par email et chat. Une documentation complète et des tutoriels vidéo sont également disponibles."
+            /> */}
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          16. CONTACT / DEMANDER UNE DÉMO
+          ═══════════════════════════════════════════════ */}
+      <FadeSection id="contact" className="landing-section section-contact">
+        <div className="section-inner">
+          <div className="contact-grid">
+            <div className="contact-text-col">
+              <span className="section-kicker">CONTACT</span>
+              <h2 className="section-heading">
+                Une question ?<br />
+                <span className="heading-muted">Parlons-en.</span>
+              </h2>
+              <p className="section-lead" style={{ marginBottom: '32px' }}>
+                Notre équipe est disponible pour vous accompagner dans la découverte d'Alliance One, planifier une démonstration personnalisée, ou répondre à vos questions techniques.
+              </p>
+
+              <div className="contact-info-list">
+                <div className="contact-info-item">
+                  <Mail size={18} />
+                  <div>
+                    <strong>Email</strong>
+                    <span>contact@allianceone.io</span>
+                  </div>
+                </div>
+                <div className="contact-info-item">
+                  <Phone size={18} />
+                  <div>
+                    <strong>Téléphone</strong>
+                    <span>+237 6XX XXX XXX</span>
+                  </div>
+                </div>
+                <div className="contact-info-item">
+                  <MapPin size={18} />
+                  <div>
+                    <strong>Siège</strong>
+                    <span>Douala, Cameroun</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="contact-form-col">
+              <div className="contact-form-card">
+                <h3>Demander une démonstration</h3>
+                <div className="contact-form-fields">
+                  <input type="text" placeholder="Votre nom complet" className="contact-input" />
+                  <input type="email" placeholder="Votre email professionnel" className="contact-input" />
+                  <input type="text" placeholder="Nom de votre organisation" className="contact-input" />
+                  <select className="contact-input">
+                    <option value="">Type d'organisation</option>
+                    <option>École / Université</option>
+                    <option>PME / Entreprise</option>
+                    <option>Clinique / Centre de santé</option>
+                    <option>ONG / Association</option>
+                    <option>Autre</option>
+                  </select>
+                  <textarea placeholder="Décrivez brièvement vos besoins..." className="contact-input contact-textarea" rows={4} />
+                </div>
+                <button className="contact-submit-btn" onClick={() => navigate('/register')}>
+                  Envoyer ma demande <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeSection>
+
+      {/* ═══════════════════════════════════════════════
+          17. CTA FINAL — VIDEO BACKGROUND (animation 5)
           ═══════════════════════════════════════════════ */}
       <section className="landing-section section-cta-final">
         <video className="cta-bg-video" src={ctaVideo} autoPlay muted loop playsInline />
