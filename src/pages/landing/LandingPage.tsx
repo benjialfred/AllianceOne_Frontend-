@@ -783,7 +783,7 @@ export const LandingPage: React.FC = () => {
           </h2>
 
           <div className="faq-list">
-            {/* <FAQItem
+            <FAQItem
               question="Qu'est-ce qu'Alliance One exactement ?"
               answer="Alliance One est un Business Operating System (OS métier). C'est un environnement unifié qui réunit vos applications professionnelles (éducation, finances, stocks, tâches, bibliothèque, etc.), vos données et vos processus dans une seule plateforme. Contrairement à un logiciel classique, Alliance One fonctionne comme un système d'exploitation pour votre organisation."
             />
@@ -814,7 +814,7 @@ export const LandingPage: React.FC = () => {
             <FAQItem
               question="Comment contacter le support ?"
               answer="Le plan Découverte inclut le support communautaire. Les plans Professionnel et Entreprise bénéficient d'un support prioritaire par email et chat. Une documentation complète et des tutoriels vidéo sont également disponibles."
-            /> */}
+            />
           </div>
         </div>
       </FadeSection>
