@@ -1,27 +1,28 @@
 /* =========================================
    ALLIANCE HUB — ENTERPRISE DASHBOARD STYLES
-   Clean, premium, SaaS aesthetics.
+   Ultra-premium SaaS aesthetics (Linear/Vercel).
    ========================================= */
 
 .ent-hub-root {
-  min-height: calc(100vh - 60px);
-  background: var(--color-bg-base);
-  display: flex;
-  flex-direction: column;
+  min-height: calc(100vh - 56px);
+  background: #fafafa;
+}
+
+[data-theme='dark'] .ent-hub-root {
+  background: #0a0a0a; /* Very dark gray, almost black */
 }
 
 .ent-hub-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem 3rem;
   width: 100%;
-  flex: 1;
 }
 
 .ent-hub-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
