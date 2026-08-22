@@ -29,7 +29,8 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
   onOpenSearch,
   onOpenCreate,
   onOpenNotifications,
-  unreadNotificationsCount = 3
+  onOpenAI,
+  unreadNotificationsCount = 0
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
