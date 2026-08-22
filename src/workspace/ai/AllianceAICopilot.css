@@ -1,0 +1,211 @@
+/* =========================================
+   ALLIANCE AI COPILOT STYLES
+   Spotlight / Command Palette Style
+   Titanium Dark Aesthetic
+   ========================================= */
+
+.ai-copilot-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 11, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12vh;
+}
+
+.ai-copilot-modal {
+  width: 100%;
+  max-width: 640px;
+  background: #121214; /* Graphite 1 */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Input */
+.ai-copilot-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ai-copilot-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ai-copilot-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f4f4f5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ai-copilot-brand svg {
+  color: #3b82f6; /* Alliance Accent */
+}
+
+.ai-copilot-close {
+  background: transparent;
+  border: none;
+  color: #52525b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-copilot-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f5;
+}
+
+.ai-copilot-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ai-copilot-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #f4f4f5;
+  font-size: 1.25rem;
+  font-weight: 400;
+  padding: 0;
+  outline: none;
+}
+
+.ai-copilot-input::placeholder {
+  color: #52525b;
+}
+
+/* Body / Content Area */
+.ai-copilot-body {
+  padding: 1.5rem;
+  min-height: 120px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ai-copilot-body::-webkit-scrollbar {
+  width: 4px;
+}
+.ai-copilot-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.ai-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #52525b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+/* Suggestions */
+.ai-suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: #a1a1aa;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.ai-suggestion-item:hover, .ai-suggestion-item.active {
+  background: rgba(255, 255, 255, 0.03);
+  color: #f4f4f5;
+}
+
+.ai-suggestion-icon {
+  color: #52525b;
+}
+.ai-suggestion-item:hover .ai-suggestion-icon, 
+.ai-suggestion-item.active .ai-suggestion-icon {
+  color: #3b82f6;
+}
+
+/* Streaming State / Status */
+.ai-state-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #a1a1aa;
+  font-size: 0.9rem;
+  padding: 12px 0;
+}
+
+.ai-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: ai-spin 1s linear infinite;
+}
+
+@keyframes ai-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Footer */
+.ai-copilot-footer {
+  padding: 1rem 1.5rem;
+  background: #0a0a0b;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ai-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #52525b;
+}
+
+.ai-kbd {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #a1a1aa;
+}

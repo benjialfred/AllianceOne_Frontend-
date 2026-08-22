@@ -12,12 +12,14 @@ import {
 } from 'lucide-react';
 import { Logo } from '../../design-system/components/Logo';
 import { usePlatformStore } from '../../core/stores/platformStore';
+import { useAuthStore } from '../../core/stores/authStore';
 import './GlobalNavbar.css';
 
 interface GlobalNavbarProps {
   onOpenSearch: () => void;
   onOpenCreate: () => void;
   onOpenNotifications: () => void;
+  onOpenAI?: () => void;
   unreadNotificationsCount?: number;
 }
 
@@ -39,6 +41,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
   const theme = usePlatformStore((s) => s.theme);
   const toggleTheme = usePlatformStore((s) => s.toggleTheme);
   const currentOrg = usePlatformStore((s) => s.currentOrganization);
+  const logout = useAuthStore((s) => s.logout);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -184,7 +187,13 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
           <button className="ent-search-bar" onClick={onOpenSearch}>
             <Search size={14} />
             <span className="placeholder">Rechercher...</span>
-            <kbd>⌘K</kbd>
+            <kbd>/</kbd>
+          </button>
+          
+          <button className="ent-search-bar" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)' }} onClick={onOpenAI}>
+            <Sparkles size={14} />
+            <span className="placeholder" style={{ color: '#3b82f6' }}>Ask Alliance AI</span>
+            <kbd style={{ background: 'transparent', color: '#3b82f6', border: 'none' }}>⌘K</kbd>
           </button>
 
           <div className="ent-divider" />
@@ -227,7 +236,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                     <span>Centre d'aide</span>
                   </button>
                   <div className="ent-dropdown-divider" />
-                  <button className="ent-list-item danger" onClick={() => alert('Déconnexion')}>
+                  <button className="ent-list-item danger" onClick={() => { logout(); navigate('/'); }}>
                     <LogOut size={16} />
                     <span>Se déconnecter</span>
                   </button>

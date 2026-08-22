@@ -38,6 +38,7 @@ import { GlobalNavbar } from './components/GlobalNavbar';
 import { UniversalCommandPalette } from './components/UniversalCommandPalette';
 import { UniversalCreateModal } from './components/UniversalCreateModal';
 import { NotificationsDrawer } from './components/NotificationsDrawer';
+import { AllianceAICopilot } from './ai/AllianceAICopilot';
 import { AllianceHub } from './hub/AllianceHub';
 import { MarketplacePage } from './pages/MarketplacePage';
 import { DevelopersPage } from './pages/DevelopersPage';
@@ -159,6 +160,7 @@ export const WorkspaceShell: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isAIOpen, setIsAIOpen] = useState(false);
 
   // Load organizations on start
   useEffect(() => {
@@ -197,7 +199,7 @@ export const WorkspaceShell: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setIsSearchOpen((prev) => !prev);
+        setIsAIOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -242,6 +244,7 @@ export const WorkspaceShell: React.FC = () => {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenCreate={() => setIsCreateOpen(true)}
         onOpenNotifications={() => setIsNotifOpen(true)}
+        onOpenAI={() => setIsAIOpen(true)}
         unreadNotificationsCount={3}
       />
 
@@ -349,6 +352,11 @@ export const WorkspaceShell: React.FC = () => {
       <UniversalCommandPalette 
         isOpen={isSearchOpen} 
         onClose={() => setIsSearchOpen(false)} 
+      />
+
+      <AllianceAICopilot 
+        isOpen={isAIOpen}
+        onClose={() => setIsAIOpen(false)}
       />
 
       <UniversalCreateModal 
