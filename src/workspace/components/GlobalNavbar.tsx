@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Plus, Bell, ChevronDown, Moon, Sun, 
   Building2, Menu, X, Home, Boxes, Compass, 
-  LogOut, HelpCircle, Zap, Activity
+  LogOut, HelpCircle, Zap, Activity, Sparkles
 } from 'lucide-react';
 import { Logo } from '../../design-system/components/Logo';
 import { usePlatformStore } from '../../core/stores/platformStore';
