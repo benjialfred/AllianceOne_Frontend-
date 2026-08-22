@@ -1,15 +1,21 @@
 /**
  * ALLIANCE AI COPILOT
- * Spotlight-style universal intelligence interface.
+ * Premium Right-Side Chat Drawer
  */
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, X, ChevronRight, FileText, Activity, AlertTriangle } from 'lucide-react';
+import { Sparkles, X, Activity, FileText, AlertTriangle, Send, User as UserIcon } from 'lucide-react';
 import './AllianceAICopilot.css';
 
 interface AllianceAICopilotProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 const SUGGESTIONS = [
@@ -20,20 +26,27 @@ const SUGGESTIONS = [
 
 export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
-  const [response, setResponse] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingState, setProcessingState] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Focus input when opened
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && messages.length === 0) {
       setTimeout(() => inputRef.current?.focus(), 100);
-      setQuery('');
-      setResponse(null);
-      setIsProcessing(false);
     }
   }, [isOpen]);
+
+  // Auto-scroll to bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isProcessing, processingState]);
 
   // Handle global shortcut (Escape)
   useEffect(() => {
@@ -47,27 +60,41 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
   }, [isOpen, onClose]);
 
   const executeQuery = async (textToExecute: string) => {
-    if (!textToExecute.trim()) return;
+    if (!textToExecute.trim() || isProcessing) return;
 
-    // Simulate backend processing states for UI feedback
+    const newUserMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: textToExecute.trim()
+    };
+    
+    // Add user message to UI
+    const currentMessages = [...messages, newUserMessage];
+    setMessages(currentMessages);
+    setQuery('');
     setIsProcessing(true);
     setProcessingState('Analyse du contexte...');
-    setResponse(null);
     
-    // Simulate streaming UI while waiting for fetch
-    const steps = ['Recherche des données...', 'Vérification des permissions...', 'Préparation de la réponse...'];
+    // Simulate backend processing states for UI feedback
+    const steps = ['Recherche des données...', 'Consultation des outils...', 'Préparation de la réponse...'];
     let stepIndex = 0;
     const interval = setInterval(() => {
       if (stepIndex < steps.length) {
         setProcessingState(steps[stepIndex]);
         stepIndex++;
       }
-    }, 1000);
+    }, 1500);
 
     try {
       const token = localStorage.getItem('alliance-auth') 
         ? JSON.parse(localStorage.getItem('alliance-auth') as string).state?.accessToken 
         : null;
+
+      // Extract history for API (excluding the current message we just added)
+      const historyForApi = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
 
       const res = await fetch('http://localhost:8000/api/core/ai/ask/', {
         method: 'POST',
@@ -77,6 +104,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         },
         body: JSON.stringify({ 
           prompt: textToExecute,
+          history: historyForApi,
           context: {
             active_module: window.location.pathname.split('/')[2] || 'hub',
             active_route: window.location.pathname,
@@ -86,20 +114,30 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
       });
 
       const data = await res.json();
-      console.log('AI Response:', data);
-      
       clearInterval(interval);
       setProcessingState('');
       setIsProcessing(false);
-      setResponse(data.content || JSON.stringify(data));
-      // Don't clear query if we want to show what was asked, but UI looks cleaner cleared or kept.
-      // Let's keep the query so the user sees their prompt!
+      
+      const newAssistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: data.content || JSON.stringify(data)
+      };
+      
+      setMessages(prev => [...prev, newAssistantMessage]);
+      setTimeout(() => inputRef.current?.focus(), 100);
+      
     } catch (err) {
       console.error('AI Error:', err);
       clearInterval(interval);
       setProcessingState('');
       setIsProcessing(false);
-      setResponse('Erreur de connexion avec le serveur.');
+      
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Erreur de connexion avec le serveur API.'
+      }]);
     }
   };
 
@@ -108,95 +146,156 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     executeQuery(query);
   };
 
+  const renderMessageContent = (content: string) => {
+    // Basic Markdown handling for line breaks and bold
+    return content.split('\n').map((line, i) => {
+      const parts = line.split(/(\*\*.*?\*\*)/).map((part, j) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={j} style={{ color: 'var(--color-text)' }}>{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+      return <div key={i} style={{ minHeight: line.trim() ? 'auto' : '0.8rem' }}>{parts}</div>;
+    });
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
-          className="ai-copilot-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) onClose();
-          }}
-        >
+        <>
+          {/* Overlay that dims the background slightly */}
           <motion.div 
-            className="ai-copilot-modal"
-            initial={{ scale: 0.95, opacity: 0, y: 10 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 10 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="ai-copilot-overlay-drawer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={onClose}
+          />
+          
+          {/* Right Side Drawer */}
+          <motion.div 
+            className="ai-copilot-drawer"
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
             {/* HEADER */}
             <div className="ai-copilot-header">
-              <div className="ai-copilot-title-row">
-                <div className="ai-copilot-brand">
-                  <Sparkles size={16} /> Alliance AI
+              <div className="ai-copilot-brand">
+                <div className="ai-copilot-logo-glow">
+                  <Sparkles size={18} />
                 </div>
-                <button className="ai-copilot-close" onClick={onClose}>
-                  <X size={16} />
-                </button>
+                <div>
+                  <div className="ai-copilot-title">Alliance AI</div>
+                  <div className="ai-copilot-subtitle">Copilote & Analyse</div>
+                </div>
               </div>
+              <button className="ai-copilot-close" onClick={onClose} title="Fermer (Échap)">
+                <X size={20} />
+              </button>
+            </div>
 
+            {/* BODY / CHAT HISTORY */}
+            <div className="ai-copilot-body">
+              {messages.length === 0 ? (
+                <div className="ai-copilot-empty-state">
+                  <div className="ai-empty-icon">
+                    <Sparkles size={32} />
+                  </div>
+                  <h3>Bonjour ! Je suis votre copilote.</h3>
+                  <p>Comment puis-je vous aider aujourd'hui sur Alliance One ?</p>
+                  
+                  <div className="ai-suggestions-list">
+                    {SUGGESTIONS.map((suggestion) => (
+                      <button 
+                        key={suggestion.id}
+                        className="ai-suggestion-item"
+                        onClick={() => executeQuery(suggestion.text)}
+                      >
+                        <suggestion.icon size={16} className="ai-suggestion-icon" />
+                        <span>{suggestion.text}</span>
+                        <ChevronRight size={14} className="ai-suggestion-arrow" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="ai-chat-history">
+                  {messages.map((msg) => (
+                    <motion.div 
+                      key={msg.id}
+                      className={`ai-message-row ${msg.role}`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {msg.role === 'assistant' && (
+                        <div className="ai-avatar assistant">
+                          <Sparkles size={14} />
+                        </div>
+                      )}
+                      <div className={`ai-message-bubble ${msg.role}`}>
+                        {renderMessageContent(msg.content)}
+                      </div>
+                      {msg.role === 'user' && (
+                        <div className="ai-avatar user">
+                          <UserIcon size={14} />
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                  
+                  {isProcessing && (
+                    <motion.div 
+                      className="ai-message-row assistant"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <div className="ai-avatar assistant">
+                        <Sparkles size={14} />
+                      </div>
+                      <div className="ai-state-indicator">
+                        <div className="ai-typing-dots">
+                          <span></span><span></span><span></span>
+                        </div>
+                        <span className="ai-state-text">{processingState}</span>
+                      </div>
+                    </motion.div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
+
+            {/* FOOTER / INPUT */}
+            <div className="ai-copilot-footer">
               <form className="ai-copilot-input-wrapper" onSubmit={handleSubmit}>
                 <input
                   ref={inputRef}
                   type="text"
                   className="ai-copilot-input"
-                  placeholder="Que souhaitez-vous accomplir ?"
+                  placeholder="Posez votre question à l'IA..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   disabled={isProcessing}
+                  autoComplete="off"
                 />
+                <button 
+                  type="submit" 
+                  className={`ai-copilot-send ${query.trim() ? 'active' : ''}`}
+                  disabled={!query.trim() || isProcessing}
+                >
+                  <Send size={16} />
+                </button>
               </form>
-            </div>
-
-            {/* BODY */}
-            <div className="ai-copilot-body">
-              {isProcessing ? (
-                <div className="ai-state-indicator">
-                  <div className="ai-spinner" />
-                  <span>{processingState}</span>
-                </div>
-              ) : response ? (
-                <div className="ai-response-container" style={{ color: '#f4f4f5', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: '#3b82f6' }}>
-                    <Sparkles size={16} />
-                    <span style={{ fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase' }}>Réponse</span>
-                  </div>
-                  <div>{response}</div>
-                </div>
-              ) : (
-                <>
-                  <div className="ai-section-title">Suggestions</div>
-                  <div className="ai-suggestions-list">
-                    {SUGGESTIONS.map((suggestion, index) => (
-                        <button 
-                        key={suggestion.id}
-                        className="ai-suggestion-item"
-                        onClick={() => {
-                          setQuery(suggestion.text);
-                          executeQuery(suggestion.text);
-                        }}
-                      >
-                        <suggestion.icon size={16} className="ai-suggestion-icon" />
-                        <span>{suggestion.text}</span>
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* FOOTER */}
-            <div className="ai-copilot-footer">
-              <div className="ai-hint">
-                <span className="ai-kbd">↵</span> Enter pour valider
+              <div className="ai-footer-disclaimer">
+                L'IA peut générer des informations inexactes. Vérifiez les données critiques.
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
