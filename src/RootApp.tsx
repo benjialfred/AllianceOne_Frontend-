@@ -17,6 +17,10 @@ const LandingPage = React.lazy(() =>
   import('./pages/landing/LandingPage').then((m) => ({ default: m.LandingPage }))
 );
 
+const FounderAppRoutes = React.lazy(() =>
+  import('./workspace/pages/founder/FounderApp').then((m) => ({ default: m.default }))
+);
+
 /**
  * Auth guard: redirects to /login if not authenticated.
  */
@@ -95,6 +99,14 @@ export const RootApp: React.FC = () => {
             <RequireGuest>
               <AuthPage mode="register" />
             </RequireGuest>
+          }
+        />
+
+        {/* Founder Experience is fully public */}
+        <Route
+          path="/founder/*"
+          element={
+            <FounderAppRoutes />
           }
         />
 

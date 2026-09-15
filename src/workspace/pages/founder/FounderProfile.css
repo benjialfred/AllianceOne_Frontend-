@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   FOUNDER EXPERIENCE — ULTIMATE EXPERIMENTAL DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  --founder-bg: #09090b;
+  --founder-bg-subtle: #121214;
+  --founder-bg-surface: #18181b;
+  --founder-bg-surface-hover: #27272a;
+  
+  --founder-text-display: #ffffff;
+  --founder-text-primary: #e4e4e7; 
+  --founder-text-secondary: #a1a1aa; 
+  --founder-text-muted: #71717a; 
+  
+  --founder-border: rgba(255, 255, 255, 0.08);
+  --founder-border-light: rgba(255, 255, 255, 0.04);
+  
+  --founder-accent: #3b82f6; 
+}
+
+.founder-profile-root {
+  background-color: var(--founder-bg);
+  color: var(--founder-text-primary);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  .founder-profile-root {
+    cursor: auto;
+  }
+}
+
+/* ==========================================================================
+   TYPOGRAPHY - RECALIBRATED (Densified, Smaller Scales)
+   ========================================================================== */
+
+.founder-micro {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  color: var(--founder-text-muted);
+}
+
+.founder-sub {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--founder-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.founder-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--founder-text-secondary);
+}
+
+.founder-subtitle {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 500;
+  color: var(--founder-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.founder-section-title {
+  font-size: clamp(2rem, 3vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--founder-text-display);
+  margin: 0;
+}
+
+/* Reserved for punctuation moments (Hero, Climax) */
+.founder-display-monumental {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--founder-text-display);
+  margin: 0;
+}
+
+/* ==========================================================================
+   LAYOUT UTILITIES
+   ========================================================================== */
+
+.founder-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 10rem;
+}
+
+@media (min-width: 768px) {
+  .founder-container {
+    padding: 6rem 4rem 15rem;
+  }
+}
+
+.founder-spacer {
+  height: 15vh;
+}
+
+@media (min-width: 1024px) {
+  .founder-spacer {
+    height: 25vh;
+  }
+}
+
+/* ==========================================================================
+   SPECIFIC EXPERIMENTAL SECTIONS
+   ========================================================================== */
+
+/* Contextual Cursor */
+.founder-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mix-blend-mode: exclusion;
+  transform: translate(-50%, -50%);
+}
+
+.founder-cursor-text {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* SVG Hero Portrait Wrapper */
+.founder-svg-portrait {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.founder-svg-mask-image {
+  clip-path: url(#portrait-mask);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+/* Engineering Interactive Matrix */
+.founder-eng-domain {
+  border-top: 1px solid var(--founder-border);
+  padding: 2rem 0;
+  cursor: none; /* Rely on custom cursor */
+}
+
+/* Link Overrides */
+.founder-link-raw {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: var(--founder-text-display);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: none;
+  padding: 0;
+  position: relative;
+}
+
+.founder-link-raw::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--founder-text-display);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.founder-link-raw:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Alliance One Climax */
+.climax-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 120vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Node Network Canvas overlay */
+.climax-network {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* CV Viewer */
+.cv-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--founder-bg);
+  color: var(--founder-text-primary);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  cursor: auto;
+}
+
+.cv-viewer-header {
+  height: 60px;
+  border-bottom: 1px solid var(--founder-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: var(--founder-bg);
+}
+
+.cv-viewer-content {
+  flex-grow: 1;
+  background-color: var(--founder-bg-subtle);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cv-iframe-container {
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  background: #fff;
+}
+
+.cv-iframe-container iframe,
+.cv-iframe-container object {
+  width: 100%;
+  height: 100%;
+  border: none;
+}

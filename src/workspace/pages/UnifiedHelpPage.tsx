@@ -166,6 +166,45 @@ export const UnifiedHelpPage: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* Support & Contact */}
+        <section className="services-section" style={{ marginTop: '2rem' }}>
+          <div className="help-status-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <LifeBuoy size={18} color="#4f46e5" />
+                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700 }}>Contacter le support</h3>
+              </div>
+              <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-text-muted)' }}>
+                Notre équipe est disponible pour vous accompagner dans l'utilisation de la plateforme.
+              </p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
+              <button style={{ padding: '8px 16px', borderRadius: '6px', backgroundColor: 'var(--color-text-primary)', color: 'var(--color-bg-primary)', fontWeight: 500, fontSize: '13px', border: 'none', cursor: 'pointer' }}>
+                Ouvrir un ticket
+              </button>
+              
+              {/* Founder Identity Link */}
+              <a 
+                href="/app/founder" 
+                style={{ 
+                  fontSize: '12px', 
+                  color: 'var(--color-text-muted)', 
+                  textDecoration: 'none', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '4px',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-text-primary)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-muted)'}
+                title="Découvrez la personne derrière Alliance One"
+              >
+                En savoir plus sur le fondateur <ArrowRight size={12} />
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

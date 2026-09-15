@@ -864,6 +864,19 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              <div style={{ marginTop: '2.5rem', padding: '1.5rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-text-primary, #fff)' }}>Rencontrez l'ingénieur</h4>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted, #94a3b8)', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+                  Découvrez la vision, l'architecture et l'expertise derrière la construction d'Alliance One.
+                </p>
+                <button 
+                  onClick={() => navigate('/founder')} 
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-primary, #3b82f6)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                >
+                  En savoir plus sur le fondateur <ArrowRight size={14} />
+                </button>
+              </div>
             </div>
 
             <div className="contact-form-col">

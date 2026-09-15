@@ -53,6 +53,7 @@ import InventoryModuleRoutes from '../modules/inventory/App';
 import FinanceModuleRoutes from '../modules/finance/App';
 import LibraryModuleRoutes from '../modules/library/App';
 import TasksModuleRoutes from '../modules/tasks/App';
+import FounderAppRoutes from './pages/founder/FounderApp';
 import './Workspace.css';
 
 // Navigation configurations for specialized module sidebars
