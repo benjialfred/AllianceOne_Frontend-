@@ -16,6 +16,7 @@ export interface AuthUser {
   avatar_url?: string;
   roles: string[];
   permissions: string[];
+  onboarding_completed?: boolean;
 }
 
 interface AuthState {
@@ -32,6 +33,7 @@ interface AuthState {
   register: (data: RegisterPayload) => Promise<boolean>;
   logout: () => void;
   setUser: (user: AuthUser) => void;
+  setOnboardingCompleted: (completed: boolean) => void;
   clearError: () => void;
 }
 
@@ -83,6 +85,15 @@ export const useAuthStore = create<AuthState>()(
 
           if (res.ok) {
             const data = await res.json();
+            if (data.user?.onboarding_completed) {
+              if (data.user.email) {
+                localStorage.setItem(`alliance-onboarding-completed_${data.user.email}`, 'true');
+              }
+              localStorage.setItem('alliance-onboarding-completed', 'true');
+            } else if (data.user?.email) {
+              localStorage.removeItem(`alliance-onboarding-completed_${data.user.email}`);
+              localStorage.removeItem('alliance-onboarding-completed');
+            }
             set({
               user: data.user,
               accessToken: data.access,
@@ -99,6 +110,7 @@ export const useAuthStore = create<AuthState>()(
           // If backend server is unreachable (offline/local dev mode), create a session for testing
           if (err.name === 'TypeError' || err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
             console.warn('Backend API offline, initializing local development session for:', email);
+            const isCompleted = localStorage.getItem(`alliance-onboarding-completed_${email}`) === 'true';
             const devUser: AuthUser = {
               id: 'usr-dev-local',
               email: email,
@@ -106,6 +118,7 @@ export const useAuthStore = create<AuthState>()(
               last_name: 'Alliance',
               roles: ['ADMINISTRATOR'],
               permissions: ['*'],
+              onboarding_completed: isCompleted,
             };
             set({
               user: devUser,
@@ -134,6 +147,15 @@ export const useAuthStore = create<AuthState>()(
 
           if (res.ok) {
             const data = await res.json();
+            if (data.user?.onboarding_completed) {
+              if (data.user.email) {
+                localStorage.setItem(`alliance-onboarding-completed_${data.user.email}`, 'true');
+              }
+              localStorage.setItem('alliance-onboarding-completed', 'true');
+            } else if (data.user?.email) {
+              localStorage.removeItem(`alliance-onboarding-completed_${data.user.email}`);
+              localStorage.removeItem('alliance-onboarding-completed');
+            }
             set({
               user: data.user,
               accessToken: data.access,
@@ -152,14 +174,18 @@ export const useAuthStore = create<AuthState>()(
           const payload = parseGoogleJwt(credential);
           if (payload) {
             console.info('Authenticated via Google ID Token:', payload.email);
+            const userEmail = payload.email || '';
+            const isCompleted = userEmail ? localStorage.getItem(`alliance-onboarding-completed_${userEmail}`) === 'true' : false;
+
             const googleUser: AuthUser = {
               id: payload.sub || 'usr-google',
-              email: payload.email,
+              email: userEmail,
               first_name: payload.given_name || payload.name?.split(' ')[0] || 'Utilisateur',
               last_name: payload.family_name || payload.name?.split(' ').slice(1).join(' ') || 'Google',
               avatar_url: payload.picture,
               roles: ['ADMINISTRATOR'],
               permissions: ['*'],
+              onboarding_completed: isCompleted,
             };
 
             set({
@@ -188,8 +214,12 @@ export const useAuthStore = create<AuthState>()(
 
           if (res.ok) {
             const data = await res.json();
+            if (data.user?.email) {
+              localStorage.removeItem(`alliance-onboarding-completed_${data.user.email}`);
+            }
+            localStorage.removeItem('alliance-onboarding-completed');
             set({
-              user: data.user,
+              user: { ...data.user, onboarding_completed: false },
               accessToken: data.access,
               refreshToken: data.refresh,
               isAuthenticated: true,
@@ -204,6 +234,10 @@ export const useAuthStore = create<AuthState>()(
           // Offline fallback
           if (err.name === 'TypeError' || err.message?.includes('Failed to fetch')) {
             console.warn('Backend API offline, creating local registered user:', payload.email);
+            if (payload.email) {
+              localStorage.removeItem(`alliance-onboarding-completed_${payload.email}`);
+            }
+            localStorage.removeItem('alliance-onboarding-completed');
             const regUser: AuthUser = {
               id: 'usr-reg-' + Date.now(),
               email: payload.email,
@@ -211,6 +245,7 @@ export const useAuthStore = create<AuthState>()(
               last_name: payload.last_name || '',
               roles: ['ADMINISTRATOR'],
               permissions: ['*'],
+              onboarding_completed: false,
             };
             set({
               user: regUser,
@@ -228,6 +263,11 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
+        const currentUser = get().user;
+        if (currentUser?.email) {
+          // keep per-user state intact but clear transient flags
+          localStorage.removeItem('alliance-onboarding-completed');
+        }
         set({
           user: null,
           accessToken: null,
@@ -238,6 +278,23 @@ export const useAuthStore = create<AuthState>()(
       },
 
       setUser: (user) => set({ user }),
+      setOnboardingCompleted: (completed: boolean) => {
+        const currentUser = get().user;
+        if (completed) {
+          if (currentUser?.email) {
+            localStorage.setItem(`alliance-onboarding-completed_${currentUser.email}`, 'true');
+          }
+          localStorage.setItem('alliance-onboarding-completed', 'true');
+        } else {
+          if (currentUser?.email) {
+            localStorage.removeItem(`alliance-onboarding-completed_${currentUser.email}`);
+          }
+          localStorage.removeItem('alliance-onboarding-completed');
+        }
+        set((state) => ({
+          user: state.user ? { ...state.user, onboarding_completed: completed } : null,
+        }));
+      },
       clearError: () => set({ error: null }),
     }),
     {

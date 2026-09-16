@@ -1,0 +1,857 @@
+/**
+ * ALLIANCE ONE — ONBOARDING FLOW STYLES (V2 REBUILT)
+ * Thème Obsidian & Titane avec accents Or Impérial et Indigo.
+ * Typographie haute lisibilité (Inter), contrastes élevés,
+ * et architecture 100% responsive adaptée à tous les écrans (y compris viewports courts).
+ */
+
+/* =====================================================================
+   1. SHELL CONTAINER (Plein écran avec fond immersif)
+   ===================================================================== */
+.onboarding-root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: #070a12;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 85% 90%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #f8fafc;
+  box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grille subtile d'arrière-plan */
+.onboarding-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =====================================================================
+   2. EXECUTIVE CARD MODAL (Conteneur central flottant)
+   ===================================================================== */
+.onboarding-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 740px;
+  background: #0f1422;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: calc(100vh - 32px);
+}
+
+/* =====================================================================
+   3. CARD HEADER (Barre supérieure avec Logo, Tracker et Quitter)
+   ===================================================================== */
+.onb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(15, 20, 34, 0.85);
+  backdrop-filter: blur(12px);
+  flex-shrink: 0;
+}
+
+.onb-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.onb-logo-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  object-fit: contain;
+}
+
+.onb-brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.onb-progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.onb-progress-pill strong {
+  color: #d4af37;
+}
+
+.onb-skip-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.onb-skip-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Barre de progression fine sous le header */
+.onb-progress-bar-track {
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.onb-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5 0%, #6366f1 60%, #d4af37 100%);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =====================================================================
+   4. STEP INDICATOR BAR
+   ===================================================================== */
+.onb-step-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: rgba(10, 14, 25, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.onb-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.onb-step-item.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.onb-step-item.completed {
+  color: #10b981;
+}
+
+.onb-step-number {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.onb-step-item.active .onb-step-number {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+}
+
+.onb-step-item.completed .onb-step-number {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+/* =====================================================================
+   5. CARD BODY (Zone défilable avec scrollbar discrète)
+   ===================================================================== */
+.onb-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+  box-sizing: border-box;
+}
+
+/* Scrollbar stylée */
+.onb-body::-webkit-scrollbar {
+  width: 5px;
+}
+.onb-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.onb-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.onb-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =====================================================================
+   6. TYPOGRAPHIE DES ÉTAPES (Haute visibilité & netteté absolue)
+   ===================================================================== */
+.onb-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.onb-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* =====================================================================
+   7. STEP 1: WELCOME
+   ===================================================================== */
+.onb-welcome-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 0 8px;
+}
+
+.onb-avatar-halo {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5 0%, #d4af37 100%);
+  padding: 2px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 24px rgba(79, 70, 229, 0.35);
+}
+
+.onb-avatar-core {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #0f1422;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.onb-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.onb-highlight-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.onb-highlight-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: rgba(79, 70, 229, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #818cf8;
+}
+
+.onb-highlight-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.onb-highlight-card p {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* =====================================================================
+   8. STEP 2: FORMULAIRE ORGANISATION
+   ===================================================================== */
+.onb-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.onb-form-full {
+  grid-column: 1 / -1;
+}
+
+.onb-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onb-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.onb-label-req {
+  color: #818cf8;
+}
+
+.onb-label-opt {
+  font-size: 11px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.onb-input-shell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #141a2c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0 14px;
+  height: 44px;
+  transition: all 0.2s ease;
+}
+
+.onb-input-shell:focus-within {
+  border-color: #6366f1;
+  background: #182038;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.onb-input-icon {
+  color: #64748b;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.onb-input-shell:focus-within .onb-input-icon {
+  color: #818cf8;
+}
+
+.onb-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+}
+
+.onb-input::placeholder {
+  color: #475569;
+}
+
+.onb-select {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.onb-select option {
+  background: #141a2c;
+  color: #ffffff;
+}
+
+/* =====================================================================
+   9. STEP 3: SECTEURS D'ACTIVITÉ
+   ===================================================================== */
+.onb-sector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.onb-sector-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.onb-sector-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.onb-sector-card.selected {
+  background: rgba(79, 70, 229, 0.12);
+  border-color: #6366f1;
+  box-shadow: 0 0 16px rgba(79, 70, 229, 0.2);
+}
+
+.onb-sector-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.onb-sector-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.onb-sector-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 2px;
+}
+
+.onb-sector-card.selected .onb-sector-name {
+  color: #ffffff;
+}
+
+.onb-sector-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.onb-sector-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.onb-sector-card.selected .onb-sector-check {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+/* =====================================================================
+   10. STEP 4: SÉLECTION DES MODULES
+   ===================================================================== */
+.onb-module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.onb-module-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.onb-module-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.onb-module-card.selected {
+  background: rgba(79, 70, 229, 0.1);
+  border-color: #6366f1;
+}
+
+.onb-checkbox-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.2s;
+}
+
+.onb-module-card.selected .onb-checkbox-box {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+.onb-module-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.onb-module-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.onb-module-icon-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.onb-module-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.onb-module-desc {
+  font-size: 11.5px;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.onb-module-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.onb-module-badge.native {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.onb-module-badge.beta {
+  background: rgba(212, 175, 55, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* =====================================================================
+   11. STEP 5: RÉCAPITULATIF
+   ===================================================================== */
+.onb-recap-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.onb-recap-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onb-recap-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.onb-recap-org-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.onb-recap-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.onb-recap-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.onb-recap-meta-item svg {
+  color: #818cf8;
+}
+
+.onb-recap-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.onb-recap-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.onb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.onb-chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.onb-success-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 0;
+  gap: 12px;
+}
+
+.onb-success-check-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.15);
+  border: 2px solid #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.3);
+}
+
+/* =====================================================================
+   12. CARD FOOTER (Boutons ancrés et toujours visibles)
+   ===================================================================== */
+.onb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(15, 20, 34, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.onb-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.onb-btn-back:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.onb-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  font-family: inherit;
+}
+
+.onb-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+.onb-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.onb-btn-primary.launch {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+  padding: 12px 28px;
+  font-size: 14.5px;
+}
+
+.onb-btn-primary.launch:hover:not(:disabled) {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.5);
+}
+
+.onb-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: onb-spin 0.6s linear infinite;
+}
+
+@keyframes onb-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =====================================================================
+   13. RESPONSIVE POUR ÉCRANS COMPACTS ET MOBILES
+   ===================================================================== */
+@media (max-width: 680px) {
+  .onboarding-card {
+    border-radius: 14px;
+    max-height: 98vh;
+  }
+
+  .onb-header {
+    padding: 14px 16px;
+  }
+
+  .onb-step-tracker {
+    display: none;
+  }
+
+  .onb-body {
+    padding: 18px 16px;
+  }
+
+  .onb-footer {
+    padding: 14px 16px;
+  }
+
+  .onb-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .onb-sector-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .onb-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .onb-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+}

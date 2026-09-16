@@ -112,11 +112,23 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     return () => { script.remove(); };
   }, [mode]);
 
+  const redirectAfterAuth = () => {
+    const currentUser = useAuthStore.getState().user;
+    const isCompleted = currentUser?.onboarding_completed ||
+      (currentUser?.email && localStorage.getItem(`alliance-onboarding-completed_${currentUser.email}`) === 'true');
+
+    if (isCompleted) {
+      navigate('/app', { replace: true });
+    } else {
+      navigate('/app/onboarding', { replace: true });
+    }
+  };
+
   const handleGoogleResponse = async (response: any) => {
     if (response.credential) {
       const success = await loginWithGoogle(response.credential);
       if (success) {
-        navigate('/app', { replace: true });
+        redirectAfterAuth();
       }
     }
   };
@@ -127,7 +139,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
 
     if (mode === 'login') {
       const success = await login(email, password);
-      if (success) navigate('/app', { replace: true });
+      if (success) redirectAfterAuth();
     } else {
       const success = await register({ 
         email, 
@@ -136,7 +148,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
         last_name: lastName,
         organization_name: orgName || undefined
       });
-      if (success) navigate('/app', { replace: true });
+      if (success) redirectAfterAuth();
     }
   };
 

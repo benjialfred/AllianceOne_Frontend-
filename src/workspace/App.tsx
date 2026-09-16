@@ -156,12 +156,45 @@ export const WorkspaceShell: React.FC = () => {
   const sidebarCollapsed = usePlatformStore((s) => s.sidebarCollapsed);
   const toggleSidebar = usePlatformStore((s) => s.toggleSidebar);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Modals state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
+
+  // Onboarding check — redirect to /app/onboarding if not completed
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      if (location.pathname.includes('/onboarding')) return;
+
+      const user = useAuthStore.getState().user;
+      if (!user) return;
+
+      // Check per-user onboarding status
+      const userOnboardingDone =
+        user.onboarding_completed === true ||
+        (!!user.email && localStorage.getItem(`alliance-onboarding-completed_${user.email}`) === 'true');
+
+      if (userOnboardingDone) return;
+
+      try {
+        const { onboardingApi } = await import('../core/api/onboarding');
+        const status = await onboardingApi.checkStatus();
+        if (status.onboarding_completed) {
+          useAuthStore.getState().setOnboardingCompleted(true);
+        } else {
+          navigate('/app/onboarding', { replace: true });
+        }
+      } catch (err) {
+        if (!userOnboardingDone) {
+          navigate('/app/onboarding', { replace: true });
+        }
+      }
+    };
+    checkOnboarding();
+  }, [location.pathname, navigate]);
 
   // Load organizations on start
   useEffect(() => {

@@ -9,6 +9,7 @@ import {
   User as UserIcon, CheckCircle2, Circle, Pause, 
   ChevronDown, ChevronRight, Check, AlertCircle 
 } from 'lucide-react';
+import { API_HOST_URL } from '../../core/api/client';
 import './AllianceAICopilot.css';
 
 interface AllianceAICopilotProps {
@@ -86,12 +87,11 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
   // Polling mechanism
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     let interval: ReturnType<typeof setInterval>;
     if (planId && ['RUNNING', 'EXECUTING'].includes(missionStatus)) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`${API_URL}/api/core/ai/audit/${planId}/`);
+          const res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`);
           const data = await res.json();
           if (data && data.status) {
             setMissionStatus(data.status);
@@ -166,8 +166,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         content: msg.content
       }));
 
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${API_URL}/api/core/ai/ask/`, {
+      const response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -184,41 +183,50 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         })
       });
 
-      const responseJson = await res.json();
+      if (!response.ok) {
+        throw new Error(`API Error ${response.status}: ${response.statusText}`);
+      }
+
+      const responseJson = await response.json();
       setIsProcessing(false);
       
-      const payload = responseJson.data; // Our structured JSON output
-      
-      if (responseJson.plan_id) {
-          setPlanId(responseJson.plan_id);
-      }
+      const payload = responseJson.data; // Structured JSON output
       
       if (payload) {
-        // Add Assistant Message
+        // Add Assistant Message immediately
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: payload.content || responseJson.content
         }]);
 
-        if (payload.type === 'mission_plan' && payload.mission) {
+        // Only start mission mode and polling IF it's a mission with tools!
+        if (payload.type === 'mission_plan' && payload.mission && payload.mission.steps && payload.mission.steps.length > 0) {
+          if (responseJson.plan_id) {
+            setPlanId(responseJson.plan_id);
+          }
           setMissionTitle(payload.mission.title || 'Mission en cours');
           setMissionStatus(payload.mission.status || 'EXECUTING');
-          setSteps(payload.mission.steps || []);
+          setSteps(payload.mission.steps);
           addLog(`Plan de mission généré : ${payload.mission.title}`);
           
           if (!isMobilePanelOpen && window.innerWidth <= 1024) {
             setIsMobilePanelOpen(true);
           }
+        } else {
+          // Fast-track Q&A / chat: direct answer, no background polling or delay
+          setPlanId(null);
+          setMissionStatus('DRAFT');
         }
       } else {
-
-        // Fallback for unstructured string
+        // Fallback for direct message
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: responseJson.content || 'Erreur lors de la lecture.'
         }]);
+        setPlanId(null);
+        setMissionStatus('DRAFT');
       }
       
       setTimeout(() => inputRef.current?.focus(), 100);

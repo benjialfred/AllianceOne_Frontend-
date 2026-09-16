@@ -4,7 +4,22 @@
  * Le header X-Tenant-ID est injecté automatiquement depuis le store.
  */
 
-export const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000/api';
+const isLocalhost = typeof window !== 'undefined' && (
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname.endsWith('.local')
+);
+
+const RAW_API_URL = (import.meta.env.VITE_API_URL as string) || (
+  isLocalhost 
+    ? 'http://localhost:8000' 
+    : 'https://allianceone-backend.onrender.com'
+);
+
+const SANITIZED_URL = RAW_API_URL.replace(/\/+$/, '');
+
+export const API_BASE_URL = SANITIZED_URL.endsWith('/api') ? SANITIZED_URL : `${SANITIZED_URL}/api`;
+export const API_HOST_URL = SANITIZED_URL.replace(/\/api$/, '');
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string>;

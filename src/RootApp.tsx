@@ -21,6 +21,10 @@ const FounderAppRoutes = React.lazy(() =>
   import('./workspace/pages/founder/FounderApp').then((m) => ({ default: m.default }))
 );
 
+const OnboardingFlow = React.lazy(() =>
+  import('./pages/onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow }))
+);
+
 /**
  * Auth guard: redirects to /login if not authenticated.
  */
@@ -110,6 +114,16 @@ export const RootApp: React.FC = () => {
           }
         />
 
+        {/* ─── ONBOARDING (Authenticated) ─── */}
+        <Route
+          path="/app/onboarding"
+          element={
+            <RequireAuth>
+              <OnboardingFlow />
+            </RequireAuth>
+          }
+        />
+
         {/* ─── AUTHENTICATED WORKSPACE ─── */}
         <Route
           path="/app/*"
@@ -126,3 +140,4 @@ export const RootApp: React.FC = () => {
     </Suspense>
   );
 };
+
