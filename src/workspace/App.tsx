@@ -46,6 +46,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
 import { usePlatformStore } from '../core/stores/platformStore';
+import { useAuthStore } from '../core/stores/authStore';
 import { identityApi } from '../core/api/identity';
 import { Routes, Route, useNavigate, useLocation, NavLink } from 'react-router-dom';
 import EducationModuleRoutes from '../modules/education/App';

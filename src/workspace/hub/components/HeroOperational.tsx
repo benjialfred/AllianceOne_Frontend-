@@ -4,10 +4,19 @@
  */
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Box, Activity, GraduationCap, BarChart } from 'lucide-react';
+import { ArrowRight, Box } from 'lucide-react';
+import { usePlatformStore } from '../../../core/stores/platformStore';
+import { ALLIANCE_MODULES } from '../../../core/modules/registry';
 import './OsComponents.css';
 
 export const HeroOperational: React.FC = () => {
+  const currentOrg = usePlatformStore(s => s.currentOrganization);
+  const activeModuleIds = currentOrg?.active_modules && currentOrg.active_modules.length > 0
+    ? currentOrg.active_modules
+    : ['education', 'finance', 'inventory', 'tasks'];
+
+  const ecosystemNodes = ALLIANCE_MODULES.filter(m => activeModuleIds.includes(m.id)).slice(0, 4);
+
   return (
     <section className="os-hero-operational">
       <div className="os-hero-left">
@@ -48,29 +57,19 @@ export const HeroOperational: React.FC = () => {
           </div>
 
           {/* Nodes (Animated via CSS for breathing effect) */}
-          <div className="os-eco-node node-edu">
-            <GraduationCap size={16} />
-            <span>Éducation</span>
-          </div>
-          <div className="os-eco-node node-fin">
-            <BarChart size={16} />
-            <span>Finance</span>
-          </div>
-          <div className="os-eco-node node-inv">
-            <Box size={16} />
-            <span>Stocks</span>
-          </div>
-          <div className="os-eco-node node-tsk">
-            <Activity size={16} />
-            <span>Tâches</span>
-          </div>
+          {ecosystemNodes.map((node, i) => (
+            <div key={node.id} className={`os-eco-node node-pos-${i + 1}`}>
+              <node.icon size={16} color={node.accentColor} />
+              <span>{node.name}</span>
+            </div>
+          ))}
 
           {/* SVG Connections */}
           <svg className="os-eco-lines" width="100%" height="100%">
-            <line x1="50%" y1="50%" x2="20%" y2="20%" />
-            <line x1="50%" y1="50%" x2="80%" y2="20%" />
-            <line x1="50%" y1="50%" x2="20%" y2="80%" />
-            <line x1="50%" y1="50%" x2="80%" y2="80%" />
+            {ecosystemNodes.length > 0 && <line x1="50%" y1="50%" x2="20%" y2="20%" />}
+            {ecosystemNodes.length > 1 && <line x1="50%" y1="50%" x2="80%" y2="20%" />}
+            {ecosystemNodes.length > 2 && <line x1="50%" y1="50%" x2="20%" y2="80%" />}
+            {ecosystemNodes.length > 3 && <line x1="50%" y1="50%" x2="80%" y2="80%" />}
           </svg>
         </motion.div>
       </div>

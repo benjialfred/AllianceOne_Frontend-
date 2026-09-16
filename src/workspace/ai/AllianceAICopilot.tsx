@@ -10,6 +10,7 @@ import {
   ChevronDown, ChevronRight, Check, AlertCircle 
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
+import { useAuthStore } from '../../core/stores/authStore';
 import './AllianceAICopilot.css';
 
 interface AllianceAICopilotProps {
@@ -91,7 +92,18 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     if (planId && ['RUNNING', 'EXECUTING'].includes(missionStatus)) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`);
+          const authState = useAuthStore.getState();
+          const authHeaders: Record<string, string> = {};
+          if (authState.accessToken) {
+            authHeaders['Authorization'] = `Bearer ${authState.accessToken}`;
+          }
+          if (authState.user?.email) {
+            authHeaders['X-User-Email'] = authState.user.email;
+          }
+
+          const res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`, {
+            headers: authHeaders
+          });
           const data = await res.json();
           if (data && data.status) {
             setMissionStatus(data.status);
@@ -157,21 +169,32 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     setProcessingState('Analyse de l\'objectif...');
 
     try {
-      const token = localStorage.getItem('alliance-auth') 
-        ? JSON.parse(localStorage.getItem('alliance-auth') as string).state?.accessToken 
-        : null;
+      const authState = useAuthStore.getState();
+      const token = authState.accessToken || (
+        localStorage.getItem('alliance-auth') 
+          ? JSON.parse(localStorage.getItem('alliance-auth') as string).state?.accessToken 
+          : null
+      );
+      const userEmail = authState.user?.email;
 
       const historyForApi = messages.map(msg => ({
         role: msg.role,
         content: msg.content
       }));
 
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      if (userEmail) {
+        headers['X-User-Email'] = userEmail;
+      }
+
       const response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : ''
-        },
+        headers,
         body: JSON.stringify({ 
           prompt: textToExecute,
           history: historyForApi,

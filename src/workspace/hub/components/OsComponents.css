@@ -181,10 +181,10 @@
   color: var(--os-text-primary);
 }
 
-.node-edu { top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
-.node-fin { top: 10%; right: 10%; animation: float 7s ease-in-out infinite reverse; }
-.node-inv { bottom: 10%; left: 10%; animation: float 5s ease-in-out infinite 1s; }
-.node-tsk { bottom: 10%; right: 10%; animation: float 8s ease-in-out infinite 2s; }
+.node-pos-1 { top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+.node-pos-2 { top: 10%; right: 10%; animation: float 7s ease-in-out infinite reverse; }
+.node-pos-3 { bottom: 10%; left: 10%; animation: float 5s ease-in-out infinite 1s; }
+.node-pos-4 { bottom: 10%; right: 10%; animation: float 8s ease-in-out infinite 2s; }
 
 .os-eco-lines {
   position: absolute;

@@ -7,6 +7,7 @@ export interface Organization {
   name: string;
   legal_name: string;
   registration_number: string;
+  active_modules?: string[];
   created_at: string;
   updated_at: string;
 }
