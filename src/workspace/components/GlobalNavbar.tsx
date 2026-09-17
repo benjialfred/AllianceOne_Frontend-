@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Plus, Bell, ChevronDown, Moon, Sun, 
   Building2, Menu, X, Home, Boxes, Compass, 
-  LogOut, HelpCircle, Zap, Activity, Sparkles
+  LogOut, HelpCircle, Zap, Activity, Sparkles, Send
 } from 'lucide-react';
 import { Logo } from '../../design-system/components/Logo';
 import { usePlatformStore } from '../../core/stores/platformStore';
@@ -20,6 +20,7 @@ interface GlobalNavbarProps {
   onOpenCreate: () => void;
   onOpenNotifications: () => void;
   onOpenAI?: () => void;
+  onOpenTelegram?: () => void;
   unreadNotificationsCount?: number;
 }
 
@@ -30,6 +31,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
   onOpenCreate,
   onOpenNotifications,
   onOpenAI,
+  onOpenTelegram,
   unreadNotificationsCount = 0
 }) => {
   const navigate = useNavigate();
@@ -197,6 +199,21 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
             <kbd style={{ background: 'transparent', color: '#3b82f6', border: 'none' }}>⌘K</kbd>
           </button>
 
+          <button 
+            className="ent-search-bar" 
+            style={{ 
+              background: 'rgba(0, 136, 204, 0.1)', 
+              color: '#0088cc', 
+              border: '1px solid rgba(0, 136, 204, 0.25)',
+              cursor: 'pointer' 
+            }} 
+            onClick={onOpenTelegram}
+            title="Connecter Telegram & Alliance AI"
+          >
+            <Send size={14} />
+            <span className="placeholder" style={{ color: '#0088cc', fontWeight: 600 }}>Bot Telegram</span>
+          </button>
+
           <div className="ent-divider" />
 
           <button className="ent-icon-btn" onClick={onOpenNotifications}>
@@ -228,6 +245,14 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                     <span>{currentOrg?.name || 'Lycée Émergence'}</span>
                   </div>
                   <div className="ent-dropdown-divider" />
+                  <button 
+                    className="ent-list-item" 
+                    onClick={() => { onOpenTelegram?.(); setUserDropdownOpen(false); }}
+                    style={{ background: 'rgba(0, 136, 204, 0.08)' }}
+                  >
+                    <Send size={16} color="#0088cc" />
+                    <span style={{ fontWeight: 600, color: '#0088cc' }}>Connecter Telegram (Bot IA)</span>
+                  </button>
                   <button className="ent-list-item" onClick={() => navigate('/app/settings')}>
                     <Home size={16} />
                     <span>Paramètres du compte</span>

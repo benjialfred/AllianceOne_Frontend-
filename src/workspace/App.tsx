@@ -45,6 +45,8 @@ import { DevelopersPage } from './pages/DevelopersPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
+import { SettingsHubPage } from './pages/SettingsHubPage';
+import { TelegramConnectModal } from './components/TelegramConnectModal';
 import { usePlatformStore } from '../core/stores/platformStore';
 import { useAuthStore } from '../core/stores/authStore';
 import { identityApi } from '../core/api/identity';
@@ -164,6 +166,7 @@ export const WorkspaceShell: React.FC = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const [isTelegramOpen, setIsTelegramOpen] = useState(false);
 
   // Onboarding check — redirect to /app/onboarding if not completed
   useEffect(() => {
@@ -280,6 +283,7 @@ export const WorkspaceShell: React.FC = () => {
         onOpenCreate={() => setIsCreateOpen(true)}
         onOpenNotifications={() => setIsNotifOpen(true)}
         onOpenAI={() => setIsAIOpen(true)}
+        onOpenTelegram={() => setIsTelegramOpen(true)}
         unreadNotificationsCount={3}
       />
 
@@ -372,6 +376,7 @@ export const WorkspaceShell: React.FC = () => {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/help" element={<UnifiedHelpPage />} />
+            <Route path="/settings" element={<SettingsHubPage onOpenTelegram={() => setIsTelegramOpen(true)} />} />
 
             {/* Business Modules */}
             <Route path="/education/*" element={<EducationModuleRoutes />} />
@@ -402,6 +407,11 @@ export const WorkspaceShell: React.FC = () => {
       <NotificationsDrawer 
         isOpen={isNotifOpen} 
         onClose={() => setIsNotifOpen(false)} 
+      />
+
+      <TelegramConnectModal 
+        isOpen={isTelegramOpen} 
+        onClose={() => setIsTelegramOpen(false)} 
       />
     </div>
   );
