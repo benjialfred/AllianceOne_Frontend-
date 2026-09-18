@@ -101,9 +101,16 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
             authHeaders['X-User-Email'] = authState.user.email;
           }
 
-          const res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`, {
-            headers: authHeaders
-          });
+          let res: Response;
+          try {
+            res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`, {
+              headers: authHeaders
+            });
+          } catch (_) {
+            res = await fetch(`http://127.0.0.1:8000/api/core/ai/audit/${planId}/`, {
+              headers: authHeaders
+            });
+          }
           const data = await res.json();
           if (data && data.status) {
             setMissionStatus(data.status);
@@ -191,19 +198,48 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         'X-User-Email': effectiveEmail,
       };
 
-      const response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ 
-          prompt: textToExecute,
-          history: historyForApi,
-          context: {
-            active_module: window.location.pathname.split('/')[2] || 'hub',
-            active_route: window.location.pathname,
-            academic_year: "2026-2027"
-          }
-        })
+      const requestBody = JSON.stringify({ 
+        prompt: textToExecute,
+        history: historyForApi,
+        context: {
+          active_module: window.location.pathname.split('/')[2] || 'hub',
+          active_route: window.location.pathname,
+          academic_year: "2026-2027"
+        }
       });
+
+      let response: Response;
+      try {
+        response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
+          method: 'POST',
+          headers,
+          body: requestBody
+        });
+      } catch (networkErr: any) {
+        // Fallback to local 127.0.0.1:8000 or localhost if primary URL is unreachable
+        const fallbackUrls = ['http://127.0.0.1:8000/api/core/ai/ask/', 'http://localhost:8000/api/core/ai/ask/'];
+        let successResponse: Response | null = null;
+        for (const fbUrl of fallbackUrls) {
+          if (!fbUrl.startsWith(API_HOST_URL)) {
+            try {
+              console.warn(`Primary URL ${API_HOST_URL} failed, trying fallback: ${fbUrl}`);
+              successResponse = await fetch(fbUrl, {
+                method: 'POST',
+                headers,
+                body: requestBody
+              });
+              if (successResponse) break;
+            } catch (_) {
+              // continue to next fallback
+            }
+          }
+        }
+        if (successResponse) {
+          response = successResponse;
+        } else {
+          throw networkErr;
+        }
+      }
 
       if (!response.ok) {
         const errJson = await response.json().catch(() => null);

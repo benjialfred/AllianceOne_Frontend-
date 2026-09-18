@@ -10,11 +10,12 @@ const isLocalhost = typeof window !== 'undefined' && (
   window.location.hostname.endsWith('.local')
 );
 
-const RAW_API_URL = (import.meta.env.VITE_API_URL as string) || (
-  isLocalhost 
-    ? 'http://localhost:8000' 
-    : 'https://allianceone-backend.onrender.com'
-);
+// If on localhost/127.0.0.1, prioritize local backend on port 8000 using matching hostname
+const localHostUrl = typeof window !== 'undefined' ? `http://${window.location.hostname}:8000` : 'http://127.0.0.1:8000';
+
+const RAW_API_URL = isLocalhost
+  ? (import.meta.env.VITE_DEV_API_URL || import.meta.env.VITE_API_URL || localHostUrl)
+  : (import.meta.env.VITE_API_URL as string || 'https://allianceone-backend.onrender.com');
 
 const SANITIZED_URL = RAW_API_URL.replace(/\/+$/, '');
 
