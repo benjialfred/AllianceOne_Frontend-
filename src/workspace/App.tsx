@@ -168,6 +168,14 @@ export const WorkspaceShell: React.FC = () => {
   const [isAIOpen, setIsAIOpen] = useState(false);
   const [isTelegramOpen, setIsTelegramOpen] = useState(false);
 
+  // Auto-open Telegram Connect Modal if URL parameter ?telegram=connect or ?connect=telegram
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('telegram') === 'connect' || params.get('connect') === 'telegram' || params.get('telegram') === 'true') {
+      setIsTelegramOpen(true);
+    }
+  }, [location.search]);
+
   // Onboarding check — redirect to /app/onboarding if not completed
   useEffect(() => {
     const checkOnboarding = async () => {
