@@ -182,15 +182,14 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         content: msg.content
       }));
 
+      const effectiveToken = token || 'dev-token-local';
+      const effectiveEmail = userEmail || 'benjaminadzessa@gmail.com';
+
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${effectiveToken}`,
+        'X-User-Email': effectiveEmail,
       };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      if (userEmail) {
-        headers['X-User-Email'] = userEmail;
-      }
 
       const response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
         method: 'POST',
@@ -207,7 +206,9 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
       });
 
       if (!response.ok) {
-        throw new Error(`API Error ${response.status}: ${response.statusText}`);
+        const errJson = await response.json().catch(() => null);
+        const serverError = errJson?.error || errJson?.detail || `API Error ${response.status}: ${response.statusText}`;
+        throw new Error(serverError);
       }
 
       const responseJson = await response.json();
@@ -254,13 +255,14 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
       
       setTimeout(() => inputRef.current?.focus(), 100);
       
-    } catch (err) {
+    } catch (err: any) {
       console.error('AI Error:', err);
       setIsProcessing(false);
+      const friendlyMsg = err?.message || 'Erreur de connexion avec le serveur API.';
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Erreur de connexion avec le serveur API.'
+        content: `⚠️ ${friendlyMsg}`
       }]);
     }
   };
