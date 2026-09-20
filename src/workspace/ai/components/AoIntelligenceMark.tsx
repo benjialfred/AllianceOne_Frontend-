@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Check, AlertCircle, ShieldCheck } from 'lucide-react';
 import type { SystemOperationalState } from '../types';
+import logoImg from '../../../assets/logo.png';
 
 interface AoIntelligenceMarkProps {
   state?: SystemOperationalState;
@@ -10,9 +12,10 @@ interface AoIntelligenceMarkProps {
 }
 
 /**
- * AO INTELLIGENCE MARK — SIGNATURE 2
- * Living architectural mark of Alliance One.
- * Pure geometric precision: SVG vector with stateful segment kinematics.
+ * AO INTELLIGENCE MARK — SIGNATURE EXPERIENCE
+ * The living Intelligence Medallion of Alliance One.
+ * Combines the official Alliance One corporate mark with stateful
+ * kinetic coordination (ambient aura, operational orbit rail, status badges).
  */
 export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
   state = 'IDLE',
@@ -22,8 +25,8 @@ export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
 }) => {
   const shouldReduceMotion = useReducedMotion();
 
-  // Color mapping according to Alliance Design System
-  const getColor = () => {
+  // Coordinated state palette
+  const getThemeColor = () => {
     switch (state) {
       case 'ANALYZING':
       case 'PLANNING':
@@ -38,72 +41,14 @@ export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
         return '#ef4444'; // Clean Crimson
       case 'IDLE':
       default:
-        return 'var(--color-obsidian-50, #f8fafc)';
+        return '#3b82f6'; // Alliance One Blue
     }
   };
 
-  const primaryColor = getColor();
-
-  // Motion variants for the outer triangular/structural glyph (A)
-  const outerVariants = {
-    IDLE: { scale: 1, rotate: 0, opacity: 0.95 },
-    ANALYZING: {
-      scale: shouldReduceMotion ? 1 : [1, 0.94, 1.02, 1],
-      rotate: shouldReduceMotion ? 0 : [0, -3, 3, 0],
-      transition: { duration: 1.8, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }
-    },
-    PLANNING: {
-      scale: shouldReduceMotion ? 1 : [1, 1.05, 0.97, 1],
-      transition: { duration: 1.4, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }
-    },
-    EXECUTING: {
-      rotate: shouldReduceMotion ? 0 : 360,
-      transition: { duration: 4, repeat: Infinity, ease: 'linear' }
-    },
-    VERIFYING: {
-      scale: shouldReduceMotion ? 1 : [1, 1.06, 1],
-      transition: { duration: 0.9, repeat: Infinity, ease: 'easeInOut' }
-    },
-    COMPLETED: {
-      scale: 1,
-      rotate: 0,
-      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-    },
-    ERROR: {
-      x: shouldReduceMotion ? 0 : [0, -2, 2, -1, 1, 0],
-      transition: { duration: 0.4 }
-    }
-  };
-
-  // Motion variants for inner nexus core (O)
-  const innerVariants = {
-    IDLE: { scale: 1, opacity: 0.8 },
-    ANALYZING: {
-      scale: shouldReduceMotion ? 1 : [0.8, 1.2, 0.8],
-      opacity: [0.6, 1, 0.6],
-      transition: { duration: 1.4, repeat: Infinity, ease: 'easeInOut' }
-    },
-    PLANNING: {
-      scale: shouldReduceMotion ? 1 : [1, 1.15, 1],
-      transition: { duration: 1.2, repeat: Infinity, ease: 'easeInOut' }
-    },
-    EXECUTING: {
-      scale: [0.9, 1.1, 0.9],
-      opacity: [0.7, 1, 0.7],
-      transition: { duration: 1.2, repeat: Infinity, ease: 'easeInOut' }
-    },
-    VERIFYING: {
-      scale: [1, 1.25, 1],
-      opacity: [0.8, 1, 0.8],
-      transition: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' }
-    },
-    COMPLETED: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.3 }
-    },
-    ERROR: { scale: 0.85, opacity: 1 }
-  };
+  const accentColor = getThemeColor();
+  const radius = size > 44 ? 16 : size > 26 ? 9 : 7;
+  const badgeSize = Math.max(9, Math.round(size * 0.36));
+  const orbitOffset = size > 36 ? 6 : 4;
 
   return (
     <div 
@@ -114,83 +59,231 @@ export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
         height: size,
         display: 'inline-flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexShrink: 0
       }}
     >
-      {/* Subtle Spatial Aura (No massive neon blur) */}
-      {showHalo && (
-        <div
+      {/* ─── 1. LIVING AMBIENT AURA ─── */}
+      {(showHalo || state !== 'IDLE') && (
+        <motion.div
           style={{
             position: 'absolute',
-            inset: -4,
+            inset: -size * 0.24,
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${primaryColor}22 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${accentColor}38 0%, ${accentColor}0a 55%, transparent 75%)`,
             pointerEvents: 'none',
-            transition: 'background 0.4s ease'
+            zIndex: 0
+          }}
+          animate={
+            shouldReduceMotion
+              ? { opacity: 0.8 }
+              : state === 'ANALYZING' || state === 'PLANNING'
+              ? { scale: [0.96, 1.2, 0.96], opacity: [0.35, 0.85, 0.35] }
+              : state === 'EXECUTING'
+              ? { scale: [1, 1.25, 1], opacity: [0.45, 0.95, 0.45] }
+              : state === 'VERIFYING'
+              ? { scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }
+              : { scale: 1, opacity: 0.6 }
+          }
+          transition={{
+            duration: state === 'EXECUTING' ? 1.6 : 2.2,
+            repeat: Infinity,
+            ease: 'easeInOut'
           }}
         />
       )}
 
+      {/* ─── 2. KINETIC COORDINATION PERIMETER (SVG Orbit) ─── */}
       <svg
-        width={size}
-        height={size}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ overflow: 'visible' }}
+        style={{
+          position: 'absolute',
+          inset: -orbitOffset,
+          width: size + orbitOffset * 2,
+          height: size + orbitOffset * 2,
+          pointerEvents: 'none',
+          zIndex: 1,
+          overflow: 'visible'
+        }}
+        viewBox="0 0 40 40"
       >
-        {/* Outer Architectural Glyph — The "A" Framework */}
-        <motion.path
-          d="M16 3L27.5 24.5H4.5L16 3Z"
-          stroke={primaryColor}
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          variants={outerVariants}
-          animate={state}
-          style={{ transformOrigin: '16px 16px' }}
+        {/* Static Perimeter Hairline */}
+        <rect
+          x="2"
+          y="2"
+          width="36"
+          height="36"
+          rx={radius + 2}
+          fill="none"
+          stroke={accentColor}
+          strokeWidth="1.2"
+          strokeOpacity={state === 'IDLE' ? 0.25 : 0.35}
         />
 
-        {/* Central Dynamic Cross-Bar */}
-        <motion.line
-          x1="10"
-          y1="18.5"
-          x2="22"
-          y2="18.5"
-          stroke={primaryColor}
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          animate={{
-            opacity: state === 'ANALYZING' || state === 'PLANNING' ? [0.4, 1, 0.4] : 0.85
-          }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        {/* Dynamic Executing Orbit (Electric Blue kinetic sweep) */}
+        {state === 'EXECUTING' && (
+          <motion.rect
+            x="2"
+            y="2"
+            width="36"
+            height="36"
+            rx={radius + 2}
+            fill="none"
+            stroke={accentColor}
+            strokeWidth="1.8"
+            strokeDasharray="24 65"
+            animate={shouldReduceMotion ? {} : { strokeDashoffset: [0, -89] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          />
+        )}
 
-        {/* Inner Nexus Core — The "O" Operational Nucleus */}
-        <motion.circle
-          cx="16"
-          cy="18.5"
-          r="3.5"
-          fill={primaryColor}
-          variants={innerVariants}
-          animate={state}
-          style={{ transformOrigin: '16px 18.5px' }}
-        />
-
-        {/* Completed State Check Indicator */}
-        {state === 'COMPLETED' && (
-          <motion.path
-            d="M13.5 18.5L15.5 20.5L19 16.5"
-            stroke="#ffffff"
+        {/* Dynamic Analyzing/Planning Orbit (Rhythmic breathing dash) */}
+        {(state === 'ANALYZING' || state === 'PLANNING') && (
+          <motion.rect
+            x="2"
+            y="2"
+            width="36"
+            height="36"
+            rx={radius + 2}
+            fill="none"
+            stroke={accentColor}
             strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
+            strokeDasharray="18 40"
+            animate={shouldReduceMotion ? {} : { strokeDashoffset: [0, 58] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        )}
+
+        {/* Dynamic Verifying Orbit (Golden seal luminescence) */}
+        {state === 'VERIFYING' && (
+          <motion.rect
+            x="2"
+            y="2"
+            width="36"
+            height="36"
+            rx={radius + 2}
+            fill="none"
+            stroke={accentColor}
+            strokeWidth="2"
+            animate={shouldReduceMotion ? {} : { opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}
           />
         )}
       </svg>
+
+      {/* ─── 3. OFFICIAL ALLIANCE ONE LOGO MEDALLION ─── */}
+      <motion.div
+        style={{
+          position: 'relative',
+          width: size,
+          height: size,
+          borderRadius: `${radius}px`,
+          background: '#ffffff',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: `0 2px 10px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.25) inset`,
+          zIndex: 2,
+          flexShrink: 0
+        }}
+        animate={
+          shouldReduceMotion
+            ? {}
+            : state === 'ERROR'
+            ? { x: [-1, 2, -2, 1, 0] }
+            : state === 'COMPLETED'
+            ? { scale: [1, 1.08, 1] }
+            : {}
+        }
+        transition={{ duration: 0.35 }}
+      >
+        <img
+          src={logoImg}
+          alt="Alliance One"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            display: 'block',
+            userSelect: 'none'
+          }}
+          draggable={false}
+        />
+      </motion.div>
+
+      {/* ─── 4. STATUS COORDINATION MICRO-BADGE ─── */}
+      {state === 'COMPLETED' && (
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+          style={{
+            position: 'absolute',
+            bottom: -2,
+            right: -2,
+            width: badgeSize,
+            height: badgeSize,
+            borderRadius: '50%',
+            background: '#10b981',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.35)',
+            zIndex: 4
+          }}
+        >
+          <Check size={badgeSize * 0.75} strokeWidth={3} />
+        </motion.div>
+      )}
+
+      {state === 'ERROR' && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          style={{
+            position: 'absolute',
+            bottom: -2,
+            right: -2,
+            width: badgeSize,
+            height: badgeSize,
+            borderRadius: '50%',
+            background: '#ef4444',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.35)',
+            zIndex: 4
+          }}
+        >
+          <AlertCircle size={badgeSize * 0.75} strokeWidth={3} />
+        </motion.div>
+      )}
+
+      {state === 'VERIFYING' && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          style={{
+            position: 'absolute',
+            bottom: -2,
+            right: -2,
+            width: badgeSize,
+            height: badgeSize,
+            borderRadius: '50%',
+            background: '#f59e0b',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.35)',
+            zIndex: 4
+          }}
+        >
+          <ShieldCheck size={badgeSize * 0.75} strokeWidth={2.5} />
+        </motion.div>
+      )}
     </div>
   );
 };

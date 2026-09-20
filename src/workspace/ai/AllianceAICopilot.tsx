@@ -533,7 +533,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
               {/* Topbar */}
               <header className="ao-copilot-header">
                 <div className="ao-brand-badge">
-                  <AoIntelligenceMark state={operationalState} size={24} showHalo={operationalState !== 'IDLE'} />
+                  <AoIntelligenceMark state={operationalState} size={28} showHalo={operationalState !== 'IDLE'} />
                   <div className="ao-brand-text">
                     <span className="ao-brand-name">ALLIANCE AI</span>
                     <span className="ao-brand-context">Alliance One • Intelligence Opérationnelle</span>
@@ -592,7 +592,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <AoIntelligenceMark state="IDLE" size={54} showHalo />
+                      <AoIntelligenceMark state="IDLE" size={64} showHalo />
                     </motion.div>
 
                     <div className="ao-hero-line-rail">
@@ -694,7 +694,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                           <span className="ao-msg-time">En cours</span>
                         </div>
                         <div className="ao-processing-card">
-                          <AoIntelligenceMark state={operationalState} size={20} />
+                          <AoIntelligenceMark state={operationalState} size={22} />
                           <div className="ao-processing-text">
                             <span className="ao-proc-title">{operationalDetail || 'Analyse en cours...'}</span>
                             <IntelligencePulse state={operationalState} size="sm" />
