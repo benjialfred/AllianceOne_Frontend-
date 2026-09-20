@@ -278,7 +278,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                       style={{ background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6', fontWeight: 600 }}
                     >
                       <Shield size={16} color="#8b5cf6" />
-                      <span>Cockpit HyperAdmin</span>
+                      <span>Tableau de bord HyperAdmin</span>
                     </button>
                   )}
                   <button 

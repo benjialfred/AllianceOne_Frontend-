@@ -48,7 +48,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   // Video carousel
   const videos = [authVideo1, authVideo2, authVideo3];
   const videoLabels = [
-    'Alliance Hub — Votre cockpit opérationnel',
+    'Alliance Hub — Votre espace de travail unifié',
     'Applications Métier — Finance, Stocks, Éducation',
     'Écosystème — IA, Automation & Cloud'
   ];
@@ -193,7 +193,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              The Operating System<br />for Organizations
+              La plateforme unifiée<br />des organisations
             </motion.h1>
             <motion.p
               className="auth-showcase-sub"

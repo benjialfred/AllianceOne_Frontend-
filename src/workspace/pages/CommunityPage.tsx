@@ -46,7 +46,7 @@ export const CommunityPage: React.FC = () => {
         verified: true
       },
       title: 'Déploiement officiel d’Alliance One Hub v2.4 🚀',
-      content: 'Nous venons de finaliser l’architecture du Business Operating System avec la navigation globale à 7 entrées, le flux d’activité universel et l’onboarding interactif. Tous les modules natifs (Éducation, Stock, Finance, Tâches, Bibliothèque) sont désormais synchronisés en temps réel.',
+      content: 'Nous venons de finaliser l’architecture unifiée d’Alliance One avec la navigation globale, le flux d’activité universel et l’onboarding interactif. Tous les modules natifs (Éducation, Stock, Finance, Tâches, Bibliothèque) sont désormais synchronisés en temps réel.',
       category: 'Mise à jour',
       tags: ['AllianceHub', 'Architecture', 'Release'],
       likes: 38,

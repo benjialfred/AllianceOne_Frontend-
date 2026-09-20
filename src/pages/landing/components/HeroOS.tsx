@@ -243,9 +243,9 @@ export const HeroOS: React.FC = () => {
           <img src={logoSrc} alt="AO" className="apex-monogram" />
           <div className="apex-text-block">
             <span className="apex-title">ALLIANCE ONE</span>
-            <span className="apex-sub">Business Operating System</span>
+            <span className="apex-sub">Suite de Gestion Intégrée</span>
           </div>
-          <span className="apex-badge">OS 2.4</span>
+          <span className="apex-badge">v2.4</span>
         </div>
       </motion.div>
 

@@ -158,7 +158,7 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
       id: 'nav-hub',
       category: 'Navigation',
       title: 'Alliance Hub (Accueil Central)',
-      subtitle: 'Cockpit principal et vue d’ensemble du système',
+      subtitle: 'Tableau de bord principal et vue d’ensemble de votre espace',
       icon: Command,
       action: () => navigate('/')
     },
@@ -190,9 +190,9 @@ export const UniversalCommandPalette: React.FC<UniversalCommandPaletteProps> = (
     // Système
     {
       id: 'sys-theme',
-      category: 'Paramètres & Système',
+      category: 'Paramètres',
       title: `Basculer en ${theme === 'dark' ? 'Mode Clair' : 'Mode Sombre'}`,
-      subtitle: 'Changer le thème visuel du Business OS',
+      subtitle: 'Changer le thème visuel de l’interface',
       icon: theme === 'dark' ? Sun : Moon,
       action: () => toggleTheme()
     }

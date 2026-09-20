@@ -6,7 +6,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
-  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw, Sparkles
+  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw, Sparkles,
+  MessageSquare, Plus, ChevronDown, History
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -26,6 +27,7 @@ import { IntelligencePulse } from './components/IntelligencePulse';
 import { StructuredContentRenderer } from './components/StructuredContentRenderer';
 import { MissionControlPanel } from './components/MissionControlPanel';
 import { CopilotComposer } from './components/CopilotComposer';
+import { SessionHistoryDrawer } from './components/SessionHistoryDrawer';
 
 import './AllianceAICopilot.css';
 
@@ -39,8 +41,11 @@ const STORAGE_KEY_MISSION_ID = 'alliance_ai_active_mission_id';
 export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, onClose }) => {
   const shouldReduceMotion = useReducedMotion();
 
-  // --- IDENTITY & CONVERSATION IDENTIFIERS ---
+  // --- IDENTITY, MULTI-SESSION & CONVERSATION IDENTIFIERS ---
   const conversationIdRef = useRef<string>(`conv_${Date.now()}`);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [conversationTitle, setConversationTitle] = useState<string>('Nouvelle session');
+  const [isHistoryDrawerOpen, setIsHistoryDrawerOpen] = useState<boolean>(false);
   
   // --- UI STATES ---
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
@@ -60,7 +65,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastPromptRef = useRef<string>('');
 
-  // --- 1. RECONSTRUCT MISSION STATE FROM BACKEND ON OPEN/REFRESH ---
+  // --- 1. RECONSTRUCT MISSION STATE FROM BACKEND ---
   const fetchMissionAuditFromBackend = useCallback(async (missionId: string) => {
     try {
       const authState = useAuthStore.getState();
@@ -89,40 +94,146 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     }
   }, []);
 
+  // --- 2. RECONSTRUCT FULL CONVERSATION & MISSION FROM BACKEND DB ---
+  const loadConversation = useCallback(async (convId: string) => {
+    try {
+      setOperationalState('THINKING');
+      setOperationalDetail('Chargement de la session...');
+      const authState = useAuthStore.getState();
+      const authHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (authState.accessToken) authHeaders['Authorization'] = `Bearer ${authState.accessToken}`;
+      if (authState.user?.email) authHeaders['X-User-Email'] = authState.user.email;
+
+      let res: Response;
+      const url = `${API_HOST_URL}/api/core/ai/conversations/${convId}/`;
+      try {
+        res = await fetch(url, { headers: authHeaders });
+      } catch {
+        res = await fetch(`http://127.0.0.1:8000/api/core/ai/conversations/${convId}/`, { headers: authHeaders });
+      }
+
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const data = await res.json();
+      const conv = data.conversation;
+      if (!conv) return;
+
+      setActiveConversationId(conv.id);
+      conversationIdRef.current = conv.id;
+      setConversationTitle(conv.title || 'Session');
+      localStorage.setItem('alliance_ai_last_conversation_id', conv.id);
+
+      const reconstructed: ConversationMessage[] = (conv.messages || []).map((m: any) => ({
+        id: m.id,
+        conversation_id: conv.id,
+        mission_id: m.mission_id,
+        role: m.sender === 'USER' ? 'user' : 'assistant',
+        content: m.content,
+        blocks: m.structured_blocks || undefined,
+        timestamp: new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        mode: (m.interaction_mode as InteractionMode) || 'DIRECT'
+      }));
+      setMessages(reconstructed);
+
+      // If any message has a linked mission, restore it
+      const lastMissionMsg = [...reconstructed].reverse().find(m => m.mission_id);
+      if (lastMissionMsg && lastMissionMsg.mission_id) {
+        sessionStorage.setItem(STORAGE_KEY_MISSION_ID, lastMissionMsg.mission_id);
+        fetchMissionAuditFromBackend(lastMissionMsg.mission_id).then(auditData => {
+          if (auditData && auditData.steps) {
+            const restoredPlan: MissionPlan = {
+              mission_id: auditData.plan_id,
+              user_request: auditData.user_request,
+              title: auditData.user_request || 'Mission active',
+              status: auditData.status,
+              created_at: auditData.created_at,
+              final_result: auditData.final_result,
+              steps: auditData.steps.map((s: any) => ({
+                step_id: s.step_id,
+                tool_name: s.tool_name,
+                arguments: s.arguments || {},
+                dependencies: s.dependencies || [],
+                status: s.status,
+                output: s.output,
+                error: s.error,
+                requires_confirmation: s.requires_confirmation,
+                verification_status: s.verification_status || 'PENDING',
+                execution_metadata: s.execution_metadata || {}
+              }))
+            };
+            setActiveMission(restoredPlan);
+            setIsMissionPanelOpen(true);
+          }
+        });
+      } else {
+        setActiveMission(null);
+        sessionStorage.removeItem(STORAGE_KEY_MISSION_ID);
+        setIsMissionPanelOpen(false);
+      }
+    } catch (err) {
+      console.warn('Could not restore conversation from backend:', err);
+    } finally {
+      setOperationalState('IDLE');
+      setOperationalDetail('');
+    }
+  }, [fetchMissionAuditFromBackend]);
+
+  // --- 3. START A FRESH NEW CONVERSATION SESSION ---
+  const handleStartNewSession = useCallback(() => {
+    setActiveConversationId(null);
+    conversationIdRef.current = `conv_${Date.now()}`;
+    setConversationTitle('Nouvelle session');
+    setMessages([]);
+    setActiveMission(null);
+    setMissionEvents([]);
+    sessionStorage.removeItem(STORAGE_KEY_MISSION_ID);
+    localStorage.removeItem('alliance_ai_last_conversation_id');
+    setIsMissionPanelOpen(false);
+    setOperationalState('IDLE');
+    setOperationalDetail('');
+  }, []);
+
+  // --- 4. INITIAL CONVERSATION RESTORATION ON MOUNT / OPEN ---
   useEffect(() => {
     if (!isOpen) return;
 
-    // Check if there is an active mission ID in session cache
-    const savedMissionId = sessionStorage.getItem(STORAGE_KEY_MISSION_ID);
-    if (savedMissionId && !activeMission) {
-      fetchMissionAuditFromBackend(savedMissionId).then((auditData) => {
-        if (auditData && auditData.steps) {
-          const reconstructedMission: MissionPlan = {
-            mission_id: auditData.plan_id,
-            user_request: auditData.user_request,
-            title: auditData.user_request || 'Mission active',
-            status: auditData.status,
-            created_at: auditData.created_at,
-            final_result: auditData.final_result,
-            steps: auditData.steps.map((s: any) => ({
-              step_id: s.step_id,
-              tool_name: s.tool_name,
-              arguments: s.arguments || {},
-              dependencies: s.dependencies || [],
-              status: s.status,
-              output: s.output,
-              error: s.error,
-              requires_confirmation: s.requires_confirmation,
-              verification_status: s.verification_status || 'PENDING',
-              execution_metadata: s.execution_metadata || {}
-            }))
-          };
-          setActiveMission(reconstructedMission);
-          setIsMissionPanelOpen(true);
+    if (!activeConversationId) {
+      const savedConvId = localStorage.getItem('alliance_ai_last_conversation_id');
+      if (savedConvId) {
+        loadConversation(savedConvId);
+      } else {
+        // Check for active mission ID as fallback
+        const savedMissionId = sessionStorage.getItem(STORAGE_KEY_MISSION_ID);
+        if (savedMissionId && !activeMission) {
+          fetchMissionAuditFromBackend(savedMissionId).then((auditData) => {
+            if (auditData && auditData.steps) {
+              const reconstructedMission: MissionPlan = {
+                mission_id: auditData.plan_id,
+                user_request: auditData.user_request,
+                title: auditData.user_request || 'Mission active',
+                status: auditData.status,
+                created_at: auditData.created_at,
+                final_result: auditData.final_result,
+                steps: auditData.steps.map((s: any) => ({
+                  step_id: s.step_id,
+                  tool_name: s.tool_name,
+                  arguments: s.arguments || {},
+                  dependencies: s.dependencies || [],
+                  status: s.status,
+                  output: s.output,
+                  error: s.error,
+                  requires_confirmation: s.requires_confirmation,
+                  verification_status: s.verification_status || 'PENDING',
+                  execution_metadata: s.execution_metadata || {}
+                }))
+              };
+              setActiveMission(reconstructedMission);
+              setIsMissionPanelOpen(true);
+            }
+          });
         }
-      });
+      }
     }
-  }, [isOpen, activeMission, fetchMissionAuditFromBackend]);
+  }, [isOpen, activeConversationId, activeMission, loadConversation, fetchMissionAuditFromBackend]);
 
   // --- 2. POLLING AUDIT WHILE MISSION IS EXECUTING ---
   useEffect(() => {
@@ -162,7 +273,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
           if (auditData.status === 'SUCCEEDED' || auditData.status === 'COMPLETED') {
             setOperationalState('COMPLETED');
-            setOperationalDetail('Mission validée');
+            setOperationalDetail('Action terminée');
             sessionStorage.removeItem(STORAGE_KEY_MISSION_ID);
 
             // Add final conclusion message if not already present
@@ -260,6 +371,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
       const requestBody = JSON.stringify({
         prompt: promptText,
         history: historyPayload,
+        conversation_id: activeConversationId || undefined,
         context: {
           active_module: activeMod,
           active_route: window.location.pathname,
@@ -298,6 +410,16 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
       const resData = await response.json();
       const payload = resData.data;
 
+      // Update active conversation identifier & title from backend source of truth
+      if (resData.conversation_id) {
+        setActiveConversationId(resData.conversation_id);
+        conversationIdRef.current = resData.conversation_id;
+        localStorage.setItem('alliance_ai_last_conversation_id', resData.conversation_id);
+      }
+      if (resData.conversation_title) {
+        setConversationTitle(resData.conversation_title);
+      }
+
       // Check if it's a mission plan requiring tool execution
       if (payload && payload.type === 'mission_plan' && payload.mission && payload.mission.steps && payload.mission.steps.length > 0) {
         const newMission: MissionPlan = {
@@ -330,8 +452,8 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         setMessages(prev => [
           ...prev,
           {
-            id: `msg_${Date.now()}_a`,
-            conversation_id: conversationIdRef.current,
+            id: resData.message_id || `msg_${Date.now()}_a`,
+            conversation_id: resData.conversation_id || conversationIdRef.current,
             mission_id: newMission.mission_id,
             role: 'assistant',
             content: resData.content || `Objectif structuré en plan d'action (${newMission.steps.length} étapes). Déploiement de Mission Control en cours.`,
@@ -360,8 +482,8 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
         setMessages(prev => [
           ...prev,
           {
-            id: `msg_${Date.now()}_a`,
-            conversation_id: conversationIdRef.current,
+            id: resData.message_id || `msg_${Date.now()}_a`,
+            conversation_id: resData.conversation_id || conversationIdRef.current,
             role: 'assistant',
             content: payload?.content || resData.content || 'Voici les informations demandées.',
             timestamp: time,
@@ -540,12 +662,32 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                   </div>
                 </div>
 
+                {/* Session Selector & New Session Button */}
+                <div className="ao-session-nav-group">
+                  <button 
+                    className="ao-session-selector-btn"
+                    onClick={() => setIsHistoryDrawerOpen(true)}
+                    title="Historique des sessions"
+                  >
+                    <History size={14} />
+                    <span className="ao-session-title-truncate">{conversationTitle}</span>
+                    <ChevronDown size={13} className="ao-chevron" />
+                  </button>
+                  <button 
+                    className="ao-new-session-btn"
+                    onClick={handleStartNewSession}
+                    title="Nouvelle session"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+
                 <div className="ao-header-actions">
                   {/* Real System Telemetry Status */}
                   <div className="ao-status-indicator">
                     <IntelligencePulse state={operationalState} size="sm" />
                     <span className="ao-status-label">
-                      {operationalState === 'IDLE' ? 'SYSTÈME PRÊT' : operationalDetail || operationalState}
+                      {operationalState === 'IDLE' ? 'Disponible' : operationalDetail || 'Traitement en cours...'}
                     </span>
                   </div>
 
@@ -815,6 +957,21 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                 </>
               )}
             </AnimatePresence>
+
+            {/* ─── SESSION HISTORY DRAWER ─── */}
+            <SessionHistoryDrawer
+              isOpen={isHistoryDrawerOpen}
+              onClose={() => setIsHistoryDrawerOpen(false)}
+              activeConversationId={activeConversationId}
+              onSelectConversation={(id) => {
+                loadConversation(id);
+                setIsHistoryDrawerOpen(false);
+              }}
+              onNewSession={() => {
+                handleStartNewSession();
+                setIsHistoryDrawerOpen(false);
+              }}
+            />
 
           </div>
         </motion.div>

@@ -104,9 +104,9 @@ export const Layout = () => {
                 <div className="sidebar-footer">
                     <div className="status-indicator">
                         <span className="status-dot"></span>
-                        <span>Système Opérationnel</span>
+                        <span>En ligne</span>
                     </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-tertiary)', marginTop: '4px' }}>Alliance OS v2.0.1</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-tertiary)', marginTop: '4px' }}>Alliance One v2.0</div>
                 </div>
             </aside>
 

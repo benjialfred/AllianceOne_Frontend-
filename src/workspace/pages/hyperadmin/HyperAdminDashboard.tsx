@@ -212,7 +212,7 @@ export const HyperAdminDashboard: React.FC = () => {
       <div className="hyperadmin-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#6366f1', fontWeight: 600 }}>
           <RefreshCw className="animate-spin" size={24} />
-          Initialisation du Cockpit HyperAdmin (Interrogation ORM en direct)...
+          Chargement de l'espace HyperAdmin...
         </div>
       </div>
     );
@@ -238,17 +238,17 @@ export const HyperAdminDashboard: React.FC = () => {
             </div>
             <div>
               <h1>
-                Cockpit HyperAdmin
-                <span className="hyperadmin-badge-pro">Platform Master</span>
+                Espace HyperAdmin
+                <span className="hyperadmin-badge-pro">Administration Générale</span>
               </h1>
-              <p>Supervision Centrale & Gouvernance Multi-Tenant de l'écosystème Alliance One</p>
+              <p>Supervision et gouvernance du parc d'organisations Alliance One</p>
             </div>
           </div>
 
           <div className="hyperadmin-header-actions">
             <div className="hyperadmin-status-pill">
               <span className="status-dot-pulse" />
-              Plateforme 100% Opérationnelle
+              Services en ligne
             </div>
 
             <button
@@ -654,9 +654,9 @@ export const HyperAdminDashboard: React.FC = () => {
               <div>
                 <h2>
                   <Server size={18} color="#10b981" />
-                  Santé & Télémétrie Microservices
+                  État des Services Plateforme
                 </h2>
-                <p>Moteur ORM: {telemetry?.dbEngine.toUpperCase() || 'SQLITE3'} • Statut: ONLINE</p>
+                <p>Base de données active • Tous les services sont connectés</p>
               </div>
             </div>
 

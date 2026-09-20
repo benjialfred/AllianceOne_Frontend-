@@ -673,7 +673,7 @@ export const OnboardingFlow: React.FC = () => {
                       </div>
                       <h1 className="onb-title">Organisation configurée avec succès !</h1>
                       <p className="onb-subtitle">
-                        Initialisation de votre Business OS en cours... Redirection automatique.
+                        Configuration de votre espace en cours... Redirection automatique.
                       </p>
                     </div>
                   ) : (

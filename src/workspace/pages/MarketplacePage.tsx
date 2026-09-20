@@ -54,7 +54,7 @@ export const MarketplacePage: React.FC = () => {
         </div>
         <h1 className="ecosystem-title">Applications & Extensions d'Entreprise</h1>
         <p className="ecosystem-subtitle">
-          Découvrez, testez et déployez des modules certifiés pour enrichir votre Business Operating System.
+          Découvrez, testez et déployez des applications certifiées pour enrichir votre espace Alliance One.
         </p>
 
         {/* Search & Filter Bar */}

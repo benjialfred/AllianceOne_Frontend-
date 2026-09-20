@@ -28,13 +28,13 @@ export const ProductStories: React.FC = () => {
     {
       id: 'story-2',
       tag: 'DÉCISION TEMPS RÉEL',
-      title: 'Cockpit & Tableaux de Bord Unifiés',
+      title: 'Pilotage & Tableaux de Bord Unifiés',
       description: 'Visualisez vos KPIs financiers, la valorisation de vos stocks et la performance d’équipe.',
       videoSrc: campusVideo
     },
     {
       id: 'story-3',
-      tag: 'ARCHITECTURE OS',
+      tag: 'PLATEFORME INTÉGRÉE',
       title: 'Conçu pour l’Entreprise Moderne',
       description: 'Multi-tenant, modulaire, sécurisé et pensé pour les standards internationaux.',
       videoSrc: corpVideo

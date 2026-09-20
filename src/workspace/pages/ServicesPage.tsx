@@ -31,7 +31,7 @@ export const ServicesPage: React.FC = () => {
 
   const caseStudies = [
     {
-      title: 'Alliance One — Business Operating System',
+      title: 'Alliance One — Suite de Gestion Intégrée',
       category: 'Système ERP Multi-Tenant',
       tech: ['React 19', 'TypeScript', 'Django REST', 'PostgreSQL', 'Docker'],
       desc: 'Architecture modulaire unifiée avec EventBus, contrôle d’accès ABAC et synchronisation temps réel pour les institutions scolaires et entreprises.',

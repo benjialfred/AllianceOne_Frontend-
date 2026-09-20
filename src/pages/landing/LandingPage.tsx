@@ -138,7 +138,7 @@ export const LandingPage: React.FC = () => {
         <div className="landing-nav-inner">
           <div className="landing-nav-brand" onClick={() => navigate('/')}>
             <img src={logoSrc} alt="Alliance One" className="landing-nav-logo" />
-            <span className="landing-brand-badge">BUSINESS OS</span>
+            <span className="landing-brand-badge">SUITE D'ENTREPRISE</span>
           </div>
 
           <nav className="landing-nav-links">
@@ -199,7 +199,7 @@ export const LandingPage: React.FC = () => {
           >
             <div className="hero-kicker-pill">
               <span className="kicker-pulse-dot" />
-              <span className="kicker-text">ALLIANCE ONE · THE OPERATING SYSTEM FOR ORGANIZATIONS</span>
+              <span className="kicker-text">ALLIANCE ONE · LA SUITE DE GESTION DES ORGANISATIONS</span>
             </div>
 
             <h1 className="landing-hero-title">
@@ -791,7 +791,7 @@ export const LandingPage: React.FC = () => {
           <div className="faq-list">
             <FAQItem
               question="Qu'est-ce qu'Alliance One exactement ?"
-              answer="Alliance One est un Business Operating System (OS métier). C'est un environnement unifié qui réunit vos applications professionnelles (éducation, finances, stocks, tâches, bibliothèque, etc.), vos données et vos processus dans une seule plateforme. Contrairement à un logiciel classique, Alliance One fonctionne comme un système d'exploitation pour votre organisation."
+              answer="Alliance One est une suite logicielle intégrée conçue pour les organisations. C'est un environnement unifié qui réunit toutes vos applications professionnelles (éducation, finances, stocks, tâches, bibliothèque) et vos données dans une seule plateforme moderne, fluide et sécurisée."
             />
             <FAQItem
               question="Est-ce adapté à mon école / ma PME / ma clinique ?"
@@ -952,7 +952,7 @@ export const LandingPage: React.FC = () => {
         <div className="footer-inner">
           <div className="footer-brand-col">
             <img src={logoSrc} alt="Alliance One" className="footer-logo" />
-            <p className="footer-tagline">The Business Operating System.<br />Built for Africa. Ready for the world.</p>
+            <p className="footer-tagline">La plateforme unifiée des organisations modernes.<br />Conçue en Afrique. Prête pour le monde.</p>
           </div>
 
           <div className="footer-links-col">

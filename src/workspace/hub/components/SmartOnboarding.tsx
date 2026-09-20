@@ -1,6 +1,6 @@
 /**
- * ALLIANCE ONE — SMART ONBOARDING LAYER
- * Couche de découverte progressive et astuces intelligentes du Business OS.
+ * ALLIANCE HUB — SMART ONBOARDING DISCOVERY
+ * Couche de découverte progressive et astuces intelligentes d'Alliance One.
  */
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -110,7 +110,7 @@ export const SmartOnboarding: React.FC = () => {
               <div>
                 <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 700 }}>Bienvenue dans Alliance One 👋</h3>
                 <p style={{ margin: 0, fontSize: '11px', color: 'var(--color-text-muted)' }}>
-                  Prise en main progressive du Business OS ({completedCount}/{steps.length} validés)
+                  Découverte de votre espace ({completedCount}/{steps.length} étapes complétées)
                 </p>
               </div>
             </div>

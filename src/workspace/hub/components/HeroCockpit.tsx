@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Users, Receipt, AlertTriangle, TrendingUp } from 'lucide-react';
 import { usePlatformStore } from '../../../core/stores/platformStore';
+import { useAuthStore } from '../../../core/stores/authStore';
 import { useHubStore } from '../../../core/stores/hubStore';
 import './HubComponents.css';
 
@@ -15,6 +16,7 @@ interface HeroCockpitProps {
 
 export const HeroCockpit: React.FC<HeroCockpitProps> = ({ onOpenCreate }) => {
   const currentOrg = usePlatformStore((s) => s.currentOrganization);
+  const user = useAuthStore((s) => s.user);
   const { metrics, fetchMetrics } = useHubStore();
 
   useEffect(() => {
@@ -37,12 +39,14 @@ export const HeroCockpit: React.FC<HeroCockpitProps> = ({ onOpenCreate }) => {
     year: 'numeric'
   }).format(new Date());
 
+  const firstName = user?.first_name || '';
+
   return (
     <section className="ent-hero-cockpit">
       <div className="ent-hero-header">
         <div className="ent-hero-titles">
           <h1 className="ent-greeting">
-            {greetingTime()}, <span>Benjamin</span>
+            {greetingTime()}{firstName ? `, ${firstName}` : ''}
           </h1>
           <p className="ent-date">{currentDate.charAt(0).toUpperCase() + currentDate.slice(1)}</p>
         </div>

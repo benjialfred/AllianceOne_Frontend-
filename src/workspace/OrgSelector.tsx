@@ -126,7 +126,7 @@ export const OrgSelector: React.FC = () => {
               transition: 'all 0.2s'
             }}
           >
-            🛡️ Accéder au Cockpit HyperAdmin
+            🛡️ Accéder à l'Administration Générale
           </button>
         </div>
       </motion.div>
