@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Check, AlertCircle, ChevronDown, Clock, ShieldCheck, Minimize2, ExternalLink } from 'lucide-react';
+import { Check, AlertCircle, ChevronDown, Clock, ShieldCheck, Minimize2, ExternalLink, XCircle } from 'lucide-react';
 import type { MissionPlan, MissionStep, MissionEvent } from '../types';
 import { VerificationSeal } from './VerificationSeal';
 
@@ -77,24 +77,50 @@ export const MissionControlPanel: React.FC<MissionControlPanelProps> = ({
             </span>
           </div>
 
-          {onToggleCollapse && (
-            <button
-              onClick={onToggleCollapse}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#94a3b8',
-                cursor: 'pointer',
-                padding: '4px',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-              title="Réduire Mission Control"
-            >
-              <Minimize2 size={15} />
-            </button>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {onCancelMission && mission.status !== 'SUCCEEDED' && mission.status !== 'CANCELLED' && (
+              <button
+                onClick={onCancelMission}
+                style={{
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  color: '#f87171',
+                  cursor: 'pointer',
+                  padding: '3px 8px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  transition: 'all 0.15s ease'
+                }}
+                title="Interrompre et annuler cette mission"
+              >
+                <XCircle size={13} />
+                <span>Annuler</span>
+              </button>
+            )}
+
+            {onToggleCollapse && (
+              <button
+                onClick={onToggleCollapse}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#94a3b8',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+                title="Réduire Mission Control"
+              >
+                <Minimize2 size={15} />
+              </button>
+            )}
+          </div>
         </div>
 
         <div>

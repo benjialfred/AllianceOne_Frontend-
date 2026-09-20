@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
-  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight
+  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -58,6 +58,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastPromptRef = useRef<string>('');
 
   // --- 1. RECONSTRUCT MISSION STATE FROM BACKEND ON OPEN/REFRESH ---
   const fetchMissionAuditFromBackend = useCallback(async (missionId: string) => {
@@ -228,6 +229,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const userMsgId = `msg_${Date.now()}_u`;
+    lastPromptRef.current = promptText;
 
     // Add User Message
     const userMessage: ConversationMessage = {
@@ -385,15 +387,129 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     }
   };
 
-  const handleConfirmStep = (stepId: string) => {
+  const handleConfirmStep = async (stepId: string) => {
     if (!activeMission) return;
-    setActiveMission(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        steps: prev.steps.map(s => s.step_id === stepId ? { ...s, requires_confirmation: false, status: 'RUNNING' } : s)
+    try {
+      const authState = useAuthStore.getState();
+      const token = authState.accessToken || 'dev-token-local';
+      const userEmail = authState.user?.email || 'benjaminadzessa@gmail.com';
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'X-User-Email': userEmail
       };
-    });
+      const activeMod = window.location.pathname.split('/')[2] || 'hub';
+      const payload = JSON.stringify({
+        step_id: stepId,
+        context: {
+          active_module: activeMod,
+          active_route: window.location.pathname
+        }
+      });
+
+      let response: Response;
+      try {
+        response = await fetch(`${API_HOST_URL}/api/core/ai/mission/${activeMission.mission_id}/confirm/`, {
+          method: 'POST',
+          headers,
+          body: payload
+        });
+      } catch (netErr) {
+        response = await fetch(`http://127.0.0.1:8000/api/core/ai/mission/${activeMission.mission_id}/confirm/`, {
+          method: 'POST',
+          headers,
+          body: payload
+        });
+      }
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => null);
+        throw new Error(errData?.error || `Erreur confirmation ${response.status}`);
+      }
+
+      setActiveMission(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          status: 'RUNNING',
+          steps: prev.steps.map(s => s.step_id === stepId ? { ...s, requires_confirmation: false, status: 'RUNNING' } : s)
+        };
+      });
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setMissionEvents(prev => [
+        ...prev,
+        {
+          id: `evt_${Date.now()}_conf`,
+          mission_id: activeMission.mission_id,
+          type: 'StepConfirmed',
+          timestamp: time,
+          label: `Étape confirmée par l'utilisateur. Reprise de l'exécution.`
+        }
+      ]);
+    } catch (err: any) {
+      console.error('Confirm step error:', err);
+      alert(`Erreur de confirmation : ${err.message}`);
+    }
+  };
+
+  const handleCancelMission = async () => {
+    if (!activeMission) return;
+    try {
+      const authState = useAuthStore.getState();
+      const token = authState.accessToken || 'dev-token-local';
+      const userEmail = authState.user?.email || 'benjaminadzessa@gmail.com';
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'X-User-Email': userEmail
+      };
+
+      let response: Response;
+      try {
+        response = await fetch(`${API_HOST_URL}/api/core/ai/mission/${activeMission.mission_id}/cancel/`, {
+          method: 'POST',
+          headers
+        });
+      } catch (netErr) {
+        response = await fetch(`http://127.0.0.1:8000/api/core/ai/mission/${activeMission.mission_id}/cancel/`, {
+          method: 'POST',
+          headers
+        });
+      }
+
+      sessionStorage.removeItem(STORAGE_KEY_MISSION_ID);
+      setActiveMission(prev => prev ? { ...prev, status: 'CANCELLED' } : null);
+      setOperationalState('IDLE');
+      setOperationalDetail('');
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `msg_${Date.now()}_cancel`,
+          conversation_id: conversationIdRef.current,
+          mission_id: activeMission.mission_id,
+          role: 'assistant',
+          content: `✕ Mission #${activeMission.mission_id.slice(-6).toUpperCase()} interrompue à votre demande. Aucune modification résiduelle n'a été appliquée.`,
+          timestamp: time
+        }
+      ]);
+
+      setMissionEvents(prev => [
+        ...prev,
+        {
+          id: `evt_${Date.now()}_canc`,
+          mission_id: activeMission.mission_id,
+          type: 'MissionCancelled',
+          timestamp: time,
+          label: `Mission annulée par l'utilisateur.`
+        }
+      ]);
+    } catch (err: any) {
+      console.error('Cancel mission error:', err);
+      alert(`Impossible d'annuler la mission : ${err.message}`);
+    }
   };
 
   const isMissionActive = activeMission && activeMission.steps.length > 0;
@@ -538,13 +654,25 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                         {/* Content Area */}
                         <div className="ao-msg-body">
                           {msg.role === 'assistant' ? (
-                            <StructuredContentRenderer
-                              content={msg.content}
-                              blocks={msg.blocks}
-                              onActionClick={(actionId) => {
-                                handleSendMessage(`Exécuter l'action recommandée : ${actionId}`);
-                              }}
-                            />
+                            <>
+                              <StructuredContentRenderer
+                                content={msg.content}
+                                blocks={msg.blocks}
+                                onActionClick={(actionId) => {
+                                  handleSendMessage(`Exécuter l'action recommandée : ${actionId}`);
+                                }}
+                              />
+                              {(msg.id.includes('_err') || (operationalState === 'ERROR' && msg === messages[messages.length - 1])) && lastPromptRef.current && (
+                                <button
+                                  className="ao-retry-btn"
+                                  onClick={() => handleSendMessage(lastPromptRef.current)}
+                                  title="Réessayer avec la même requête"
+                                >
+                                  <RotateCcw size={13} />
+                                  <span>Réessayer</span>
+                                </button>
+                              )}
+                            </>
                           ) : (
                             <div className="ao-user-bubble-text">
                               {msg.content}
@@ -613,6 +741,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                     mission={activeMission}
                     events={missionEvents}
                     onConfirmStep={handleConfirmStep}
+                    onCancelMission={handleCancelMission}
                     onToggleCollapse={() => setIsMissionPanelOpen(false)}
                   />
                 </div>
@@ -643,6 +772,7 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                         mission={activeMission}
                         events={missionEvents}
                         onConfirmStep={handleConfirmStep}
+                        onCancelMission={handleCancelMission}
                         onToggleCollapse={() => setIsMobileSheetOpen(false)}
                       />
                     </div>
