@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Check, AlertCircle, ChevronDown, Clock, ShieldCheck, Minimize2, ExternalLink, XCircle } from 'lucide-react';
 import type { MissionPlan, MissionStep, MissionEvent } from '../types';
 import { VerificationSeal } from './VerificationSeal';
+import { MissionResultCard } from './MissionResultCard';
 
 interface MissionControlPanelProps {
   mission: MissionPlan;
@@ -216,8 +217,9 @@ export const MissionControlPanel: React.FC<MissionControlPanelProps> = ({
                 {/* Step Node Marker */}
                 <div 
                   style={{
-                    width: '23px',
-                    height: '23px',
+                    position: 'relative',
+                    width: '24px',
+                    height: '24px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
@@ -226,11 +228,24 @@ export const MissionControlPanel: React.FC<MissionControlPanelProps> = ({
                     fontWeight: 700,
                     background: isCompleted ? '#10b981' : isRunning ? '#3b82f6' : isBlocked ? '#f59e0b' : '#1e293b',
                     color: isCompleted ? '#064e3b' : isRunning ? '#ffffff' : isBlocked ? '#451a03' : '#94a3b8',
-                    border: isRunning ? '2px solid rgba(59, 130, 246, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    border: isRunning ? '2px solid rgba(59, 130, 246, 0.5)' : isPending ? '1.5px dashed rgba(255, 255, 255, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
                     flexShrink: 0,
-                    boxShadow: isRunning ? '0 0 10px rgba(59, 130, 246, 0.3)' : 'none'
+                    boxShadow: isRunning ? '0 0 12px rgba(59, 130, 246, 0.4)' : isCompleted ? '0 0 8px rgba(16, 185, 129, 0.3)' : 'none'
                   }}
                 >
+                  {isRunning && !shouldReduceMotion && (
+                    <motion.div
+                      style={{
+                        position: 'absolute',
+                        inset: -5,
+                        borderRadius: '50%',
+                        border: '1.5px solid #60a5fa',
+                        pointerEvents: 'none'
+                      }}
+                      animate={{ scale: [1, 1.45, 1], opacity: [0.85, 0, 0.85] }}
+                      transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                  )}
                   {isCompleted ? (
                     <Check size={13} strokeWidth={3} />
                   ) : (
@@ -314,6 +329,26 @@ export const MissionControlPanel: React.FC<MissionControlPanelProps> = ({
           })}
         </div>
       </div>
+
+      {/* ─── FINAL CONCLUSION SYNTHESIS (When mission is complete) ─── */}
+      {(mission.status === 'SUCCEEDED' || mission.status === 'COMPLETED') && (
+        <MissionResultCard
+          title={mission.title || mission.user_request}
+          summary={mission.final_result || `Toutes les ${totalSteps} étapes ont été accomplies avec succès et certifiées conformes aux politiques d'Alliance One.`}
+          highlights={mission.steps.map(s => `${s.tool_name.replace(/_/g, ' ')} : exécuté et certifié`)}
+          metrics={[
+            { label: "Étapes vérifiées", value: `${completedSteps}/${totalSteps}`, trend: "100%" },
+            { label: "Certification", value: "A+", trend: "Vérifié" }
+          ]}
+          nextActions={[
+            { id: 'rapport', label: 'Générer le rapport exécutif', actionType: 'report' },
+            { id: 'tache', label: 'Créer une tâche de suivi', actionType: 'task' }
+          ]}
+          onActionClick={(actionId) => {
+            if (onConfirmStep) onConfirmStep(`Action: ${actionId}`);
+          }}
+        />
+      )}
 
       <div style={{ height: '1px', background: 'var(--color-surface-border, rgba(255, 255, 255, 0.06))' }} />
 

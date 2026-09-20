@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
-  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw
+  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw, Sparkles
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -671,6 +671,41 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                                   <RotateCcw size={13} />
                                   <span>Réessayer</span>
                                 </button>
+                              )}
+
+                              {/* Dynamic Contextual Suggestions (Section 20) */}
+                              {msg === messages[messages.length - 1] && operationalState === 'IDLE' && !msg.id.includes('_err') && (
+                                <motion.div
+                                  className="ao-contextual-suggestions"
+                                  initial={{ opacity: 0, y: 4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.15 }}
+                                >
+                                  <button
+                                    type="button"
+                                    className="ao-suggestion-chip"
+                                    onClick={() => handleSendMessage("Analyser en détail les causes sous-jacentes et les chiffres clés.")}
+                                  >
+                                    <Sparkles size={11} />
+                                    <span>Analyser les détails</span>
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    className="ao-suggestion-chip"
+                                    onClick={() => handleSendMessage("Générer un rapport exécutif complet à exporter.")}
+                                  >
+                                    <span>Générer un rapport exécutif</span>
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    className="ao-suggestion-chip"
+                                    onClick={() => handleSendMessage("Quelles actions opérationnelles recommandez-vous d'initier ?")}
+                                  >
+                                    <span>Recommandations d'actions</span>
+                                  </button>
+                                </motion.div>
                               )}
                             </>
                           ) : (
