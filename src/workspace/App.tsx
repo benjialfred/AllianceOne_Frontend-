@@ -46,6 +46,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
 import { SettingsHubPage } from './pages/SettingsHubPage';
+import { HyperAdminDashboard } from './pages/hyperadmin/HyperAdminDashboard';
 import { TelegramConnectModal } from './components/TelegramConnectModal';
 import { usePlatformStore } from '../core/stores/platformStore';
 import { useAuthStore } from '../core/stores/authStore';
@@ -385,6 +386,9 @@ export const WorkspaceShell: React.FC = () => {
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/help" element={<UnifiedHelpPage />} />
             <Route path="/settings" element={<SettingsHubPage onOpenTelegram={() => setIsTelegramOpen(true)} />} />
+
+            {/* HyperAdmin Central Cockpit */}
+            <Route path="/hyperadmin" element={<HyperAdminDashboard />} />
 
             {/* Business Modules */}
             <Route path="/education/*" element={<EducationModuleRoutes />} />

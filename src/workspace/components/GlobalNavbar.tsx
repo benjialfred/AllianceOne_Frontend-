@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Plus, Bell, ChevronDown, Moon, Sun, 
   Building2, Menu, X, Home, Boxes, Compass, 
-  LogOut, HelpCircle, Zap, Activity, Sparkles, Send
+  LogOut, HelpCircle, Zap, Activity, Sparkles, Send, Shield
 } from 'lucide-react';
 import { Logo } from '../../design-system/components/Logo';
 import { usePlatformStore } from '../../core/stores/platformStore';
@@ -45,6 +45,8 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
   const toggleTheme = usePlatformStore((s) => s.toggleTheme);
   const currentOrg = usePlatformStore((s) => s.currentOrganization);
   const logout = useAuthStore((s) => s.logout);
+  const user = useAuthStore((s) => s.user);
+  const isHyperAdmin = user?.is_hyperadmin || user?.roles?.includes('HYPERADMIN') || false;
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -87,6 +89,23 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
           <NavLink to="/app" end className={({ isActive }) => `ent-nav-item ${isActive ? 'active' : ''}`}>
             Dashboard
           </NavLink>
+
+          {isHyperAdmin && (
+            <NavLink
+              to="/app/hyperadmin"
+              className={({ isActive }) => `ent-nav-item hyperadmin-nav-link ${isActive ? 'active' : ''}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                color: '#8b5cf6',
+                fontWeight: 600,
+              }}
+            >
+              <Shield size={14} color="#8b5cf6" />
+              <span>HyperAdmin</span>
+            </NavLink>
+          )}
 
           {/* Applications Dropdown */}
           <div className="ent-dropdown-wrapper">
@@ -228,7 +247,12 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
           {/* User Profile */}
           <div className="ent-user-wrapper">
             <button className="ent-profile-btn" onClick={() => setUserDropdownOpen(!userDropdownOpen)}>
-              <div className="ent-avatar">BA</div>
+              <div 
+                className="ent-avatar"
+                style={isHyperAdmin ? { background: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)', color: '#fff', fontWeight: 700 } : undefined}
+              >
+                {user ? `${user.first_name?.[0] || 'A'}${user.last_name?.[0] || 'O'}` : 'HA'}
+              </div>
             </button>
             
             <AnimatePresence>
@@ -241,10 +265,22 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                   transition={{ duration: 0.15 }}
                 >
                   <div className="ent-profile-header">
-                    <strong>Benjamin Adzessa</strong>
-                    <span>{currentOrg?.name || 'Lycée Émergence'}</span>
+                    <strong>{user ? `${user.first_name} ${user.last_name}` : 'Utilisateur Alliance'}</strong>
+                    <span style={{ color: isHyperAdmin ? '#8b5cf6' : undefined, fontWeight: isHyperAdmin ? 600 : undefined }}>
+                      {isHyperAdmin ? '🛡️ Hyper-Administrateur' : (currentOrg?.name || 'Collège & Lycée Émergence')}
+                    </span>
                   </div>
                   <div className="ent-dropdown-divider" />
+                  {isHyperAdmin && (
+                    <button 
+                      className="ent-list-item" 
+                      onClick={() => { navigate('/app/hyperadmin'); setUserDropdownOpen(false); }}
+                      style={{ background: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6', fontWeight: 600 }}
+                    >
+                      <Shield size={16} color="#8b5cf6" />
+                      <span>Cockpit HyperAdmin</span>
+                    </button>
+                  )}
                   <button 
                     className="ent-list-item" 
                     onClick={() => { onOpenTelegram?.(); setUserDropdownOpen(false); }}

@@ -17,6 +17,7 @@ export interface AuthUser {
   roles: string[];
   permissions: string[];
   onboarding_completed?: boolean;
+  is_hyperadmin?: boolean;
 }
 
 interface AuthState {

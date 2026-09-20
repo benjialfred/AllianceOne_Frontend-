@@ -107,12 +107,15 @@ export const OrgSelector: React.FC = () => {
             Vous êtes administrateur de la plateforme ?
           </p>
           <button 
-            onClick={() => handleSelect({ id: 'platform_admin', name: 'Administration Alliance One' } as Organization)}
+            onClick={() => {
+              setOrganization({ id: 'platform_admin', name: 'Administration Alliance One' } as Organization);
+              navigate('/app/hyperadmin');
+            }}
             style={{ 
-              background: 'var(--color-surface-hover)', 
-              border: '1px solid var(--color-border)',
+              background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(79, 70, 229, 0.12) 100%)', 
+              border: '1px solid rgba(139, 92, 246, 0.35)',
               padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
+              borderRadius: '10px',
               color: 'var(--color-text-primary)',
               fontWeight: 600,
               cursor: 'pointer',
@@ -123,7 +126,7 @@ export const OrgSelector: React.FC = () => {
               transition: 'all 0.2s'
             }}
           >
-            Accéder au Dashboard Principal
+            🛡️ Accéder au Cockpit HyperAdmin
           </button>
         </div>
       </motion.div>
