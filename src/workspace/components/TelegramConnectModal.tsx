@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Send, ExternalLink, Copy, Check, 
-  Clock, ShieldCheck, RefreshCw, Unlink, AlertCircle
+  Clock, ShieldCheck, RefreshCw, Unlink, AlertCircle,
+  Bell, BellRing, CheckCircle2, Radio, Users, Sliders
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -13,20 +14,33 @@ interface TelegramConnectModalProps {
   onClose: () => void;
 }
 
+interface TelegramNotificationPreferences {
+  alert_security: boolean;
+  alert_finance: boolean;
+  alert_inventory: boolean;
+  alert_education: boolean;
+  daily_digest: boolean;
+}
+
 interface TelegramStatus {
   is_linked: boolean;
   telegram_user_id?: number;
   telegram_username?: string;
   first_name?: string;
-  active_organization?: string;
+  active_organization?: {
+    id: string;
+    name: string;
+    role?: string;
+  } | string;
   verified_at?: string;
+  preferences?: TelegramNotificationPreferences;
 }
 
 interface LinkCodeResponse {
   code: string;
-  expires_in_seconds: number;
+  expires_in_seconds?: number;
   deep_link: string;
-  bot_username: string;
+  bot_username?: string;
 }
 
 export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOpen, onClose }) => {
@@ -38,6 +52,18 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
   const [linkData, setLinkData] = useState<LinkCodeResponse | null>(null);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Phase 5: Notification Preferences & Live Test
+  const [preferences, setPreferences] = useState<TelegramNotificationPreferences>({
+    alert_security: true,
+    alert_finance: true,
+    alert_inventory: true,
+    alert_education: true,
+    daily_digest: false,
+  });
+  const [savingPrefKey, setSavingPrefKey] = useState<string | null>(null);
+  const [testingNotif, setTestingNotif] = useState(false);
+  const [testFeedback, setTestFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
   const getHeaders = () => {
     const headers: Record<string, string> = {
@@ -60,13 +86,15 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
         headers: getHeaders()
       });
       if (res.ok) {
-        const data = await res.json();
+        const data: TelegramStatus = await res.json();
         setStatus(data);
+        if (data.preferences) {
+          setPreferences(data.preferences);
+        }
         if (!data.is_linked) {
           generateCode();
         }
       } else {
-        // Fallback: generate code
         generateCode();
       }
     } catch (err: any) {
@@ -116,6 +144,61 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
     }
   };
 
+  const togglePreference = async (key: keyof TelegramNotificationPreferences) => {
+    const nextVal = !preferences[key];
+    const prevVal = preferences[key];
+    setSavingPrefKey(key);
+    setPreferences((prev) => ({ ...prev, [key]: nextVal }));
+
+    try {
+      const res = await fetch(`${API_HOST_URL}/api/integrations/telegram/preferences/`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ [key]: nextVal })
+      });
+      if (!res.ok) {
+        throw new Error('Erreur de sauvegarde');
+      }
+    } catch (err) {
+      console.error('Failed to update preference:', err);
+      // Revert on failure
+      setPreferences((prev) => ({ ...prev, [key]: prevVal }));
+    } finally {
+      setSavingPrefKey(null);
+    }
+  };
+
+  const handleTestNotification = async () => {
+    try {
+      setTestingNotif(true);
+      setTestFeedback(null);
+      const res = await fetch(`${API_HOST_URL}/api/integrations/telegram/test-notification/`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({})
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTestFeedback({
+          success: true,
+          message: data.message || 'Notification de test transmise sur votre application Telegram !'
+        });
+      } else {
+        setTestFeedback({
+          success: false,
+          message: data.message || data.error || 'Échec de transmission du test.'
+        });
+      }
+    } catch (err: any) {
+      setTestFeedback({
+        success: false,
+        message: err.message || 'Erreur réseau lors de l\'envoi du test.'
+      });
+    } finally {
+      setTestingNotif(false);
+    }
+  };
+
   const copyCode = () => {
     if (!linkData?.code) return;
     navigator.clipboard.writeText(linkData.code);
@@ -130,6 +213,10 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const orgDisplayName = typeof status?.active_organization === 'string'
+    ? status.active_organization
+    : status?.active_organization?.name || 'Alliance One';
 
   return (
     <AnimatePresence>
@@ -149,7 +236,7 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
             </div>
             <div className="tg-header-text">
               <h3>Connecter Telegram à Alliance One</h3>
-              <p>Pilotez votre organisation et échangez avec Alliance AI sur Telegram</p>
+              <p>Pilotez votre organisation, recevez vos alertes et dialoguez avec Alliance AI</p>
             </div>
             <button className="tg-close-btn" onClick={onClose}>
               <X size={18} />
@@ -170,9 +257,10 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
               <div className="tg-linked-container">
                 <div className="tg-success-badge">
                   <ShieldCheck size={20} className="tg-success-icon" />
-                  <span>Compte Telegram Vérifié & Connecté</span>
+                  <span>Compte Telegram Authentifié & Connecté</span>
                 </div>
 
+                {/* Identity info */}
                 <div className="tg-details-box">
                   <div className="tg-detail-row">
                     <span className="tg-label">Utilisateur Telegram</span>
@@ -186,10 +274,155 @@ export const TelegramConnectModal: React.FC<TelegramConnectModalProps> = ({ isOp
                   )}
                   <div className="tg-detail-row">
                     <span className="tg-label">Organisation Active</span>
-                    <strong className="tg-val">{status.active_organization || 'Alliance One'}</strong>
+                    <strong className="tg-val">{orgDisplayName}</strong>
                   </div>
                 </div>
 
+                {/* Notification Preferences Section */}
+                <div className="tg-preferences-card">
+                  <div className="tg-pref-header">
+                    <div className="tg-pref-title-box">
+                      <Sliders size={16} className="tg-pref-icon" />
+                      <h4>Abonnements aux notifications instantanées</h4>
+                    </div>
+                    <span className="tg-pref-badge">Direct Push</span>
+                  </div>
+                  <p className="tg-pref-subtitle">
+                    Choisissez les événements d'entreprise relayés immédiatement dans votre chat Telegram :
+                  </p>
+
+                  <div className="tg-switch-list">
+                    <div className="tg-switch-row" onClick={() => togglePreference('alert_security')}>
+                      <div className="tg-switch-info">
+                        <strong>🔒 Sécurité & Connexions</strong>
+                        <span>Alertes de connexion, sessions et validations d'actions sensibles</span>
+                      </div>
+                      <button 
+                        className={`tg-toggle-switch ${preferences.alert_security ? 'active' : ''}`}
+                        disabled={savingPrefKey === 'alert_security'}
+                        aria-label="Toggle security alerts"
+                      >
+                        <span className="tg-toggle-thumb" />
+                      </button>
+                    </div>
+
+                    <div className="tg-switch-row" onClick={() => togglePreference('alert_finance')}>
+                      <div className="tg-switch-info">
+                        <strong>💳 Finances & Facturation</strong>
+                        <span>Échéances dépassées, factures impayées et réceptions de paiements</span>
+                      </div>
+                      <button 
+                        className={`tg-toggle-switch ${preferences.alert_finance ? 'active' : ''}`}
+                        disabled={savingPrefKey === 'alert_finance'}
+                        aria-label="Toggle finance alerts"
+                      >
+                        <span className="tg-toggle-thumb" />
+                      </button>
+                    </div>
+
+                    <div className="tg-switch-row" onClick={() => togglePreference('alert_inventory')}>
+                      <div className="tg-switch-info">
+                        <strong>📦 Inventaire & Stocks</strong>
+                        <span>Ruptures de stock, réapprovisionnements critiques et seuils d'alerte</span>
+                      </div>
+                      <button 
+                        className={`tg-toggle-switch ${preferences.alert_inventory ? 'active' : ''}`}
+                        disabled={savingPrefKey === 'alert_inventory'}
+                        aria-label="Toggle inventory alerts"
+                      >
+                        <span className="tg-toggle-thumb" />
+                      </button>
+                    </div>
+
+                    <div className="tg-switch-row" onClick={() => togglePreference('alert_education')}>
+                      <div className="tg-switch-info">
+                        <strong>🎓 Vie Scolaire & Éducation</strong>
+                        <span>Absences signalées, incidents disciplinaires et notes publiées</span>
+                      </div>
+                      <button 
+                        className={`tg-toggle-switch ${preferences.alert_education ? 'active' : ''}`}
+                        disabled={savingPrefKey === 'alert_education'}
+                        aria-label="Toggle education alerts"
+                      >
+                        <span className="tg-toggle-thumb" />
+                      </button>
+                    </div>
+
+                    <div className="tg-switch-row" onClick={() => togglePreference('daily_digest')}>
+                      <div className="tg-switch-info">
+                        <strong>📊 Résumé Quotidien d'Activité</strong>
+                        <span>Synthèse synthétique matinale des indicateurs clés de votre organisation</span>
+                      </div>
+                      <button 
+                        className={`tg-toggle-switch ${preferences.daily_digest ? 'active' : ''}`}
+                        disabled={savingPrefKey === 'daily_digest'}
+                        aria-label="Toggle daily digest"
+                      >
+                        <span className="tg-toggle-thumb" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Test Notification Trigger */}
+                <div className="tg-test-box">
+                  <button 
+                    className="tg-test-btn" 
+                    onClick={handleTestNotification}
+                    disabled={testingNotif}
+                  >
+                    {testingNotif ? (
+                      <RefreshCw size={15} className="tg-spin" />
+                    ) : (
+                      <BellRing size={15} />
+                    )}
+                    <span>{testingNotif ? 'Envoi en cours...' : 'Envoyer une notification de test sur mon Telegram'}</span>
+                  </button>
+
+                  {testFeedback && (
+                    <div className={`tg-test-feedback ${testFeedback.success ? 'success' : 'error'}`}>
+                      {testFeedback.success ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+                      <span>{testFeedback.message}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Ecosystem Broadcast Links */}
+                <div className="tg-community-grid">
+                  <a 
+                    href="https://t.me/allianceonechannels" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="tg-community-tile"
+                  >
+                    <div className="tg-tile-icon-wrap channel">
+                      <Radio size={18} />
+                    </div>
+                    <div className="tg-tile-text">
+                      <strong>Canal Officiel</strong>
+                      <span>@allianceonechannels</span>
+                    </div>
+                    <ExternalLink size={14} className="tg-tile-arrow" />
+                  </a>
+
+                  <a 
+                    href="https://t.me/allianceonecommunity" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="tg-community-tile"
+                  >
+                    <div className="tg-tile-icon-wrap group">
+                      <Users size={18} />
+                    </div>
+                    <div className="tg-tile-text">
+                      <strong>Communauté Entraide</strong>
+                      <span>@allianceonecommunity</span>
+                    </div>
+                    <ExternalLink size={14} className="tg-tile-arrow" />
+                  </a>
+                </div>
+
+                {/* Actions row */}
                 <div className="tg-actions-row">
                   <a 
                     href="https://t.me/AllianceOneAIBot" 
