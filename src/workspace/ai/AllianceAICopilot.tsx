@@ -1,16 +1,32 @@
 /**
- * ALLIANCE AI COPILOT
- * AI Mission Workspace (Chef de Mission) - FUNCTIONAL END-TO-END
+ * ALLIANCE AI COPILOT — SIGNATURE EXPERIENCE
+ * The Intelligence Layer of Alliance One.
+ * Pure Architectural Precision, Event-Driven Observability & Dynamic Mission Control.
  */
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { 
-  Sparkles, X, Activity, FileText, AlertTriangle, Send, 
-  User as UserIcon, CheckCircle2, Circle, Pause, 
-  ChevronDown, ChevronRight, Check, AlertCircle 
+  X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
+
+import type { 
+  InteractionMode, 
+  SystemOperationalState, 
+  ConversationMessage, 
+  MissionPlan, 
+  MissionStep, 
+  MissionEvent 
+} from './types';
+
+import { AoIntelligenceMark } from './components/AoIntelligenceMark';
+import { AllianceLine } from './components/AllianceLine';
+import { IntelligencePulse } from './components/IntelligencePulse';
+import { StructuredContentRenderer } from './components/StructuredContentRenderer';
+import { MissionControlPanel } from './components/MissionControlPanel';
+import { CopilotComposer } from './components/CopilotComposer';
+
 import './AllianceAICopilot.css';
 
 interface AllianceAICopilotProps {
@@ -18,135 +34,184 @@ interface AllianceAICopilotProps {
   onClose: () => void;
 }
 
-type MissionStatus = 'DRAFT' | 'PLANNING' | 'READY' | 'EXECUTING' | 'WAITING_FOR_INPUT' | 'WAITING_FOR_CONFIRMATION' | 'PAUSED' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-type StepStatus = 'pending' | 'active' | 'running' | 'completed' | 'failed' | 'paused';
-type StepType = 'automatic' | 'confirmation_required' | 'input_required' | 'blocked';
-
-interface MissionStep {
-  id: string;
-  title: string;
-  description: string;
-  type: StepType;
-  status: StepStatus;
-  result?: string;
-  timestamp?: string;
-}
-
-interface ActivityLog {
-  id: string;
-  time: string;
-  message: string;
-  details?: string;
-}
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-}
+const STORAGE_KEY_MISSION_ID = 'alliance_ai_active_mission_id';
 
 export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, onClose }) => {
-  // --- UI STATE ---
-  const [query, setQuery] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingState, setProcessingState] = useState('');
+  const shouldReduceMotion = useReducedMotion();
+
+  // --- IDENTITY & CONVERSATION IDENTIFIERS ---
+  const conversationIdRef = useRef<string>(`conv_${Date.now()}`);
   
-  // --- MISSION STATE ---
-  const [missionStatus, setMissionStatus] = useState<MissionStatus>('DRAFT');
-  const [missionTitle, setMissionTitle] = useState('');
-  const [planId, setPlanId] = useState<string | null>(null);
-  const [steps, setSteps] = useState<MissionStep[]>([]);
-  const [logs, setLogs] = useState<ActivityLog[]>([]);
-  
+  // --- UI STATES ---
+  const [messages, setMessages] = useState<ConversationMessage[]>([]);
+  const [operationalState, setOperationalState] = useState<SystemOperationalState>('IDLE');
+  const [operationalDetail, setOperationalDetail] = useState<string>('');
+  const [isMissionPanelOpen, setIsMissionPanelOpen] = useState<boolean>(false);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState<boolean>(false);
+  const [hasScrolledUp, setHasScrolledUp] = useState<boolean>(false);
+  const [newMessagesCount, setNewMessagesCount] = useState<number>(0);
+  const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
+
+  // --- MISSION STATE (Source of Truth: Backend) ---
+  const [activeMission, setActiveMission] = useState<MissionPlan | null>(null);
+  const [missionEvents, setMissionEvents] = useState<MissionEvent[]>([]);
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize focus
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-      if (messages.length === 0) {
-        setMissionStatus('DRAFT');
-        setSteps([]);
-        setLogs([]);
-        setMissionTitle('');
-        setPlanId(null);
+  // --- 1. RECONSTRUCT MISSION STATE FROM BACKEND ON OPEN/REFRESH ---
+  const fetchMissionAuditFromBackend = useCallback(async (missionId: string) => {
+    try {
+      const authState = useAuthStore.getState();
+      const authHeaders: Record<string, string> = {};
+      if (authState.accessToken) {
+        authHeaders['Authorization'] = `Bearer ${authState.accessToken}`;
       }
-    }
-  }, [isOpen]);
+      if (authState.user?.email) {
+        authHeaders['X-User-Email'] = authState.user.email;
+      }
 
-  // Auto-scroll chat
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+      let res: Response;
+      const url = `${API_HOST_URL}/api/core/ai/audit/${missionId}/`;
+      try {
+        res = await fetch(url, { headers: authHeaders });
+      } catch (_) {
+        res = await fetch(`http://127.0.0.1:8000/api/core/ai/audit/${missionId}/`, { headers: authHeaders });
+      }
+
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data;
+    } catch (e) {
+      console.warn('Could not reconstruct mission from backend:', e);
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isProcessing, processingState]);
+    if (!isOpen) return;
 
-  // Polling mechanism
+    // Check if there is an active mission ID in session cache
+    const savedMissionId = sessionStorage.getItem(STORAGE_KEY_MISSION_ID);
+    if (savedMissionId && !activeMission) {
+      fetchMissionAuditFromBackend(savedMissionId).then((auditData) => {
+        if (auditData && auditData.steps) {
+          const reconstructedMission: MissionPlan = {
+            mission_id: auditData.plan_id,
+            user_request: auditData.user_request,
+            title: auditData.user_request || 'Mission active',
+            status: auditData.status,
+            created_at: auditData.created_at,
+            final_result: auditData.final_result,
+            steps: auditData.steps.map((s: any) => ({
+              step_id: s.step_id,
+              tool_name: s.tool_name,
+              arguments: s.arguments || {},
+              dependencies: s.dependencies || [],
+              status: s.status,
+              output: s.output,
+              error: s.error,
+              requires_confirmation: s.requires_confirmation,
+              verification_status: s.verification_status || 'PENDING',
+              execution_metadata: s.execution_metadata || {}
+            }))
+          };
+          setActiveMission(reconstructedMission);
+          setIsMissionPanelOpen(true);
+        }
+      });
+    }
+  }, [isOpen, activeMission, fetchMissionAuditFromBackend]);
+
+  // --- 2. POLLING AUDIT WHILE MISSION IS EXECUTING ---
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-    if (planId && ['RUNNING', 'EXECUTING'].includes(missionStatus)) {
+    if (activeMission && ['PLANNING', 'EXECUTING', 'RUNNING'].includes(activeMission.status)) {
+      setOperationalState('EXECUTING');
       interval = setInterval(async () => {
-        try {
-          const authState = useAuthStore.getState();
-          const authHeaders: Record<string, string> = {};
-          if (authState.accessToken) {
-            authHeaders['Authorization'] = `Bearer ${authState.accessToken}`;
-          }
-          if (authState.user?.email) {
-            authHeaders['X-User-Email'] = authState.user.email;
+        const auditData = await fetchMissionAuditFromBackend(activeMission.mission_id);
+        if (auditData && auditData.steps) {
+          // Detect step state changes to emit timeline events
+          const updatedSteps: MissionStep[] = auditData.steps.map((s: any) => ({
+            step_id: s.step_id,
+            tool_name: s.tool_name,
+            arguments: s.arguments || {},
+            dependencies: s.dependencies || [],
+            status: s.status,
+            output: s.output,
+            error: s.error,
+            requires_confirmation: s.requires_confirmation,
+            verification_status: s.verification_status || 'PENDING',
+            execution_metadata: s.execution_metadata || {}
+          }));
+
+          setActiveMission(prev => prev ? {
+            ...prev,
+            status: auditData.status,
+            final_result: auditData.final_result,
+            steps: updatedSteps
+          } : null);
+
+          // Add timeline entry
+          const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const runningStep = updatedSteps.find(s => s.status === 'RUNNING');
+          if (runningStep) {
+            setOperationalDetail(`Exécution : ${runningStep.tool_name.replace(/_/g, ' ')}`);
           }
 
-          let res: Response;
-          try {
-            res = await fetch(`${API_HOST_URL}/api/core/ai/audit/${planId}/`, {
-              headers: authHeaders
-            });
-          } catch (_) {
-            res = await fetch(`http://127.0.0.1:8000/api/core/ai/audit/${planId}/`, {
-              headers: authHeaders
-            });
-          }
-          const data = await res.json();
-          if (data && data.status) {
-            setMissionStatus(data.status);
-            
-            // Map backend execution steps to UI MissionStep
-            const mappedSteps: MissionStep[] = (data.steps || []).map((s: any) => ({
-              id: s.step_id,
-              title: s.tool_name,
-              description: `Arguments: ${JSON.stringify(s.arguments)}`,
-              type: 'automatic',
-              status: s.status === 'SUCCEEDED' ? 'completed' :
-                      s.status === 'RUNNING' ? 'running' :
-                      s.status === 'PENDING' ? 'pending' :
-                      s.status === 'FAILED' ? 'failed' : 'paused',
-              result: s.output ? JSON.stringify(s.output) : undefined
-            }));
-            
-            setSteps(mappedSteps);
-            if (data.status === 'SUCCEEDED') {
-              setMessages(prev => [...prev, {
-                id: Date.now().toString(),
+          if (auditData.status === 'SUCCEEDED' || auditData.status === 'COMPLETED') {
+            setOperationalState('COMPLETED');
+            setOperationalDetail('Mission validée');
+            sessionStorage.removeItem(STORAGE_KEY_MISSION_ID);
+
+            // Add final conclusion message if not already present
+            setMessages(prev => [
+              ...prev,
+              {
+                id: `msg_${Date.now()}_concl`,
+                conversation_id: conversationIdRef.current,
+                mission_id: activeMission.mission_id,
                 role: 'assistant',
-                content: '✅ Mission accomplie avec succès !'
-              }]);
-              addLog('Mission terminée avec succès');
-            }
+                content: `✓ Mission #${activeMission.mission_id.slice(-6).toUpperCase()} accomplie avec succès. Résultats certifiés et enregistrés dans le grand livre de l'organisation.`,
+                timestamp: time
+              }
+            ]);
           }
-        } catch (e) {
-          console.error("Polling error", e);
         }
       }, 2000);
     }
     return () => clearInterval(interval);
-  }, [planId, missionStatus]);
+  }, [activeMission?.mission_id, activeMission?.status, fetchMissionAuditFromBackend]);
 
-  // Handle global shortcut (Escape)
+  // --- 3. AUTO-SCROLL WITH USER-SCROLL DETECTION ---
+  const handleScroll = () => {
+    if (!chatContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+
+    if (distanceFromBottom > 120) {
+      setHasScrolledUp(true);
+    } else {
+      setHasScrolledUp(false);
+      setNewMessagesCount(0);
+    }
+  };
+
+  const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+    messagesEndRef.current?.scrollIntoView({ behavior });
+    setHasScrolledUp(false);
+    setNewMessagesCount(0);
+  };
+
+  useEffect(() => {
+    if (!hasScrolledUp) {
+      scrollToBottom('smooth');
+    } else {
+      setNewMessagesCount(prev => prev + 1);
+    }
+  }, [messages, operationalState]);
+
+  // --- 4. KEYBOARD SHORTCUTS ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -157,57 +222,56 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const addLog = (message: string) => {
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setLogs(prev => [...prev, { id: Date.now().toString(), time, message }]);
-  };
+  // --- 5. SEND INSTRUCTION TO ALLIANCE AI ---
+  const handleSendMessage = async (promptText: string) => {
+    if (!promptText.trim() || operationalState === 'ANALYZING' || operationalState === 'PLANNING') return;
 
-  // --- API CALL LOGIC ---
-  const executeQuery = async (textToExecute: string) => {
-    if (!textToExecute.trim() || isProcessing) return;
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMsgId = `msg_${Date.now()}_u`;
 
     // Add User Message
-    const newUserMsg: Message = { id: Date.now().toString(), role: 'user', content: textToExecute };
-    const currentMessages = [...messages, newUserMsg];
-    setMessages(currentMessages);
-    setQuery('');
-    
-    setIsProcessing(true);
-    setProcessingState('Analyse de l\'objectif...');
+    const userMessage: ConversationMessage = {
+      id: userMsgId,
+      conversation_id: conversationIdRef.current,
+      role: 'user',
+      content: promptText,
+      timestamp: time,
+      mode: 'DIRECT'
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setOperationalState('ANALYZING');
+    setOperationalDetail('Analyse de l\'objectif & résolution du contexte...');
 
     try {
       const authState = useAuthStore.getState();
-      const token = authState.accessToken || (
-        localStorage.getItem('alliance-auth') 
-          ? JSON.parse(localStorage.getItem('alliance-auth') as string).state?.accessToken 
-          : null
-      );
-      const userEmail = authState.user?.email;
+      const token = authState.accessToken || 'dev-token-local';
+      const userEmail = authState.user?.email || 'benjaminadzessa@gmail.com';
 
-      const historyForApi = messages.map(msg => ({
-        role: msg.role,
-        content: msg.content
+      const historyPayload = messages.slice(-8).map(m => ({
+        role: m.role,
+        content: m.content
       }));
 
-      const effectiveToken = token || 'dev-token-local';
-      const effectiveEmail = userEmail || 'benjaminadzessa@gmail.com';
+      const activeMod = window.location.pathname.split('/')[2] || 'hub';
 
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${effectiveToken}`,
-        'X-User-Email': effectiveEmail,
-      };
-
-      const requestBody = JSON.stringify({ 
-        prompt: textToExecute,
-        history: historyForApi,
+      const requestBody = JSON.stringify({
+        prompt: promptText,
+        history: historyPayload,
         context: {
-          active_module: window.location.pathname.split('/')[2] || 'hub',
+          active_module: activeMod,
           active_route: window.location.pathname,
-          academic_year: "2026-2027"
+          academic_year: '2026-2027'
         }
       });
 
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'X-User-Email': userEmail
+      };
+
+      // Real network call with local fallback resilience
       let response: Response;
       try {
         response = await fetch(`${API_HOST_URL}/api/core/ai/ask/`, {
@@ -215,362 +279,372 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
           headers,
           body: requestBody
         });
-      } catch (networkErr: any) {
-        // Fallback to local 127.0.0.1:8000 or localhost if primary URL is unreachable
-        const fallbackUrls = ['http://127.0.0.1:8000/api/core/ai/ask/', 'http://localhost:8000/api/core/ai/ask/'];
-        let successResponse: Response | null = null;
-        for (const fbUrl of fallbackUrls) {
-          if (!fbUrl.startsWith(API_HOST_URL)) {
-            try {
-              console.warn(`Primary URL ${API_HOST_URL} failed, trying fallback: ${fbUrl}`);
-              successResponse = await fetch(fbUrl, {
-                method: 'POST',
-                headers,
-                body: requestBody
-              });
-              if (successResponse) break;
-            } catch (_) {
-              // continue to next fallback
-            }
-          }
-        }
-        if (successResponse) {
-          response = successResponse;
-        } else {
-          throw networkErr;
-        }
+      } catch (netErr) {
+        console.warn('Remote ask failed, falling back to local backend...');
+        response = await fetch('http://127.0.0.1:8000/api/core/ai/ask/', {
+          method: 'POST',
+          headers,
+          body: requestBody
+        });
       }
 
       if (!response.ok) {
         const errJson = await response.json().catch(() => null);
-        const serverError = errJson?.error || errJson?.detail || `API Error ${response.status}: ${response.statusText}`;
-        throw new Error(serverError);
+        throw new Error(errJson?.error || errJson?.detail || `API Error ${response.status}`);
       }
 
-      const responseJson = await response.json();
-      setIsProcessing(false);
-      
-      const payload = responseJson.data; // Structured JSON output
-      
-      if (payload) {
-        // Add Assistant Message immediately
-        setMessages(prev => [...prev, {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: payload.content || responseJson.content
-        }]);
+      const resData = await response.json();
+      const payload = resData.data;
 
-        // Only start mission mode and polling IF it's a mission with tools!
-        if (payload.type === 'mission_plan' && payload.mission && payload.mission.steps && payload.mission.steps.length > 0) {
-          if (responseJson.plan_id) {
-            setPlanId(responseJson.plan_id);
+      // Check if it's a mission plan requiring tool execution
+      if (payload && payload.type === 'mission_plan' && payload.mission && payload.mission.steps && payload.mission.steps.length > 0) {
+        const newMission: MissionPlan = {
+          mission_id: resData.plan_id || `plan_${Date.now()}`,
+          user_request: promptText,
+          title: payload.mission.title || promptText,
+          status: payload.mission.status || 'EXECUTING',
+          created_at: new Date().toISOString(),
+          steps: payload.mission.steps.map((s: any) => ({
+            step_id: s.step_id,
+            tool_name: s.tool_name,
+            arguments: s.arguments || {},
+            dependencies: s.dependencies || [],
+            status: s.status || 'PENDING',
+            output: s.output,
+            error: s.error,
+            requires_confirmation: s.requires_confirmation || false,
+            verification_status: s.verification_status || 'PENDING',
+            execution_metadata: s.execution_metadata || {}
+          }))
+        };
+
+        setActiveMission(newMission);
+        sessionStorage.setItem(STORAGE_KEY_MISSION_ID, newMission.mission_id);
+        setIsMissionPanelOpen(true);
+        setOperationalState('EXECUTING');
+        setOperationalDetail('Structuration du plan d\'action...');
+
+        // Add assistant introductory message
+        setMessages(prev => [
+          ...prev,
+          {
+            id: `msg_${Date.now()}_a`,
+            conversation_id: conversationIdRef.current,
+            mission_id: newMission.mission_id,
+            role: 'assistant',
+            content: resData.content || `Objectif structuré en plan d'action (${newMission.steps.length} étapes). Déploiement de Mission Control en cours.`,
+            timestamp: time,
+            mode: 'MISSION'
           }
-          setMissionTitle(payload.mission.title || 'Mission en cours');
-          setMissionStatus(payload.mission.status || 'EXECUTING');
-          setSteps(payload.mission.steps);
-          addLog(`Plan de mission généré : ${payload.mission.title}`);
-          
-          if (!isMobilePanelOpen && window.innerWidth <= 1024) {
-            setIsMobilePanelOpen(true);
+        ]);
+
+        // Add to timeline events
+        setMissionEvents(prev => [
+          ...prev,
+          {
+            id: `evt_${Date.now()}_start`,
+            mission_id: newMission.mission_id,
+            type: 'PlanCreated',
+            timestamp: time,
+            label: `Plan initialisé avec ${newMission.steps.length} étapes.`
           }
-        } else {
-          // Fast-track Q&A / chat: direct answer, no background polling or delay
-          setPlanId(null);
-          setMissionStatus('DRAFT');
-        }
+        ]);
+
       } else {
-        // Fallback for direct message
-        setMessages(prev => [...prev, {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: responseJson.content || 'Erreur lors de la lecture.'
-        }]);
-        setPlanId(null);
-        setMissionStatus('DRAFT');
+        // Direct answer or informative analysis (No heavy mission tools)
+        setOperationalState('IDLE');
+        setOperationalDetail('');
+
+        setMessages(prev => [
+          ...prev,
+          {
+            id: `msg_${Date.now()}_a`,
+            conversation_id: conversationIdRef.current,
+            role: 'assistant',
+            content: payload?.content || resData.content || 'Voici les informations demandées.',
+            timestamp: time,
+            mode: 'DIRECT'
+          }
+        ]);
       }
-      
-      setTimeout(() => inputRef.current?.focus(), 100);
-      
+
     } catch (err: any) {
-      console.error('AI Error:', err);
-      setIsProcessing(false);
-      const friendlyMsg = err?.message || 'Erreur de connexion avec le serveur API.';
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: `⚠️ ${friendlyMsg}`
-      }]);
+      console.error('Alliance AI Error:', err);
+      setOperationalState('ERROR');
+      setOperationalDetail(err.message || 'Erreur de connexion');
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `msg_${Date.now()}_err`,
+          conversation_id: conversationIdRef.current,
+          role: 'assistant',
+          content: `⚠️ Erreur opérationnelle : ${err.message || 'Impossible de contacter le serveur.'}`,
+          timestamp: time
+        }
+      ]);
     }
   };
 
   const handleConfirmStep = (stepId: string) => {
-    // In Phase 2, this will send a real command to the backend to execute the step tool
-    const updatedSteps = [...steps];
-    const stepIndex = updatedSteps.findIndex(s => s.id === stepId);
-    
-    if (stepIndex !== -1) {
-      updatedSteps[stepIndex].status = 'completed';
-      updatedSteps[stepIndex].result = 'Action confirmée et exécutée avec succès.';
-      if (updatedSteps[stepIndex + 1]) {
-        updatedSteps[stepIndex + 1].status = 'active';
-      }
-      setSteps(updatedSteps);
-      addLog(`Étape '${updatedSteps[stepIndex].title}' confirmée par l'utilisateur`);
-    }
-  };
-
-  // --- RENDER HELPERS ---
-  const completedSteps = steps.filter(s => s.status === 'completed').length;
-  const progressPercent = steps.length > 0 ? Math.round((completedSteps / steps.length) * 100) : 0;
-
-  const renderMessageContent = (content: string) => {
-    return content.split('\n').map((line, i) => {
-      if (line.startsWith('✓')) {
-        return <div key={i} className="ai-msg-check"><Check size={14} /> <span>{line.substring(1)}</span></div>;
-      }
-      if (line.startsWith('→')) {
-        return <div key={i} className="ai-msg-arrow"><ChevronRight size={14} /> <span style={{opacity: 0.7}}>{line.substring(1)}</span></div>;
-      }
-      return <div key={i} style={{ minHeight: line.trim() ? 'auto' : '0.4rem' }}>{line}</div>;
+    if (!activeMission) return;
+    setActiveMission(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        steps: prev.steps.map(s => s.step_id === stepId ? { ...s, requires_confirmation: false, status: 'RUNNING' } : s)
+      };
     });
   };
 
-  const renderMissionControl = () => {
-    if (missionStatus === 'DRAFT' || steps.length === 0) {
-      return (
-        <div className="mc-empty">
-          <Sparkles size={32} className="mc-empty-icon" />
-          <h4>Mission Control</h4>
-          <p>Le plan d'action apparaîtra ici pour les objectifs complexes.</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="mc-container">
-        {/* Header */}
-        <div className="mc-header">
-          <div className="mc-header-top">
-            <h3 className="mc-title">{missionTitle}</h3>
-            <div className="mc-actions">
-              <button className="mc-btn-icon"><Pause size={14} /></button>
-            </div>
-          </div>
-          <div className="mc-meta">
-            <span className="mc-status-badge running">{missionStatus}</span>
-            <span className="mc-id">Mission #A{Date.now().toString().slice(-4)}</span>
-          </div>
-        </div>
-
-        {/* Progression */}
-        <div className="mc-progress-section">
-          <div className="mc-progress-header">
-            <span>{completedSteps} / {steps.length} étapes</span>
-            <span>{progressPercent}%</span>
-          </div>
-          <div className="mc-progress-bar">
-            <div className="mc-progress-fill" style={{ width: `${progressPercent}%` }}></div>
-          </div>
-        </div>
-
-        {/* Steps List */}
-        <div className="mc-steps">
-          {steps.map((step) => (
-            <div key={step.id} className={`mc-step ${step.status}`}>
-              <div className="mc-step-icon">
-                {step.status === 'completed' && <CheckCircle2 size={16} className="text-success" />}
-                {step.status === 'active' && <Circle size={16} className="text-primary mc-pulse" fill="currentColor" />}
-                {step.status === 'pending' && <Circle size={16} className="text-muted" />}
-              </div>
-              <div className="mc-step-content">
-                <div className="mc-step-title">{step.title}</div>
-                <div style={{ fontSize: '0.8rem', color: '#71717a' }}>{step.description}</div>
-                
-                {/* Result Block */}
-                {step.status === 'completed' && step.result && (
-                  <div className="mc-step-result">
-                    <Check size={12} /> {step.result}
-                  </div>
-                )}
-                
-                {/* Active Confirmation Block */}
-                {step.status === 'active' && step.type === 'confirmation_required' && (
-                  <div className="mc-step-action">
-                    <div className="mc-step-action-text">
-                      <AlertCircle size={14} /> Action requise de votre part.
-                    </div>
-                    <div className="mc-step-action-buttons">
-                      <button className="btn-secondary">Annuler</button>
-                      <button className="btn-primary" onClick={() => handleConfirmStep(step.id)}>Confirmer</button>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Active Running Block */}
-                {step.status === 'active' && step.type === 'automatic' && (
-                  <div className="mc-step-running">
-                    <span className="mc-spinner"></span> En cours d'exécution par l'IA...
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Activity Log */}
-        <div className="mc-activity">
-          <div className="mc-activity-title">ACTIVITY LOG</div>
-          <div className="mc-log-list">
-            {logs.map(log => (
-              <div key={log.id} className="mc-log-item">
-                <span className="mc-log-time">{log.time}</span>
-                <span className="mc-log-msg">{log.message}</span>
-              </div>
-            ))}
-          </div>
-          <button className="mc-log-details-btn">
-            Technical details <ChevronDown size={14} />
-          </button>
-        </div>
-      </div>
-    );
-  };
+  const isMissionActive = activeMission && activeMission.steps.length > 0;
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
-          className="ai-workspace-overlay"
-          initial={{ opacity: 0 }}
+        <motion.div
+          className={`ao-workspace-overlay ${isFocusMode ? 'focus-mode' : ''}`}
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {/* Main Workspace Split Layout */}
-          <div className="ai-workspace-container">
+          {/* Main Architectural Shell */}
+          <div className={`ao-workspace-container ${isMissionActive && isMissionPanelOpen ? 'has-mission-open' : ''}`}>
             
-            {/* LEFT: CHAT COLUMN */}
-            <div className="ai-chat-column">
-              <div className="ai-chat-topbar">
-                <div className="ai-brand">
-                  <Sparkles size={16} className="text-primary" />
-                  <span>Alliance AI</span>
+            {/* ─── LEFT COLUMN: CONVERSATION & INTELLIGENCE FLOW ─── */}
+            <div className="ao-chat-deck">
+              
+              {/* Topbar */}
+              <header className="ao-copilot-header">
+                <div className="ao-brand-badge">
+                  <AoIntelligenceMark state={operationalState} size={24} showHalo={operationalState !== 'IDLE'} />
+                  <div className="ao-brand-text">
+                    <span className="ao-brand-name">ALLIANCE AI</span>
+                    <span className="ao-brand-context">Alliance One • Intelligence Opérationnelle</span>
+                  </div>
                 </div>
-                {/* Mobile Mission Toggle */}
-                {steps.length > 0 && (
-                  <button 
-                    className="ai-mobile-mission-toggle"
-                    onClick={() => setIsMobilePanelOpen(true)}
-                  >
-                    <Activity size={16} />
-                    <span>Voir le Plan</span>
-                  </button>
-                )}
-                <button className="ai-close-btn" onClick={onClose}><X size={20} /></button>
-              </div>
 
-              <div className="ai-chat-history">
+                <div className="ao-header-actions">
+                  {/* Real System Telemetry Status */}
+                  <div className="ao-status-indicator">
+                    <IntelligencePulse state={operationalState} size="sm" />
+                    <span className="ao-status-label">
+                      {operationalState === 'IDLE' ? 'SYSTÈME PRÊT' : operationalDetail || operationalState}
+                    </span>
+                  </div>
+
+                  {/* Toggle Mission Panel (Desktop) */}
+                  {isMissionActive && (
+                    <button
+                      className={`ao-btn-deck-toggle ${isMissionPanelOpen ? 'active' : ''}`}
+                      onClick={() => setIsMissionPanelOpen(prev => !prev)}
+                      title="Afficher/masquer Mission Control"
+                    >
+                      <Activity size={14} />
+                      <span>Mission #{activeMission.mission_id.slice(-4).toUpperCase()}</span>
+                    </button>
+                  )}
+
+                  {/* Toggle Focus Mode */}
+                  <button
+                    className="ao-btn-icon"
+                    onClick={() => setIsFocusMode(prev => !prev)}
+                    title={isFocusMode ? 'Quitter le mode focus' : 'Mode Focus'}
+                  >
+                    {isFocusMode ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                  </button>
+
+                  {/* Close Workspace */}
+                  <button className="ao-btn-icon close" onClick={onClose} title="Fermer (Échap)">
+                    <X size={18} />
+                  </button>
+                </div>
+              </header>
+
+              {/* Chat Stream Area */}
+              <div 
+                className="ao-chat-stream"
+                ref={chatContainerRef}
+                onScroll={handleScroll}
+              >
                 {messages.length === 0 ? (
-                  <div className="ai-empty-state">
-                    <Sparkles size={40} className="ai-empty-logo" />
-                    <h2>Que souhaitez-vous accomplir ?</h2>
-                    <div className="ai-suggestions-grid">
-                      <button onClick={() => executeQuery("Ouvre une boutique de vêtements avec Mobile Money.")}>
-                        Ouvrir une boutique
+                  /* ─── SIGNATURE HERO EMPTY STATE ─── */
+                  <div className="ao-hero-welcome">
+                    <motion.div 
+                      className="ao-hero-mark-container"
+                      initial={shouldReduceMotion ? {} : { scale: 0.85, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <AoIntelligenceMark state="IDLE" size={54} showHalo />
+                    </motion.div>
+
+                    <div className="ao-hero-line-rail">
+                      <AllianceLine activeStage={1} showLabels compact />
+                    </div>
+
+                    <h2 className="ao-hero-title">ALLIANCE AI</h2>
+                    <p className="ao-hero-subtitle">
+                      Votre intelligence opérationnelle intégrée.
+                      <br />
+                      Décrivez simplement ce que vous souhaitez accomplir sur votre organisation.
+                    </p>
+
+                    <div className="ao-hero-suggestions-grid">
+                      <button onClick={() => handleSendMessage("Analyser les présences et les anomalies de la semaine.")}>
+                        <span className="ao-sug-domain">ÉDUCATION</span>
+                        <span>Analyser les absences de la semaine</span>
+                        <ChevronRight size={13} className="ao-sug-arr" />
                       </button>
-                      <button onClick={() => executeQuery("Prépare le rapport financier du mois.")}>
-                        Rapport financier
+
+                      <button onClick={() => handleSendMessage("Prépare un état complet des stocks et alertes d'inventaire.")}>
+                        <span className="ao-sug-domain">INVENTAIRE</span>
+                        <span>État des stocks et alertes de rupture</span>
+                        <ChevronRight size={13} className="ao-sug-arr" />
                       </button>
-                      <button onClick={() => executeQuery("Quel est mon stock actuel ?")}>
-                        État des stocks
+
+                      <button onClick={() => handleSendMessage("Générer la synthèse financière du mois en cours.")}>
+                        <span className="ao-sug-domain">FINANCES</span>
+                        <span>Synthèse financière et factures en attente</span>
+                        <ChevronRight size={13} className="ao-sug-arr" />
+                      </button>
+
+                      <button onClick={() => handleSendMessage("Quels sont les effectifs actuels de mon organisation ?")}>
+                        <span className="ao-sug-domain">ORGANISATION</span>
+                        <span>Effectifs globaux et répartition</span>
+                        <ChevronRight size={13} className="ao-sug-arr" />
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="ai-messages-list">
+                  /* ─── EDITORIAL CONVERSATION LIST ─── */
+                  <div className="ao-messages-flow">
                     {messages.map((msg) => (
-                      <motion.div 
+                      <motion.div
                         key={msg.id}
-                        className={`ai-message ${msg.role}`}
-                        initial={{ opacity: 0, y: 10 }}
+                        className={`ao-message-entry ${msg.role}`}
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        {msg.role === 'assistant' && (
-                          <div className="ai-avatar-cell">
-                            <Sparkles size={16} className="text-primary" />
-                          </div>
-                        )}
-                        <div className="ai-message-content">
-                          {renderMessageContent(msg.content)}
+                        {/* Meta Label */}
+                        <div className="ao-msg-meta-header">
+                          <span className="ao-msg-author">
+                            {msg.role === 'user' ? 'VOUS' : 'ALLIANCE AI'}
+                          </span>
+                          <span className="ao-msg-time">{msg.timestamp}</span>
+                        </div>
+
+                        {/* Content Area */}
+                        <div className="ao-msg-body">
+                          {msg.role === 'assistant' ? (
+                            <StructuredContentRenderer
+                              content={msg.content}
+                              blocks={msg.blocks}
+                              onActionClick={(actionId) => {
+                                handleSendMessage(`Exécuter l'action recommandée : ${actionId}`);
+                              }}
+                            />
+                          ) : (
+                            <div className="ao-user-bubble-text">
+                              {msg.content}
+                            </div>
+                          )}
                         </div>
                       </motion.div>
                     ))}
-                    {isProcessing && (
-                      <motion.div 
-                        className="ai-message assistant"
-                        initial={{ opacity: 0, y: 10 }}
+
+                    {/* Operational Processing Indicator */}
+                    {(operationalState === 'ANALYZING' || operationalState === 'PLANNING') && (
+                      <motion.div
+                        className="ao-message-entry assistant analyzing"
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                       >
-                        <div className="ai-avatar-cell">
-                          <Sparkles size={16} className="text-primary" />
+                        <div className="ao-msg-meta-header">
+                          <span className="ao-msg-author">ALLIANCE AI</span>
+                          <span className="ao-msg-time">En cours</span>
                         </div>
-                        <div className="ai-state-indicator">
-                          <div className="ai-typing-dots">
-                            <span></span><span></span><span></span>
+                        <div className="ao-processing-card">
+                          <AoIntelligenceMark state={operationalState} size={20} />
+                          <div className="ao-processing-text">
+                            <span className="ao-proc-title">{operationalDetail || 'Analyse en cours...'}</span>
+                            <IntelligencePulse state={operationalState} size="sm" />
                           </div>
-                          <span className="ai-state-text">{processingState}</span>
                         </div>
                       </motion.div>
                     )}
+
                     <div ref={messagesEndRef} />
                   </div>
                 )}
               </div>
 
-              <div className="ai-chat-input-area">
-                <form className="ai-input-form" onSubmit={(e) => { e.preventDefault(); executeQuery(query); }}>
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Décrivez votre objectif (ex: Publier une boutique)..."
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    autoComplete="off"
-                    disabled={isProcessing}
-                  />
-                  <button type="submit" disabled={!query.trim() || isProcessing} className={query.trim() ? 'active' : ''}>
-                    <Send size={16} />
-                  </button>
-                </form>
-              </div>
+              {/* Floating "Scroll to Bottom" Badge */}
+              <AnimatePresence>
+                {hasScrolledUp && newMessagesCount > 0 && (
+                  <motion.button
+                    className="ao-scroll-badge"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    onClick={() => scrollToBottom('smooth')}
+                  >
+                    <ArrowDown size={13} />
+                    <span>{newMessagesCount} nouveau{newMessagesCount > 1 ? 'x' : ''} élément{newMessagesCount > 1 ? 's' : ''}</span>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+
+              {/* Composer Deck */}
+              <footer className="ao-composer-deck">
+                <CopilotComposer
+                  onSend={handleSendMessage}
+                  isProcessing={operationalState === 'ANALYZING' || operationalState === 'PLANNING'}
+                />
+              </footer>
             </div>
 
-            {/* RIGHT: MISSION CONTROL (Desktop) */}
-            <div className="ai-mission-column desktop-only">
-              {renderMissionControl()}
-            </div>
-            
-            {/* MOBILE BOTTOM SHEET FOR MISSION CONTROL */}
+            {/* ─── RIGHT COLUMN: CONTEXTUAL MISSION CONTROL (Desktop) ─── */}
             <AnimatePresence>
-              {isMobilePanelOpen && (
+              {isMissionActive && isMissionPanelOpen && (
+                <div className="ao-mission-deck desktop-only">
+                  <MissionControlPanel
+                    mission={activeMission}
+                    events={missionEvents}
+                    onConfirmStep={handleConfirmStep}
+                    onToggleCollapse={() => setIsMissionPanelOpen(false)}
+                  />
+                </div>
+              )}
+            </AnimatePresence>
+
+            {/* ─── RESPONSIVE BOTTOM SHEET (Mobile / Tablet) ─── */}
+            <AnimatePresence>
+              {isMobileSheetOpen && isMissionActive && (
                 <>
-                  <motion.div 
-                    className="ai-bottom-sheet-backdrop"
+                  <motion.div
+                    className="ao-sheet-backdrop"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onClick={() => setIsMobilePanelOpen(false)}
+                    onClick={() => setIsMobileSheetOpen(false)}
                   />
-                  <motion.div 
-                    className="ai-bottom-sheet"
+                  <motion.div
+                    className="ao-sheet-drawer"
                     initial={{ y: '100%' }}
                     animate={{ y: 0 }}
                     exit={{ y: '100%' }}
-                    transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+                    transition={{ type: 'spring', bounce: 0, duration: 0.35 }}
                   >
-                    <div className="ai-bottom-sheet-handle" onClick={() => setIsMobilePanelOpen(false)}></div>
-                    <div className="ai-bottom-sheet-content">
-                      {renderMissionControl()}
+                    <div className="ao-sheet-handle" onClick={() => setIsMobileSheetOpen(false)} />
+                    <div style={{ flex: 1, overflowY: 'auto' }}>
+                      <MissionControlPanel
+                        mission={activeMission}
+                        events={missionEvents}
+                        onConfirmStep={handleConfirmStep}
+                        onToggleCollapse={() => setIsMobileSheetOpen(false)}
+                      />
                     </div>
                   </motion.div>
                 </>
@@ -583,3 +657,4 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
     </AnimatePresence>
   );
 };
+export default AllianceAICopilot;
