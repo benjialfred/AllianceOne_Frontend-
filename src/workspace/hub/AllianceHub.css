@@ -86,6 +86,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--ao-space-4);
   margin-bottom: var(--ao-space-8);
 }
 
@@ -324,4 +326,6 @@
 .ao-tl-desc {
   font-size: 12px;
   color: var(--ao-color-text-secondary);
+  word-break: break-word;
+  white-space: normal;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, GraduationCap, Package, Landmark, FolderKanban, BookOpen, Box } from 'lucide-react';
+import { ArrowRight, GraduationCap, Package, Landmark, FolderKanban, BookOpen, Box, Grid } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePlatformStore } from '../../../core/stores/platformStore';
 
@@ -19,9 +19,9 @@ export const ModulesSpaces: React.FC = () => {
   const navigate = useNavigate();
   const currentOrg = usePlatformStore(s => s.currentOrganization);
   
-  const activeModuleIds = currentOrg?.active_modules && currentOrg.active_modules.length > 0
-    ? currentOrg.active_modules
-    : ['education', 'finance', 'inventory'];
+  // RÈGLE D'AFFAIRES : 
+  // Un nouveau client a un tableau de bord vierge. Pas de modules par défaut.
+  const activeModuleIds = currentOrg?.active_modules || [];
 
   return (
     <section>
@@ -29,37 +29,66 @@ export const ModulesSpaces: React.FC = () => {
         <div style={{ width: 4, height: 4, background: 'var(--ao-color-text-tertiary)', borderRadius: '50%' }} />
         Espaces Opérationnels
       </div>
-      <div className="ao-spaces-grid">
-        {activeModuleIds.map((id, index) => {
-          const mod = getModuleData(id);
-          const Icon = mod.icon;
-          return (
-            <motion.div 
-              key={id}
-              className="ao-glass-panel ao-space-card ao-glass-panel-interactive"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => navigate(mod.path)}
-            >
-              <div className="ao-space-icon-wrapper" style={{ color: mod.color, backgroundColor: `${mod.color}15` }}>
-                <Icon size={20} />
-              </div>
-              <div className="ao-space-title">{mod.name}</div>
-              <div className="ao-space-stats">
-                <span className="ao-stat-value">{mod.primary}</span>
-                <span className="ao-stat-label">{mod.label}</span>
-              </div>
-              <div className="ao-space-secondary-stat">{mod.secondary}</div>
-              
-              <div className="ao-space-footer">
-                <span>Accéder à l'espace</span>
-                <ArrowRight size={14} />
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+      
+      {activeModuleIds.length === 0 ? (
+        <motion.div 
+          className="ao-glass-panel" 
+          style={{ padding: 'var(--ao-space-12)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--ao-space-4)' }}
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        >
+          <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--ao-color-bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Grid size={24} color="var(--ao-color-text-secondary)" />
+          </div>
+          <div>
+            <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Aucun module installé</h3>
+            <p style={{ fontSize: 14, color: 'var(--ao-color-text-secondary)' }}>
+              Votre environnement de travail est prêt. Installez votre premier module pour commencer.
+            </p>
+          </div>
+          <button 
+            onClick={() => navigate('/app/ecosystem')}
+            style={{ 
+              marginTop: 'var(--ao-space-4)', padding: '10px 20px', 
+              background: 'var(--ao-color-text-primary)', color: 'var(--ao-color-bg-primary)', 
+              border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: 13, fontWeight: 600 
+            }}
+          >
+            Ouvrir l'App Store
+          </button>
+        </motion.div>
+      ) : (
+        <div className="ao-spaces-grid">
+          {activeModuleIds.map((id, index) => {
+            const mod = getModuleData(id);
+            const Icon = mod.icon;
+            return (
+              <motion.div 
+                key={id}
+                className="ao-glass-panel ao-space-card ao-glass-panel-interactive"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                onClick={() => navigate(mod.path)}
+              >
+                <div className="ao-space-icon-wrapper" style={{ color: mod.color, backgroundColor: `${mod.color}15` }}>
+                  <Icon size={20} />
+                </div>
+                <div className="ao-space-title">{mod.name}</div>
+                <div className="ao-space-stats">
+                  <span className="ao-stat-value">{mod.primary}</span>
+                  <span className="ao-stat-label">{mod.label}</span>
+                </div>
+                <div className="ao-space-secondary-stat">{mod.secondary}</div>
+                
+                <div className="ao-space-footer">
+                  <span>Accéder à l'espace</span>
+                  <ArrowRight size={14} />
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };
