@@ -96,13 +96,13 @@ export const UniversalCreateModal: React.FC<UniversalCreateModalProps> = ({ isOp
       >
         <div className="universal-modal-header">
           <div>
-            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Création Rapide Universelle</h3>
-            <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--color-text-muted)' }}>
-              Sélectionnez l'objet métier que vous souhaitez créer instantanément
+            <h3 style={{ margin: 0, fontFamily: 'var(--ao-font-display)', fontSize: '18px', fontWeight: 'var(--ao-weight-semibold)', color: 'var(--ao-color-text-primary)' }}>Création Rapide</h3>
+            <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--ao-color-text-secondary)' }}>
+              Sélectionnez l'objet métier que vous souhaitez créer
             </p>
           </div>
           <button className="universal-modal-close-btn" onClick={onClose}>
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
@@ -112,8 +112,8 @@ export const UniversalCreateModal: React.FC<UniversalCreateModalProps> = ({ isOp
             return (
               <div key={group.module} className="create-group-box">
                 <div className="create-group-header">
-                  <div className="create-group-icon" style={{ backgroundColor: `${group.color}15`, color: group.color }}>
-                    <GroupIcon size={16} />
+                  <div className="create-group-icon" style={{ backgroundColor: 'var(--ao-color-bg-secondary)', color: 'var(--ao-color-text-primary)' }}>
+                    <GroupIcon size={14} />
                   </div>
                   <span className="create-group-title">{group.module}</span>
                 </div>

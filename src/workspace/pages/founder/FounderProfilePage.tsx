@@ -16,7 +16,7 @@ import { SelectedProjects } from './components/SelectedProjects';
    ========================================================================== */
 const FadeUp: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className = '' }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const isInView = useInView(ref, { once: true, margin: '-50px 0px' });
   const isReducedMotion = useReducedMotion();
 
   return (

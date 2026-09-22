@@ -37,9 +37,10 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
         </motion.div>
         
         {/* Typographic Masking Assembly */}
-        <div style={{ overflow: 'hidden', marginBottom: '2rem' }}>
+        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '1.5rem' }}>
           <motion.h1 
             className="founder-display-monumental"
+            style={{ lineHeight: 1 }}
             initial={{ y: "110%", rotate: 2 }}
             animate={{ y: "0%", rotate: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 1.2 }}
@@ -47,9 +48,10 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
             ADZESSA
           </motion.h1>
         </div>
-        <div style={{ overflow: 'hidden', marginBottom: '2rem' }}>
+        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '1.5rem' }}>
           <motion.h1 
             className="founder-display-monumental"
+            style={{ lineHeight: 1 }}
             initial={{ y: "110%", rotate: -1 }}
             animate={{ y: "0%", rotate: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 1.3 }}
@@ -57,9 +59,10 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
             BENJAMIN
           </motion.h1>
         </div>
-        <div style={{ overflow: 'hidden', marginBottom: '4rem' }}>
+        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '3.5rem' }}>
           <motion.h1 
             className="founder-display-monumental"
+            style={{ lineHeight: 1 }}
             initial={{ y: "110%", rotate: 1 }}
             animate={{ y: "0%", rotate: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}

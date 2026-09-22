@@ -1,0 +1,109 @@
+:root {
+  /* FONT FAMILIES */
+  --ao-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ao-font-display: 'Outfit', 'Inter', sans-serif;
+  --ao-font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* FONT WEIGHTS */
+  --ao-weight-regular: 400;
+  --ao-weight-medium: 500;
+  --ao-weight-semibold: 600;
+  --ao-weight-bold: 700;
+
+  /* LINE HEIGHTS */
+  --ao-leading-tight: 1.1;
+  --ao-leading-snug: 1.3;
+  --ao-leading-normal: 1.5;
+  --ao-leading-relaxed: 1.7;
+
+  /* TRACKING (Letter spacing) */
+  --ao-tracking-tighter: -0.04em;
+  --ao-tracking-tight: -0.02em;
+  --ao-tracking-normal: 0em;
+  --ao-tracking-wide: 0.05em;
+  --ao-tracking-wider: 0.1em;
+}
+
+/* 
+  ALLIANCE OS - TYPOGRAPHY CLASSES 
+  These define the exact hierarchical structure. 
+*/
+
+/* Display: For massive impact (Hero, AI intro) */
+.ao-t-display {
+  font-family: var(--ao-font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: var(--ao-weight-bold);
+  line-height: var(--ao-leading-tight);
+  letter-spacing: var(--ao-tracking-tighter);
+  color: var(--ao-color-text-primary);
+}
+
+/* Headline: For primary page/module titles */
+.ao-t-headline {
+  font-family: var(--ao-font-display);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: var(--ao-weight-semibold);
+  line-height: var(--ao-leading-tight);
+  letter-spacing: var(--ao-tracking-tight);
+  color: var(--ao-color-text-primary);
+}
+
+/* Section: For component blocks, panels, cards */
+.ao-t-section {
+  font-family: var(--ao-font-sans);
+  font-size: 1.25rem;
+  font-weight: var(--ao-weight-semibold);
+  line-height: var(--ao-leading-snug);
+  letter-spacing: var(--ao-tracking-tight);
+  color: var(--ao-color-text-primary);
+}
+
+/* Body: The default reading text */
+.ao-t-body {
+  font-family: var(--ao-font-sans);
+  font-size: 1rem;
+  font-weight: var(--ao-weight-regular);
+  line-height: var(--ao-leading-normal);
+  color: var(--ao-color-text-secondary);
+}
+
+/* Body Medium: For interactive elements (Buttons, Tabs) */
+.ao-t-body-md {
+  font-family: var(--ao-font-sans);
+  font-size: 1rem;
+  font-weight: var(--ao-weight-medium);
+  line-height: var(--ao-leading-normal);
+  color: var(--ao-color-text-primary);
+}
+
+/* Metadata: For dense tables, auxiliary info */
+.ao-t-metadata {
+  font-family: var(--ao-font-sans);
+  font-size: 0.875rem;
+  font-weight: var(--ao-weight-regular);
+  line-height: var(--ao-leading-normal);
+  color: var(--ao-color-text-tertiary);
+}
+
+/* Micro-label: For system states, kickers, tags */
+.ao-t-micro {
+  font-family: var(--ao-font-sans);
+  font-size: 0.6875rem;
+  font-weight: var(--ao-weight-semibold);
+  line-height: var(--ao-leading-tight);
+  letter-spacing: var(--ao-tracking-wider);
+  text-transform: uppercase;
+  color: var(--ao-color-text-tertiary);
+}
+
+/* Data Number: For metrics and stats */
+.ao-t-metric {
+  font-family: var(--ao-font-sans);
+  font-size: 2rem;
+  font-weight: var(--ao-weight-bold);
+  line-height: var(--ao-leading-tight);
+  letter-spacing: var(--ao-tracking-tighter);
+  font-variant-numeric: tabular-nums;
+  color: var(--ao-color-text-primary);
+}

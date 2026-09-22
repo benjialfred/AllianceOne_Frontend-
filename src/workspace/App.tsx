@@ -1,67 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '../design-system/components/Button';
 import { 
-  Moon, 
-  Sun, 
-  LayoutDashboard, 
-  Users, 
-  GraduationCap, 
-  BookOpen, 
-  Book, 
-  FileText, 
-  Calendar, 
-  CreditCard, 
-  Edit3, 
-  Settings, 
-  Library, 
-  Package, 
-  Warehouse as WarehouseIcon, 
-  History, 
-  ClipboardList, 
-  Truck, 
-  ShoppingCart, 
-  Factory, 
-  FolderKanban, 
-  ListTodo, 
-  CheckSquare, 
-  Layers, 
-  Landmark, 
-  PieChart, 
-  ChevronLeft, 
-  ChevronRight,
-  Sparkles
+  LayoutDashboard, Users, GraduationCap, BookOpen, Book, FileText, 
+  Calendar, CreditCard, Edit3, Settings, Library, Package, 
+  Warehouse as WarehouseIcon, History, ClipboardList, Truck, 
+  ShoppingCart, Factory, FolderKanban, ListTodo, CheckSquare, 
+  Layers, Landmark, PieChart 
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Workspace } from '../core/workspace-sdk';
-import { ManifestService } from '../core/services/ManifestService';
-import { GlobalNavbar } from './components/GlobalNavbar';
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
+
+import { usePlatformStore } from '../core/stores/platformStore';
+import { useAuthStore } from '../core/stores/authStore';
+import { identityApi } from '../core/api/identity';
+
+import { AllianceShell } from '../design-system/navigation/AllianceShell';
+import type { NavSection } from '../design-system/navigation/ModuleSidebar';
+
+// Modals
 import { UniversalCommandPalette } from './components/UniversalCommandPalette';
 import { UniversalCreateModal } from './components/UniversalCreateModal';
 import { NotificationsDrawer } from './components/NotificationsDrawer';
 import { AllianceAICopilot } from './ai/AllianceAICopilot';
+import { TelegramConnectModal } from './components/TelegramConnectModal';
+
+// Pages
 import { AllianceHub } from './hub/AllianceHub';
 import { MarketplacePage } from './pages/MarketplacePage';
+import { MarketplaceCallback } from './pages/MarketplaceCallback';
 import { DevelopersPage } from './pages/DevelopersPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
 import { SettingsHubPage } from './pages/SettingsHubPage';
 import { HyperAdminDashboard } from './pages/hyperadmin/HyperAdminDashboard';
-import { TelegramConnectModal } from './components/TelegramConnectModal';
-import { usePlatformStore } from '../core/stores/platformStore';
-import { useAuthStore } from '../core/stores/authStore';
-import { identityApi } from '../core/api/identity';
-import { Routes, Route, useNavigate, useLocation, NavLink } from 'react-router-dom';
+
+// Module Routes
 import EducationModuleRoutes from '../modules/education/App';
 import InventoryModuleRoutes from '../modules/inventory/App';
 import FinanceModuleRoutes from '../modules/finance/App';
 import LibraryModuleRoutes from '../modules/library/App';
 import TasksModuleRoutes from '../modules/tasks/App';
-import FounderAppRoutes from './pages/founder/FounderApp';
+
+// Legacy CSS (kept for any remaining dependencies, though AllianceShell.css is now dominant)
 import './Workspace.css';
 
 // Navigation configurations for specialized module sidebars
-const educationNavigation: any[] = [
+const educationNavigation: NavSection[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/app/education", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
@@ -86,7 +69,7 @@ const educationNavigation: any[] = [
   ]}
 ];
 
-const inventoryNavigation: any[] = [
+const inventoryNavigation: NavSection[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/app/inventory", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
@@ -110,7 +93,7 @@ const inventoryNavigation: any[] = [
   ]}
 ];
 
-const financeNavigation: any[] = [
+const financeNavigation: NavSection[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/app/finance", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
@@ -129,7 +112,7 @@ const financeNavigation: any[] = [
   ]}
 ];
 
-const libraryNavigation: any[] = [
+const libraryNavigation: NavSection[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/app/library", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
@@ -138,7 +121,7 @@ const libraryNavigation: any[] = [
   ]}
 ];
 
-const tasksNavigation: any[] = [
+const tasksNavigation: NavSection[] = [
   { section: 'APERÇU', items: [
     { label: "Tableau de bord", path: "/app/tasks", icon: LayoutDashboard, shortcut: '⌘ 1' },
   ]},
@@ -156,9 +139,6 @@ export const WorkspaceShell: React.FC = () => {
   const currentOrganization = usePlatformStore((s) => s.currentOrganization);
   const setOrganization = usePlatformStore((s) => s.setOrganization);
   const setOrganizations = usePlatformStore((s) => s.setOrganizations);
-  const setWorkspaces = usePlatformStore((s) => s.setWorkspaces);
-  const sidebarCollapsed = usePlatformStore((s) => s.sidebarCollapsed);
-  const toggleSidebar = usePlatformStore((s) => s.toggleSidebar);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -169,7 +149,7 @@ export const WorkspaceShell: React.FC = () => {
   const [isAIOpen, setIsAIOpen] = useState(false);
   const [isTelegramOpen, setIsTelegramOpen] = useState(false);
 
-  // Auto-open Telegram Connect Modal if URL parameter ?telegram=connect or ?connect=telegram
+  // Auto-open Telegram Connect Modal if URL parameter ?telegram=connect
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get('telegram') === 'connect' || params.get('connect') === 'telegram' || params.get('telegram') === 'true') {
@@ -177,7 +157,7 @@ export const WorkspaceShell: React.FC = () => {
     }
   }, [location.search]);
 
-  // Onboarding check — redirect to /app/onboarding if not completed
+  // Onboarding check
   useEffect(() => {
     const checkOnboarding = async () => {
       if (location.pathname.includes('/onboarding')) return;
@@ -185,7 +165,6 @@ export const WorkspaceShell: React.FC = () => {
       const user = useAuthStore.getState().user;
       if (!user) return;
 
-      // Check per-user onboarding status
       const userOnboardingDone =
         user.onboarding_completed === true ||
         (!!user.email && localStorage.getItem(`alliance-onboarding-completed_${user.email}`) === 'true');
@@ -220,13 +199,12 @@ export const WorkspaceShell: React.FC = () => {
             setOrganization(orgs[0]);
           }
         } else if (!currentOrganization) {
-          // Default fallback organization for seamless experience
-          const defaultOrg = {
+          // Default fallback organization
+          setOrganization({
             id: 'b7e52a92-628b-4b14-8f19-35a22d4f820c',
             name: 'Collège & Lycée Bilingue Émergence',
             slug: 'emergence-school'
-          };
-          setOrganization(defaultOrg);
+          });
         }
       })
       .catch((err) => {
@@ -246,6 +224,10 @@ export const WorkspaceShell: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
         setIsAIOpen((prev) => !prev);
       }
     };
@@ -264,7 +246,7 @@ export const WorkspaceShell: React.FC = () => {
 
   let activeNav = educationNavigation;
   let activeModuleName = 'Éducation Pro';
-  let activeModuleColor = '#4f46e5';
+  let activeModuleColor = 'var(--ao-color-alliance-blue)';
 
   if (isInv) {
     activeNav = inventoryNavigation;
@@ -285,120 +267,46 @@ export const WorkspaceShell: React.FC = () => {
   }
 
   return (
-    <div className="alliance-os-app-shell">
-      {/* 1. GLOBAL OS NAVBAR */}
-      <GlobalNavbar
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenCreate={() => setIsCreateOpen(true)}
-        onOpenNotifications={() => setIsNotifOpen(true)}
-        onOpenAI={() => setIsAIOpen(true)}
-        onOpenTelegram={() => setIsTelegramOpen(true)}
-        unreadNotificationsCount={3}
-      />
-
-      {/* 2. MAIN BODY AREA */}
-      <div className="os-body-layout">
-        {/* Module Sidebar (Visible only when inside a business module) */}
-        {isModuleView && (
-          <motion.aside 
-            className={`workspace-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}
-            initial={{ width: 260 }}
-            animate={{ width: sidebarCollapsed ? 68 : 260 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-          >
-            <div className="sidebar-module-header">
-              {!sidebarCollapsed ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span 
-                      style={{ 
-                        width: '10px', 
-                        height: '10px', 
-                        borderRadius: '50%', 
-                        backgroundColor: activeModuleColor 
-                      }}
-                    ></span>
-                    <strong style={{ fontSize: '13px', color: 'var(--color-text-primary)' }}>
-                      {activeModuleName}
-                    </strong>
-                  </div>
-                  <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
-                    <ChevronLeft size={16} />
-                  </button>
-                </div>
-              ) : (
-                <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
-                  <ChevronRight size={16} />
-                </button>
-              )}
-            </div>
-
-            <nav className="sidebar-nav">
-              {activeNav.map((sec, idx) => (
-                <div key={idx} className="sidebar-section">
-                  {!sidebarCollapsed && <div className="sidebar-section-title">{sec.section}</div>}
-                  <ul className="sidebar-nav-list">
-                    {sec.items.map((item: any) => {
-                      const Icon = item.icon;
-                      return (
-                        <li key={item.path}>
-                          <NavLink
-                            to={item.path}
-                            end={item.path === '/app/education' || item.path === '/app/inventory' || item.path === '/app/finance' || item.path === '/app/library' || item.path === '/app/tasks'}
-                            className={({ isActive }) => `sidebar-nav-link ${isActive ? 'active' : ''}`}
-                          >
-                            <Icon size={16} className="nav-link-icon" />
-                            {!sidebarCollapsed && (
-                              <span className="nav-link-label">{item.label}</span>
-                            )}
-                            {!sidebarCollapsed && item.badge && (
-                              <span className="nav-link-badge">{item.badge}</span>
-                            )}
-                          </NavLink>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </nav>
-          </motion.aside>
-        )}
-
-        {/* Dynamic Route Content */}
-        <main className={`os-content-main ${isModuleView ? 'with-sidebar' : 'full-width'}`}>
-          <Routes>
-            {/* Primary Entry Point: Alliance Hub */}
-            <Route 
-              path="/" 
-              element={
-                <AllianceHub 
-                  onOpenCreate={() => setIsCreateOpen(true)} 
-                  onOpenSearch={() => setIsSearchOpen(true)} 
-                />
-              } 
+    <AllianceShell
+      onOpenSearch={() => setIsSearchOpen(true)}
+      onOpenCreate={() => setIsCreateOpen(true)}
+      onOpenNotifications={() => setIsNotifOpen(true)}
+      onOpenAI={() => setIsAIOpen(true)}
+      activeModuleNav={isModuleView ? activeNav : undefined}
+      activeModuleName={activeModuleName}
+      activeModuleColor={activeModuleColor}
+    >
+      <Routes>
+        {/* Primary Entry Point: Alliance Hub */}
+        <Route 
+          path="/" 
+          element={
+            <AllianceHub 
+              onOpenCreate={() => setIsCreateOpen(true)} 
+              onOpenSearch={() => setIsSearchOpen(true)} 
             />
+          } 
+        />
 
-            {/* Ecosystem Pages */}
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/developers" element={<DevelopersPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/help" element={<UnifiedHelpPage />} />
-            <Route path="/settings" element={<SettingsHubPage onOpenTelegram={() => setIsTelegramOpen(true)} />} />
+        {/* Ecosystem Pages */}
+        <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/marketplace/callback" element={<MarketplaceCallback />} />
+        <Route path="/developers" element={<DevelopersPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/help" element={<UnifiedHelpPage />} />
+        <Route path="/settings" element={<SettingsHubPage onOpenTelegram={() => setIsTelegramOpen(true)} />} />
 
-            {/* HyperAdmin Central Cockpit */}
-            <Route path="/hyperadmin" element={<HyperAdminDashboard />} />
+        {/* HyperAdmin Central Cockpit */}
+        <Route path="/hyperadmin" element={<HyperAdminDashboard />} />
 
-            {/* Business Modules */}
-            <Route path="/education/*" element={<EducationModuleRoutes />} />
-            <Route path="/inventory/*" element={<InventoryModuleRoutes />} />
-            <Route path="/finance/*" element={<FinanceModuleRoutes />} />
-            <Route path="/library/*" element={<LibraryModuleRoutes />} />
-            <Route path="/tasks/*" element={<TasksModuleRoutes />} />
-          </Routes>
-        </main>
-      </div>
+        {/* Business Modules */}
+        <Route path="/education/*" element={<EducationModuleRoutes />} />
+        <Route path="/inventory/*" element={<InventoryModuleRoutes />} />
+        <Route path="/finance/*" element={<FinanceModuleRoutes />} />
+        <Route path="/library/*" element={<LibraryModuleRoutes />} />
+        <Route path="/tasks/*" element={<TasksModuleRoutes />} />
+      </Routes>
 
       {/* 3. UNIVERSAL MODALS & DRAWERS */}
       <UniversalCommandPalette 
@@ -425,6 +333,6 @@ export const WorkspaceShell: React.FC = () => {
         isOpen={isTelegramOpen} 
         onClose={() => setIsTelegramOpen(false)} 
       />
-    </div>
+    </AllianceShell>
   );
 };

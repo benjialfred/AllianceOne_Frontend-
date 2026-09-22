@@ -1,0 +1,79 @@
+:root {
+  /* ALLIANCE OS - CORE FOUNDATION TOKENS */
+
+  /* COLORS: LIGHT THEME (Warm Ivory & Navy) */
+  --ao-color-bg-primary: #fcfcfc; /* Warm Ivory */
+  --ao-color-bg-secondary: #f6f7f9;
+  --ao-color-bg-tertiary: #f0f2f5;
+  --ao-color-bg-surface: #ffffff;
+  
+  --ao-color-text-primary: #111418; /* Graphite */
+  --ao-color-text-secondary: #4a5568;
+  --ao-color-text-tertiary: #718096;
+  --ao-color-text-inverse: #ffffff;
+
+  --ao-color-border-subtle: #edf2f7;
+  --ao-color-border-default: #e2e8f0;
+  --ao-color-border-strong: #cbd5e0;
+
+  /* BRAND COLORS */
+  --ao-color-alliance-blue: #0b3d91;
+  --ao-color-deep-navy: #051a3a;
+  --ao-color-champagne: #e8dcc5;
+  --ao-color-metallic: #b5a382;
+
+  /* INTELLIGENCE LAYER COLORS */
+  --ao-color-ai-idle: var(--ao-color-border-strong);
+  --ao-color-ai-thinking: var(--ao-color-alliance-blue);
+  --ao-color-ai-executing: #2b6cb0;
+  --ao-color-ai-verified: #276749;
+  --ao-color-ai-error: #9b2c2c;
+
+  /* STATUS COLORS */
+  --ao-color-success-bg: #f0fff4;
+  --ao-color-success-text: #22543d;
+  --ao-color-warning-bg: #fffff0;
+  --ao-color-warning-text: #744210;
+  --ao-color-danger-bg: #fff5f5;
+  --ao-color-danger-text: #742a2a;
+  --ao-color-info-bg: #ebf8ff;
+  --ao-color-info-text: #2a4365;
+
+  /* SPATIAL GRID */
+  --ao-space-1: 0.25rem;  /* 4px */
+  --ao-space-2: 0.5rem;   /* 8px */
+  --ao-space-3: 0.75rem;  /* 12px */
+  --ao-space-4: 1rem;     /* 16px */
+  --ao-space-5: 1.25rem;  /* 20px */
+  --ao-space-6: 1.5rem;   /* 24px */
+  --ao-space-8: 2rem;     /* 32px */
+  --ao-space-10: 2.5rem;  /* 40px */
+  --ao-space-12: 3rem;    /* 48px */
+  --ao-space-16: 4rem;    /* 64px */
+  --ao-space-24: 6rem;    /* 96px */
+
+  /* RADIUS (Architectural, slightly sharp but friendly) */
+  --ao-radius-sm: 4px;
+  --ao-radius-md: 6px;
+  --ao-radius-lg: 10px;
+  --ao-radius-xl: 16px;
+  --ao-radius-full: 9999px;
+
+  /* ELEVATION & DEPTH */
+  --ao-shadow-sm: 0 1px 2px rgba(17, 20, 24, 0.05);
+  --ao-shadow-md: 0 4px 12px rgba(17, 20, 24, 0.05), 0 1px 2px rgba(17, 20, 24, 0.02);
+  --ao-shadow-lg: 0 12px 32px rgba(17, 20, 24, 0.06), 0 4px 8px rgba(17, 20, 24, 0.03);
+  --ao-shadow-xl: 0 24px 48px rgba(17, 20, 24, 0.08), 0 12px 24px rgba(17, 20, 24, 0.04);
+  --ao-shadow-ai: 0 0 24px rgba(11, 61, 145, 0.15); /* Soft glow for AI */
+
+  /* Z-INDEX (Strict Architecture) */
+  --ao-z-base: 0;
+  --ao-z-elevated: 10;
+  --ao-z-dropdown: 100;
+  --ao-z-sticky: 200;
+  --ao-z-fixed: 300;
+  --ao-z-overlay: 400;
+  --ao-z-modal: 500;
+  --ao-z-toast: 600;
+  --ao-z-intelligence: 1000; /* AI is always on top of everything if needed */
+}

@@ -1,41 +1,45 @@
-/**
- * ALLIANCE OS — INTELLIGENT ACTIONS
- * Prioritized "À faire maintenant" list.
- */
 import React from 'react';
-import { motion } from 'framer-motion';
-import { AlertCircle, FileText, UserPlus, Box } from 'lucide-react';
-import './OsComponents.css';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Box } from 'lucide-react';
 
 export const IntelligentActions: React.FC = () => {
-  const actions = [
-    { id: 1, text: '12 dossiers nécessitent votre validation', icon: UserPlus, type: 'urgent', module: 'Éducation' },
-    { id: 2, text: '3 factures arrivent à échéance', icon: FileText, type: 'today', module: 'Finance' },
-    { id: 3, text: '2 produits sont sous le seuil minimal', icon: Box, type: 'watch', module: 'Stocks' }
-  ];
+  const navigate = useNavigate();
 
   return (
-    <section className="os-section">
-      <h3 className="os-section-title">
-        <AlertCircle size={14} /> À faire maintenant
-      </h3>
-      <div className="os-actions-list">
-        {actions.map((act, i) => (
-          <motion.button 
-            key={act.id}
-            className="os-action-item os-panel"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.1 }}
-          >
-            <div className={`os-act-indicator type-${act.type}`} />
-            <div className="os-act-content">
-              <span className="os-act-text">{act.text}</span>
-              <span className="os-act-module">{act.module}</span>
-            </div>
-            <act.icon size={16} className="os-act-icon" />
-          </motion.button>
-        ))}
+    <section>
+      <div className="ao-section-title">
+        <div style={{ width: 4, height: 4, background: 'var(--ao-color-text-tertiary)', borderRadius: '50%' }} />
+        Actions Prioritaires
+      </div>
+      <div className="ao-actions-list">
+        
+        <div className="ao-action-item" onClick={() => navigate('/app/finance/invoices')}>
+          <div className="ao-action-indicator ao-indicator-urgent"></div>
+          <div className="ao-action-body">
+            <div className="ao-action-title">2 Factures en retard de paiement</div>
+            <div className="ao-action-context">Finances & Trésorerie</div>
+          </div>
+          <ArrowRight size={14} className="ao-color-text-tertiary" />
+        </div>
+
+        <div className="ao-action-item" onClick={() => navigate('/app/inventory/products')}>
+          <div className="ao-action-indicator ao-indicator-watch"></div>
+          <div className="ao-action-body">
+            <div className="ao-action-title">3 Articles sous le seuil d'alerte</div>
+            <div className="ao-action-context">Stocks & Logistique</div>
+          </div>
+          <ArrowRight size={14} className="ao-color-text-tertiary" />
+        </div>
+
+        <div className="ao-action-item" onClick={() => navigate('/app/education/presences')}>
+          <div className="ao-action-indicator ao-indicator-today"></div>
+          <div className="ao-action-body">
+            <div className="ao-action-title">Saisir les présences du jour</div>
+            <div className="ao-action-context">Éducation Pro</div>
+          </div>
+          <ArrowRight size={14} className="ao-color-text-tertiary" />
+        </div>
+
       </div>
     </section>
   );

@@ -15,24 +15,18 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(({
   hoverable = false,
   ...props 
 }, ref) => {
-  const baseStyle: React.CSSProperties = {
-    padding: noPadding ? '0' : 'var(--spacing-6)',
-    backgroundColor: 'var(--color-surface-card)',
-    borderRadius: 'var(--radius-xl)',
-    border: '1px solid var(--color-surface-border)',
-    boxShadow: 'var(--shadow-sm)',
-    transition: 'box-shadow var(--transition-normal), border-color var(--transition-normal)',
-    overflow: 'hidden',
-    position: 'relative',
+  const baseClass = `ao-glass-panel ${hoverable ? 'ao-glass-panel-interactive' : ''} ${className}`;
+  
+  const inlineStyle: React.CSSProperties = {
+    padding: noPadding ? '0' : 'var(--ao-space-6)',
     ...props.style,
   };
 
   return (
     <motion.div 
       ref={ref}
-      style={baseStyle} 
-      className={className} 
-      whileHover={hoverable ? { y: -2, boxShadow: 'var(--shadow-lg)' } : {}}
+      style={inlineStyle} 
+      className={baseClass} 
       layout
       {...props}
     >

@@ -1,0 +1,54 @@
+:root {
+  /* 
+    ALLIANCE OS - MOTION SYSTEM
+    Based on precise physical springs and cubic beziers.
+  */
+
+  /* DURATIONS */
+  --ao-duration-instant: 50ms;
+  --ao-duration-fast: 150ms;
+  --ao-duration-normal: 300ms;
+  --ao-duration-slow: 500ms;
+  --ao-duration-epic: 800ms; /* For major state changes or Alliance Formation */
+
+  /* EASINGS (CSS approximations of springs) */
+  /* Snappy, highly responsive for micro-interactions */
+  --ao-ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Smooth, gentle for large transitions */
+  --ao-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Bouncy, for positive feedback (use sparingly) */
+  --ao-ease-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Out, for exits */
+  --ao-ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+
+  /* STANDARD TRANSITIONS */
+  --ao-transition-color: background-color var(--ao-duration-fast) var(--ao-ease-snappy), color var(--ao-duration-fast) var(--ao-ease-snappy), border-color var(--ao-duration-fast) var(--ao-ease-snappy);
+  --ao-transition-transform: transform var(--ao-duration-normal) var(--ao-ease-snappy);
+  --ao-transition-opacity: opacity var(--ao-duration-normal) var(--ao-ease-smooth);
+  --ao-transition-all: all var(--ao-duration-normal) var(--ao-ease-snappy);
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ao-duration-fast: 0ms !important;
+    --ao-duration-normal: 0ms !important;
+    --ao-duration-slow: 0ms !important;
+    --ao-duration-epic: 0ms !important;
+    
+    --ao-transition-color: none !important;
+    --ao-transition-transform: none !important;
+    --ao-transition-opacity: none !important;
+    --ao-transition-all: none !important;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

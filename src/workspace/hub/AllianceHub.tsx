@@ -1,15 +1,10 @@
-/**
- * ALLIANCE OS — HUB ROOT
- * The entry point of the Business Operating System.
- */
 import React from 'react';
 import { WelcomeHeader } from './components/WelcomeHeader';
-import { HeroOperational } from './components/HeroOperational';
 import { ModulesSpaces } from './components/ModulesSpaces';
 import { IntelligentActions } from './components/IntelligentActions';
 import { AllianceIntelligence } from './components/AllianceIntelligence';
 import { UniversalTimeline } from './components/UniversalTimeline';
-import './OsHub.css';
+import './AllianceHub.css'; // New styles
 
 interface AllianceHubProps {
   onOpenCreate: () => void;
@@ -18,32 +13,28 @@ interface AllianceHubProps {
 
 export const AllianceHub: React.FC<AllianceHubProps> = () => {
   return (
-    <div className="os-hub-root">
-      <div className="os-hub-container">
+    <div className="ao-hub-root">
+      <div className="ao-hub-container">
         
-        {/* Top: Welcome & Hero */}
-        <div>
-          <WelcomeHeader />
-          <HeroOperational />
-        </div>
+        {/* Welcome Section */}
+        <WelcomeHeader />
 
-        {/* Main OS Layout Split */}
-        <div className="os-split-layout">
+        {/* Main Hub Split Layout */}
+        <div className="ao-hub-split">
           
-          {/* LEFT COLUMN: Operations & Modules */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          {/* Left Column: Operations & Modules */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ao-space-12)' }}>
             <ModulesSpaces />
             <IntelligentActions />
           </div>
 
-          {/* RIGHT COLUMN: Intelligence & Activity */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          {/* Right Column: Intelligence & Activity */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--ao-space-12)' }}>
             <AllianceIntelligence />
             <UniversalTimeline />
           </div>
 
         </div>
-        
       </div>
     </div>
   );

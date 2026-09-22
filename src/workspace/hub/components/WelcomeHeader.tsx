@@ -1,12 +1,7 @@
-/**
- * ALLIANCE OS — WELCOME HEADER
- * Extremely calm, contextual entry point.
- */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { usePlatformStore } from '../../../core/stores/platformStore';
 import { useAuthStore } from '../../../core/stores/authStore';
-import './OsComponents.css';
 
 export const WelcomeHeader: React.FC = () => {
   const currentOrg = usePlatformStore((s) => s.currentOrganization);
@@ -21,21 +16,21 @@ export const WelcomeHeader: React.FC = () => {
 
   return (
     <motion.header 
-      className="os-welcome-header"
+      className="ao-welcome-header"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="os-welcome-content">
-        <h1>{getGreeting()}{name ? `, ${name}` : ''}. Bienvenue sur votre espace Alliance One.</h1>
-        <p className="os-welcome-context">
-          {currentOrg?.name || 'Collège & Lycée Bilingue Émergence'} · Année académique 2026–2027
+      <div>
+        <h1 className="ao-welcome-title">{getGreeting()}{name ? `, ${name}` : ''}. Bienvenue sur Alliance One.</h1>
+        <p className="ao-welcome-subtitle">
+          {currentOrg?.name || 'Collège & Lycée Bilingue Émergence'} · Espace Opérationnel
         </p>
       </div>
 
-      <div className="os-system-status">
-        <div className="os-status-dot pulse"></div>
-        <span>En ligne</span>
+      <div className="ao-system-status">
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ao-color-success-text)' }} />
+        Système En Ligne
       </div>
     </motion.header>
   );

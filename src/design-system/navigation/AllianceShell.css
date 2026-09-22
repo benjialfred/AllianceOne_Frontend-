@@ -1,0 +1,382 @@
+/* =========================================
+   ALLIANCE OS — GLOBAL SHELL & NAVIGATION
+   Architecture spatiale de l'OS. 
+   Lignes précises, hiérarchie stricte.
+   ========================================= */
+
+.ao-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--ao-color-bg-primary);
+  overflow: hidden; /* L'OS ne scrolle pas, seules les vues internes scrollent */
+}
+
+/* --- 1. TOP NAVIGATION LAYER --- */
+.ao-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px; /* Plus fin, plus technique */
+  padding: 0 var(--ao-space-4);
+  background-color: var(--ao-color-bg-surface);
+  border-bottom: 1px solid var(--ao-color-border-default);
+  z-index: var(--ao-z-fixed);
+  box-shadow: var(--ao-shadow-sm);
+}
+
+.ao-nav-left, .ao-nav-center, .ao-nav-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.ao-nav-left {
+  gap: var(--ao-space-4);
+}
+
+.ao-nav-center {
+  flex: 1;
+  justify-content: center;
+  gap: var(--ao-space-2);
+}
+
+.ao-nav-right {
+  gap: var(--ao-space-3);
+  justify-content: flex-end;
+}
+
+/* Brand Button */
+.ao-brand-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-space-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--ao-color-text-primary);
+  transition: var(--ao-transition-opacity);
+}
+
+.ao-brand-btn:hover {
+  opacity: 0.8;
+}
+
+.ao-brand-text {
+  font-family: var(--ao-font-display);
+  font-weight: var(--ao-weight-bold);
+  font-size: 14px;
+  letter-spacing: var(--ao-tracking-tighter);
+}
+
+/* Nav Tools (Search, AI, etc.) */
+.ao-nav-tool-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-space-2);
+  height: 28px;
+  padding: 0 var(--ao-space-3);
+  border-radius: var(--ao-radius-md);
+  border: 1px solid var(--ao-color-border-default);
+  background: var(--ao-color-bg-secondary);
+  color: var(--ao-color-text-secondary);
+  font-family: var(--ao-font-sans);
+  font-size: 12px;
+  font-weight: var(--ao-weight-medium);
+  cursor: pointer;
+  transition: var(--ao-transition-color);
+}
+
+.ao-nav-tool-btn:hover {
+  border-color: var(--ao-color-border-strong);
+  background: var(--ao-color-bg-surface);
+  color: var(--ao-color-text-primary);
+}
+
+.ao-nav-tool-btn kbd {
+  font-family: var(--ao-font-mono);
+  font-size: 10px;
+  background: var(--ao-color-bg-tertiary);
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: var(--ao-color-text-tertiary);
+  margin-left: var(--ao-space-2);
+}
+
+/* AI Command Surface Trigger */
+.ao-ai-trigger {
+  border-color: rgba(11, 61, 145, 0.2);
+  background: rgba(11, 61, 145, 0.04);
+  color: var(--ao-color-alliance-blue);
+}
+.ao-ai-trigger:hover {
+  border-color: rgba(11, 61, 145, 0.4);
+  background: rgba(11, 61, 145, 0.08);
+  color: var(--ao-color-deep-navy);
+}
+
+/* Universal Create (+) */
+.ao-universal-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-color-text-primary);
+  color: var(--ao-color-bg-surface);
+  border: none;
+  cursor: pointer;
+  transition: var(--ao-transition-transform);
+}
+.ao-universal-create:hover {
+  transform: scale(1.05);
+  background: var(--ao-color-alliance-blue);
+}
+
+/* --- 2. WORKSPACE LAYER --- */
+.ao-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- 3. CONTEXTUAL SIDEBAR --- */
+.ao-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--ao-color-bg-secondary);
+  border-right: 1px solid var(--ao-color-border-default);
+  transition: width var(--ao-duration-normal) var(--ao-ease-snappy);
+  overflow: hidden;
+  z-index: var(--ao-z-elevated);
+}
+
+.ao-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 var(--ao-space-4);
+  border-bottom: 1px solid var(--ao-color-border-subtle);
+}
+
+.ao-module-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-space-2);
+}
+
+.ao-module-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.ao-sidebar-nav {
+  flex: 1;
+  padding: var(--ao-space-3);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-space-4);
+}
+
+.ao-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-space-1);
+}
+
+.ao-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--ao-space-3);
+  padding: 6px var(--ao-space-2);
+  border-radius: var(--ao-radius-md);
+  color: var(--ao-color-text-secondary);
+  text-decoration: none;
+  transition: var(--ao-transition-color);
+  font-family: var(--ao-font-sans);
+  font-size: 13px;
+  font-weight: var(--ao-weight-medium);
+  border: 1px solid transparent;
+}
+
+.ao-sidebar-link:hover {
+  background: var(--ao-color-bg-tertiary);
+  color: var(--ao-color-text-primary);
+}
+
+.ao-sidebar-link.active {
+  background: var(--ao-color-bg-surface);
+  color: var(--ao-color-alliance-blue);
+  border-color: var(--ao-color-border-default);
+  box-shadow: var(--ao-shadow-sm);
+  font-weight: var(--ao-weight-semibold);
+}
+
+/* --- 4. MAIN VIEWPORT --- */
+.ao-viewport {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--ao-color-bg-primary);
+  position: relative;
+}
+
+.ao-viewport-inner {
+  padding: var(--ao-space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ao-sidebar-section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================= */
+
+@media (max-width: 768px) {
+  /* 1. TOP NAV COMPACT */
+  .ao-top-nav {
+    padding: 0 var(--ao-space-2);
+  }
+
+  .ao-brand-text {
+    display: none; /* Keep only the logo */
+  }
+
+  .ao-nav-tool-btn {
+    padding: 0 var(--ao-space-2);
+  }
+
+  .ao-nav-tool-btn span, 
+  .ao-nav-tool-btn kbd {
+    display: none; /* Hide text/shortcuts, keep icons only */
+  }
+
+  .ao-nav-center {
+    justify-content: flex-start;
+  }
+
+  /* 2. SIDEBAR BECOMES BOTTOM NAVIGATION */
+  .ao-shell {
+    flex-direction: column;
+  }
+  
+  .ao-workspace {
+    flex-direction: column;
+  }
+
+  /* Force width even if framer-motion injects style */
+  .ao-sidebar {
+    width: 100% !important;
+    height: 60px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--ao-color-border-default);
+    order: 2; /* Move it to bottom */
+    z-index: var(--ao-z-fixed);
+    background: var(--ao-color-bg-surface);
+    padding-bottom: env(safe-area-inset-bottom); /* For iOS notches */
+  }
+  
+  .ao-viewport {
+    order: 1; /* Viewport takes remaining space above sidebar */
+    height: calc(100vh - 48px - 60px - env(safe-area-inset-bottom));
+  }
+  
+  .ao-sidebar-header {
+    display: none; /* Hide module header on mobile */
+  }
+  
+  .ao-sidebar-nav {
+    flex: 1;
+    flex-direction: row;
+    padding: 0 var(--ao-space-2);
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: center;
+    gap: var(--ao-space-4);
+    /* Hide scrollbar for clean OS feel */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .ao-sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .ao-sidebar-section {
+    flex-direction: row;
+    gap: var(--ao-space-2);
+    align-items: center;
+  }
+
+  /* Hide section titles */
+  .ao-sidebar-section .ao-t-micro {
+    display: none;
+  }
+
+  .ao-sidebar-section-items {
+    flex-direction: row;
+    gap: var(--ao-space-2);
+  }
+  
+  .ao-sidebar-link {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 10px;
+    padding: var(--ao-space-2);
+    width: 60px; /* Fixed width for uniform bottom nav items */
+    justify-content: center;
+    text-align: center;
+    border: none;
+  }
+  
+  .ao-sidebar-link svg {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+  }
+
+  .ao-sidebar-link span:not(:last-child) {
+    text-overflow: clip; /* Don't ellipsis on bottom nav, just truncate clean or let it wrap if needed, but width limits it */
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Badges hide on mobile bottom bar */
+  .ao-sidebar-link span:last-child:not(:first-child) {
+    display: none;
+  }
+
+  .ao-sidebar-link.active {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--ao-color-alliance-blue);
+  }
+
+  .ao-sidebar-link.active svg {
+    transform: translateY(-2px);
+    transition: transform 0.2s;
+  }
+
+  /* 3. VIEWPORT INNER PADDING */
+  .ao-viewport-inner {
+    padding: var(--ao-space-4);
+  }
+}

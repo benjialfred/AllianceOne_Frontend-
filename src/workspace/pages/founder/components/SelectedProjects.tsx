@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 const FadeUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
+  const isInView = useInView(ref, { once: true, margin: '-50px 0px' });
   const isReducedMotion = useReducedMotion();
   return (
     <motion.div
@@ -97,39 +97,41 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
               style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}
             >
               {/* Project Image */}
-              {project.link ? (
-                <a 
-                  href={project.link} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  onMouseEnter={() => setCursorState('view')}
-                  onMouseLeave={() => setCursorState('default')}
-                  style={{ display: 'block', overflow: 'hidden', borderRadius: '8px', position: 'relative', aspectRatio: '16/10' }}
-                >
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                  />
-                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)' }} />
-                </a>
-              ) : (
-                <div style={{ display: 'block', overflow: 'hidden', borderRadius: '8px', position: 'relative', aspectRatio: '16/10' }}>
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                  />
-                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)' }} />
-                  <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    Accès Privé
+              <div style={{ display: 'block', overflow: 'hidden', borderRadius: '12px', position: 'relative', aspectRatio: '16/10', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
+                {project.link ? (
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    onMouseEnter={() => setCursorState('view')}
+                    onMouseLeave={() => setCursorState('default')}
+                    style={{ display: 'block', width: '100%', height: '100%' }}
+                  >
+                    <motion.img 
+                      src={project.image} 
+                      alt={project.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center' }}
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)', pointerEvents: 'none' }} />
+                  </a>
+                ) : (
+                  <div style={{ display: 'block', width: '100%', height: '100%' }}>
+                    <motion.img 
+                      src={project.image} 
+                      alt={project.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center' }}
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)', pointerEvents: 'none' }} />
+                    <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', color: 'white', padding: '0.5rem 1rem', borderRadius: '20px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      Accès Privé
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Project Info */}
               <div>
@@ -179,14 +181,19 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
             {COLLABORATIONS.map((collab, idx) => (
-              <div key={idx} style={{ paddingBottom: '3rem', borderBottom: '1px solid var(--founder-border-light)' }}>
+              <motion.div 
+                key={idx} 
+                style={{ paddingBottom: '3rem', borderBottom: '1px solid var(--founder-border-light)' }}
+                whileHover={{ x: 10 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
                   <h4 className="founder-subtitle" style={{ color: 'var(--founder-text-display)', margin: 0 }}>{collab.title}</h4>
                   <span className="founder-micro">{collab.status}</span>
                 </div>
                 <div className="founder-sub" style={{ color: 'var(--founder-accent)', marginBottom: '1rem' }}>{collab.role}</div>
                 <p className="founder-body" style={{ margin: 0 }}>{collab.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

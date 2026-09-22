@@ -232,8 +232,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
           </div>
         </div>
 
-        {/* Diagonal clip */}
-        <div className="auth-diagonal-edge" />
       </div>
 
       {/* ───────── RIGHT: FORM PANEL ───────── */}
