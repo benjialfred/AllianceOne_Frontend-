@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import portfolioImg from '../../../../../assets/portfolio.jpeg';
 
 // Complex SVG mask path for the portrait
 const PORTRAIT_PATH = "M 50 10 C 150 5, 250 20, 280 100 C 300 150, 270 250, 280 350 C 290 450, 200 480, 150 490 C 50 500, 10 400, 20 250 C 30 100, -20 20, 50 10 Z";
@@ -32,7 +33,7 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
           className="founder-micro"
           style={{ marginBottom: '4rem' }}
         >
-          Founder / Alliance One
+          Fondateur / Alliance One
         </motion.div>
         
         {/* Typographic Masking Assembly */}
@@ -75,16 +76,16 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
           style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', maxWidth: '400px' }}
         >
           <div>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Focus</div>
-            <div className="founder-sub">Systems / Product / AI</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Domaine</div>
+            <div className="founder-sub">Systèmes / Produit / IA</div>
           </div>
           <div>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Location</div>
-            <div className="founder-sub">Cameroon</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Localisation</div>
+            <div className="founder-sub">Cameroun</div>
           </div>
           <div style={{ gridColumn: 'span 2', marginTop: '1rem' }}>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Currently Building</div>
-            <div className="founder-sub">Digital systems for modern organizations.</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Construit Actuellement</div>
+            <div className="founder-sub">Des systèmes digitaux pour les organisations modernes.</div>
           </div>
         </motion.div>
       </motion.div>
@@ -161,8 +162,7 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 2.5, duration: 2, ease: "easeOut" }}
             >
-              {/* Future real image goes here */}
-              <div style={{ width: '100%', height: '100%', opacity: 0.1, backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px' }} />
+              <img src={portfolioImg} alt="Founder Portrait" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </motion.div>
           </foreignObject>
           
@@ -175,7 +175,7 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 3, duration: 1 }}
         >
-          <div className="founder-micro" style={{ fontSize: '8px' }}>NODE // 01</div>
+          <div className="founder-micro" style={{ fontSize: '8px' }}>NŒUD // 01</div>
         </motion.div>
       </div>
 

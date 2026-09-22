@@ -147,6 +147,7 @@ export const LandingPage: React.FC = () => {
             <a href="#ai" className="landing-nav-link">Intelligence</a>
             <a href="#pricing" className="landing-nav-link">Tarifs</a>
             <a href="#faq" className="landing-nav-link">FAQ</a>
+            <a onClick={() => navigate('/founder')} className="landing-nav-link" style={{cursor: 'pointer'}}>Le Fondateur</a>
             <a href="#contact" className="landing-nav-link">Contact</a>
           </nav>
 
@@ -170,6 +171,7 @@ export const LandingPage: React.FC = () => {
             <a href="#ai" onClick={() => setMobileMenuOpen(false)}>Intelligence</a>
             <a href="#developers" onClick={() => setMobileMenuOpen(false)}>Développeurs</a>
             <a href="#africa" onClick={() => setMobileMenuOpen(false)}>Afrique</a>
+            <a onClick={() => navigate('/founder')} style={{cursor: 'pointer'}}>Le Fondateur</a>
             <div className="mobile-drawer-actions">
               <button className="mobile-login" onClick={() => navigate('/login')}>Se connecter</button>
               <button className="mobile-cta" onClick={() => navigate('/register')}>Créer mon environnement</button>

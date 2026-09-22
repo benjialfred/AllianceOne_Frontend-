@@ -5,15 +5,15 @@
    ========================================================================== */
 
 :root {
-  --founder-bg: #09090b;
-  --founder-bg-subtle: #121214;
-  --founder-bg-surface: #18181b;
-  --founder-bg-surface-hover: #27272a;
+  --founder-bg: #020617;
+  --founder-bg-subtle: #0f172a;
+  --founder-bg-surface: #1e293b;
+  --founder-bg-surface-hover: #334155;
   
   --founder-text-display: #ffffff;
   --founder-text-primary: #e4e4e7; 
-  --founder-text-secondary: #a1a1aa; 
-  --founder-text-muted: #71717a; 
+  --founder-text-secondary: #94a3b8; 
+  --founder-text-muted: #64748b; 
   
   --founder-border: rgba(255, 255, 255, 0.08);
   --founder-border-light: rgba(255, 255, 255, 0.04);

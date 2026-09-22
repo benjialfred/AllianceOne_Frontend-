@@ -75,8 +75,8 @@ export const AllianceOneClimax: React.FC<{ setCursorState: (state: any) => void 
 
         {/* Peripheral Nodes */}
         {[
-          { x: 100, y: 200, label: 'CORE' }, { x: 800, y: 150, label: 'USERS' }, 
-          { x: 900, y: 800, label: 'DATA' }, { x: 200, y: 850, label: 'ORGS' }
+          { x: 100, y: 200, label: 'CŒUR' }, { x: 800, y: 150, label: 'UTILISATEURS' }, 
+          { x: 900, y: 800, label: 'DONNÉES' }, { x: 200, y: 850, label: 'ORGS' }
         ].map((node, i) => (
           <motion.g key={`node-${i}`} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1 + (i * 0.2) }}>
             <circle cx={node.x} cy={node.y} r="4" fill="var(--founder-text-display)" />
@@ -107,7 +107,7 @@ export const AllianceOneClimax: React.FC<{ setCursorState: (state: any) => void 
           className="founder-micro" 
           style={{ marginBottom: '2rem' }}
         >
-          04 — System Activation
+          04 — Activation du Système
         </motion.div>
         
         <div style={{ overflow: 'hidden', margin: '0 auto', paddingBottom: '2rem' }}>

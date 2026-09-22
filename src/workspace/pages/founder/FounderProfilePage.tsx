@@ -124,15 +124,15 @@ export const FounderProfilePage: React.FC = () => {
           <FadeUp>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem', alignItems: 'start' }}>
               <div>
-                <div className="founder-micro" style={{ marginBottom: '2rem' }}>01 — Identity</div>
+                <div className="founder-micro" style={{ marginBottom: '2rem' }}>01 — Identité</div>
                 <div className="founder-micro" style={{ color: 'var(--founder-text-display)', lineHeight: 2 }}>
-                  SOFTWARE ENGINEER<br/>
-                  PRODUCT BUILDER<br/>
-                  FOUNDER
+                  INGÉNIEUR LOGICIEL<br/>
+                  BÂTISSEUR DE PRODUITS<br/>
+                  FONDATEUR
                 </div>
               </div>
               <div>
-                <h2 className="founder-section-title" style={{ marginBottom: '2rem' }}>Engineering with intention.</h2>
+                <h2 className="founder-section-title" style={{ marginBottom: '2rem' }}>L'ingénierie avec intention.</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', maxWidth: '800px' }}>
                   <p className="founder-body">
                     Je suis un ingénieur logiciel et bâtisseur de produits focalisé sur les systèmes numériques modernes. Ma conviction est que le code n'est qu'un vecteur de résolution : l'essentiel réside dans la traduction d'une complexité métier en solutions élégantes, fiables et scalables.
@@ -152,7 +152,7 @@ export const FounderProfilePage: React.FC = () => {
         <section>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
             <FadeUp>
-              <div className="founder-micro">02 — Methodology</div>
+              <div className="founder-micro">02 — Méthodologie</div>
             </FadeUp>
             
             <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
@@ -169,25 +169,25 @@ export const FounderProfilePage: React.FC = () => {
 
               <motion.div ref={buildRef1} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b1View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
-                <div className="founder-section-title">Understand</div>
+                <div className="founder-section-title">Comprendre</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Comprendre précisément l'origine du problème, les contraintes métier et les objectifs avant d'écrire la moindre ligne de code. L'ingénierie commence par l'écoute.</div>
               </motion.div>
 
               <motion.div ref={buildRef2} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b2View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
-                <div className="founder-section-title">Architect</div>
+                <div className="founder-section-title">Architecturer</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Définir des fondations résilientes. Choisir les technologies pour leur adéquation avec les exigences de sécurité et de performance.</div>
               </motion.div>
 
               <motion.div ref={buildRef3} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b3View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
-                <div className="founder-section-title">Build</div>
+                <div className="founder-section-title">Construire</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Exécuter avec précision. Écrire un code propre, testable et documenté. Chaque fonction doit avoir une raison d'exister.</div>
               </motion.div>
 
               <motion.div ref={buildRef4} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b4View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
-                <div className="founder-section-title">Refine</div>
+                <div className="founder-section-title">Raffiner</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Chercher la simplicité au-delà de la complexité initiale. L'excellence se trouve dans la soustraction.</div>
               </motion.div>
             </div>
@@ -212,7 +212,7 @@ export const FounderProfilePage: React.FC = () => {
         <section>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
             <FadeUp>
-              <div className="founder-micro">05 — Selected Work</div>
+              <div className="founder-micro">05 — Projets Sélectionnés</div>
             </FadeUp>
             
             <div>
@@ -225,12 +225,27 @@ export const FounderProfilePage: React.FC = () => {
                 whileHover={{ x: 10 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               >
-                <div className="founder-micro">2024—PRES</div>
+                <div className="founder-micro">2024—PRÉS</div>
                 <div>
-                  <div className="founder-subtitle">Alliance One Platform</div>
-                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Core Architecture, Data Modeling, Unified UI</div>
+                  <div className="founder-subtitle">Espace Projets & Innovation</div>
+                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Découvrez l'ensemble de mes réalisations, produits et solutions développés.</div>
                 </div>
-                <div className="founder-sub" style={{ textAlign: 'right' }}>Lead Architect & Fullstack</div>
+                <div className="founder-sub" style={{ textAlign: 'right' }}>Portfolio Projets</div>
+              </motion.div>
+
+              <motion.div 
+                style={{ display: 'grid', gridTemplateColumns: '100px 1fr 200px', padding: '2rem 0', borderBottom: '1px solid var(--founder-border)' }}
+                onMouseEnter={() => setCursorState('view')}
+                onMouseLeave={cursorLeave}
+                whileHover={{ x: 10 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              >
+                <div className="founder-micro">2024—PRÉS</div>
+                <div>
+                  <div className="founder-subtitle">Plateforme Alliance One</div>
+                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Architecture Core, Modélisation de Données, UI Unifiée</div>
+                </div>
+                <div className="founder-sub" style={{ textAlign: 'right' }}>Architecte Principal & Fullstack</div>
               </motion.div>
 
               <motion.div 
@@ -238,10 +253,10 @@ export const FounderProfilePage: React.FC = () => {
               >
                 <div className="founder-micro">ARCHIVE</div>
                 <div>
-                  <div className="founder-subtitle">Previous Professional Engagements</div>
-                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Detailed in Curriculum Vitae</div>
+                  <div className="founder-subtitle">Engagements Professionnels Précédents</div>
+                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Détaillé dans le Curriculum Vitae</div>
                 </div>
-                <div className="founder-sub" style={{ textAlign: 'right' }}>Available in CV</div>
+                <div className="founder-sub" style={{ textAlign: 'right' }}>Disponible dans le CV</div>
               </motion.div>
             </div>
           </div>
@@ -253,12 +268,12 @@ export const FounderProfilePage: React.FC = () => {
         <section>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
             <FadeUp>
-              <div className="founder-micro">06 — Beyond Code</div>
+              <div className="founder-micro">06 — Au-delà du Code</div>
             </FadeUp>
             
             <div>
               <FadeUp delay={0.2}>
-                <h2 className="founder-section-title" style={{ marginBottom: '4rem' }}>Character dimensions.</h2>
+                <h2 className="founder-section-title" style={{ marginBottom: '4rem' }}>Dimensions de caractère.</h2>
               </FadeUp>
               
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
@@ -267,7 +282,7 @@ export const FounderProfilePage: React.FC = () => {
                   <div className="founder-body">Constance dans l'effort et exécution méthodique. La capacité à répéter l'effort jusqu'à la maîtrise, inspirée par la rigueur sportive (Workout, Basketball).</div>
                 </FadeUp>
                 <FadeUp delay={0.4}>
-                  <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '1rem' }}>Reflection</div>
+                  <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '1rem' }}>Réflexion</div>
                   <div className="founder-body">Profondeur de pensée et ancrage des valeurs fondamentales. Comprendre le 'pourquoi' avant d'optimiser le 'comment'.</div>
                 </FadeUp>
                 <FadeUp delay={0.5}>
@@ -291,7 +306,7 @@ export const FounderProfilePage: React.FC = () => {
           style={{ textAlign: 'center', opacity: cvOpacity, scale: cvScale }}
         >
           <div className="founder-micro" style={{ marginBottom: '2rem' }}>07 — Curriculum Vitae</div>
-          <h2 className="founder-section-title" style={{ marginBottom: '3rem' }}>A closer look at the work.</h2>
+          <h2 className="founder-section-title" style={{ marginBottom: '3rem' }}>Un regard plus attentif sur le travail.</h2>
           
           <button 
             onClick={handleCVClick} 
@@ -299,7 +314,7 @@ export const FounderProfilePage: React.FC = () => {
             onMouseLeave={cursorLeave}
             className="founder-link-raw" 
           >
-            VIEW CURRICULUM VITAE
+            VOIR LE CURRICULUM VITAE
           </button>
         </motion.section>
 

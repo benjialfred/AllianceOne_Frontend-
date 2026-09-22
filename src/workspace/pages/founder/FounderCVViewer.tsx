@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Download, FileText, Loader2 } from 'lucide-react';
 import { founderApi, type FounderCV } from '../../../core/api/founder';
+import cvImg from '../../../../assets/CV.jpeg';
 import './FounderProfile.css';
 
 export const FounderCVViewer: React.FC = () => {
@@ -82,25 +83,9 @@ export const FounderCVViewer: React.FC = () => {
       </header>
 
       <main className="cv-viewer-content">
-        {loading ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--color-text-muted)' }}>
-            <Loader2 size={32} className="animate-spin" style={{ marginBottom: '16px' }} />
-            <p>Chargement du CV...</p>
-          </div>
-        ) : cvData?.file_url ? (
-          <div className="cv-iframe-container">
-            <object data={cvData.file_url} type="application/pdf">
-              <iframe src={cvData.file_url} title="CV Viewer">
-                <p>Votre navigateur ne supporte pas la lecture de PDF. <a href={cvData.file_url}>Télécharger le CV</a></p>
-              </iframe>
-            </object>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--color-text-muted)' }}>
-            <FileText size={48} style={{ marginBottom: '16px', opacity: 0.5 }} />
-            <p>Aucun CV actif disponible pour le moment.</p>
-          </div>
-        )}
+        <div className="cv-iframe-container" style={{ overflow: 'auto', display: 'flex', justifyContent: 'center', background: 'var(--founder-bg-subtle)', padding: '2rem', height: '100%', alignItems: 'flex-start' }}>
+          <img src={cvImg} alt="CV" style={{ maxWidth: '100%', height: 'auto', boxShadow: '0 0 40px rgba(0,0,0,0.5)' }} />
+        </div>
       </main>
     </div>
   );
