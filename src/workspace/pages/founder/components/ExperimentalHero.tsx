@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
-import portfolioImg from '../../../../../assets/portfolio.jpeg';
+import portfolioImg from '../../../../assets/portfolio.jpeg';
 
 // Complex SVG mask path for the portrait
 const PORTRAIT_PATH = "M 50 10 C 150 5, 250 20, 280 100 C 300 150, 270 250, 280 350 C 290 450, 200 480, 150 490 C 50 500, 10 400, 20 250 C 30 100, -20 20, 50 10 Z";

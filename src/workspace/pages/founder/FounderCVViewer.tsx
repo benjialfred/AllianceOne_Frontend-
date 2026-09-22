@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Download, FileText, Loader2 } from 'lucide-react';
 import { founderApi, type FounderCV } from '../../../core/api/founder';
-import cvImg from '../../../../assets/CV.jpeg';
+import cvImg from '../../../assets/CV.jpeg';
 import './FounderProfile.css';
 
 export const FounderCVViewer: React.FC = () => {
