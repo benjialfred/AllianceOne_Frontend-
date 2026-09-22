@@ -9,6 +9,7 @@ import { ContextualCursor, type CursorState } from './components/ContextualCurso
 import { ExperimentalHero } from './components/ExperimentalHero';
 import { SystemicEngineering } from './components/SystemicEngineering';
 import { AllianceOneClimax } from './components/AllianceOneClimax';
+import { SelectedProjects } from './components/SelectedProjects';
 
 /* ==========================================================================
    REUSABLE MOTION COMPONENTS
@@ -209,58 +210,7 @@ export const FounderProfilePage: React.FC = () => {
         <div className="founder-spacer"></div>
         
         {/* ================= 05 / SELECTED WORK ================= */}
-        <section>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
-            <FadeUp>
-              <div className="founder-micro">05 — Projets Sélectionnés</div>
-            </FadeUp>
-            
-            <div>
-              <LineDraw />
-              
-              <motion.div 
-                style={{ display: 'grid', gridTemplateColumns: '100px 1fr 200px', padding: '2rem 0', borderBottom: '1px solid var(--founder-border)' }}
-                onMouseEnter={() => setCursorState('view')}
-                onMouseLeave={cursorLeave}
-                whileHover={{ x: 10 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              >
-                <div className="founder-micro">2024—PRÉS</div>
-                <div>
-                  <div className="founder-subtitle">Espace Projets & Innovation</div>
-                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Découvrez l'ensemble de mes réalisations, produits et solutions développés.</div>
-                </div>
-                <div className="founder-sub" style={{ textAlign: 'right' }}>Portfolio Projets</div>
-              </motion.div>
-
-              <motion.div 
-                style={{ display: 'grid', gridTemplateColumns: '100px 1fr 200px', padding: '2rem 0', borderBottom: '1px solid var(--founder-border)' }}
-                onMouseEnter={() => setCursorState('view')}
-                onMouseLeave={cursorLeave}
-                whileHover={{ x: 10 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              >
-                <div className="founder-micro">2024—PRÉS</div>
-                <div>
-                  <div className="founder-subtitle">Plateforme Alliance One</div>
-                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Architecture Core, Modélisation de Données, UI Unifiée</div>
-                </div>
-                <div className="founder-sub" style={{ textAlign: 'right' }}>Architecte Principal & Fullstack</div>
-              </motion.div>
-
-              <motion.div 
-                style={{ display: 'grid', gridTemplateColumns: '100px 1fr 200px', padding: '2rem 0', borderBottom: '1px solid var(--founder-border)', opacity: 0.3 }}
-              >
-                <div className="founder-micro">ARCHIVE</div>
-                <div>
-                  <div className="founder-subtitle">Engagements Professionnels Précédents</div>
-                  <div className="founder-sub" style={{ marginTop: '0.5rem' }}>Détaillé dans le Curriculum Vitae</div>
-                </div>
-                <div className="founder-sub" style={{ textAlign: 'right' }}>Disponible dans le CV</div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        <SelectedProjects setCursorState={setCursorState} />
 
         <div className="founder-spacer"></div>
 
