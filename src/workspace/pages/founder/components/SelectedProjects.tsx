@@ -26,7 +26,7 @@ const INDIVIDUAL_PROJECTS = [
     description: "L'écosystème central. Une plateforme SaaS complète conçue pour la gestion unifiée des organisations modernes (écoles, cliniques, entreprises). Architecture modulaire, modélisation de données universelle, et intelligence artificielle intégrée pour automatiser les processus critiques de bout en bout.",
     tags: ["React", "Python", "Architecture Système", "IA"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-    link: "#lien-alliance-one-a-remplacer",
+    link: "alliancefrontend.vercel.app",
   },
   {
     title: "Emergence School",
@@ -35,7 +35,7 @@ const INDIVIDUAL_PROJECTS = [
     description: "Logiciel propriétaire complet pour la gestion d'un établissement scolaire. Le système digitalise et centralise l'ensemble du cycle de vie académique : des inscriptions à la génération des bulletins officiels, en passant par le suivi des présences et la gestion financière. Un outil vital qui a éliminé la paperasse et drastiquement accéléré la prise de décision administrative.",
     tags: ["EdTech", "Fullstack", "Base de données", "UI/UX"],
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
-    link: "#lien-emergence-school-a-remplacer",
+    // Pas de lien pour un logiciel propriétaire
   },
   {
     title: "Prophétie Couture",
@@ -44,7 +44,7 @@ const INDIVIDUAL_PROJECTS = [
     description: "Plateforme sur mesure conçue pour la gestion des ventes et des commandes en ligne d'un atelier de couture professionnel. Elle automatise la prise de mesures des clients, le suivi précis de la production des vêtements, et offre une vitrine e-commerce fluide. Une transformation digitale complète pour dynamiser l'artisanat local.",
     tags: ["E-commerce", "Automatisation", "Dashboard"],
     image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
-    link: "#lien-prophetie-couture-a-remplacer",
+    link: "https://prophetiecouture.vercel.app",
   },
   {
     title: "Minimalist TodoApp",
@@ -97,23 +97,39 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
               style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}
             >
               {/* Project Image */}
-              <a 
-                href={project.link} 
-                target="_blank" 
-                rel="noreferrer"
-                onMouseEnter={() => setCursorState('view')}
-                onMouseLeave={() => setCursorState('default')}
-                style={{ display: 'block', overflow: 'hidden', borderRadius: '8px', position: 'relative', aspectRatio: '16/10' }}
-              >
-                <motion.img 
-                  src={project.image} 
-                  alt={project.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
-                <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)' }} />
-              </a>
+              {project.link ? (
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  onMouseEnter={() => setCursorState('view')}
+                  onMouseLeave={() => setCursorState('default')}
+                  style={{ display: 'block', overflow: 'hidden', borderRadius: '8px', position: 'relative', aspectRatio: '16/10' }}
+                >
+                  <motion.img 
+                    src={project.image} 
+                    alt={project.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)' }} />
+                </a>
+              ) : (
+                <div style={{ display: 'block', overflow: 'hidden', borderRadius: '8px', position: 'relative', aspectRatio: '16/10' }}>
+                  <motion.img 
+                    src={project.image} 
+                    alt={project.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.1)' }} />
+                  <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    Accès Privé
+                  </div>
+                </div>
+              )}
 
               {/* Project Info */}
               <div>
@@ -122,16 +138,18 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
                     <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>{project.year} — {project.role}</div>
                     <h3 className="founder-section-title" style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)', color: 'var(--founder-text-display)' }}>{project.title}</h3>
                   </div>
-                  <a 
-                    href={project.link} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    onMouseEnter={() => setCursorState('explore')}
-                    onMouseLeave={() => setCursorState('default')}
-                    style={{ color: 'var(--founder-text-display)', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', border: '1px solid var(--founder-border)', borderRadius: '50%', flexShrink: 0 }}
-                  >
-                    <ArrowUpRight size={20} />
-                  </a>
+                  {project.link && (
+                    <a 
+                      href={project.link} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      onMouseEnter={() => setCursorState('explore')}
+                      onMouseLeave={() => setCursorState('default')}
+                      style={{ color: 'var(--founder-text-display)', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', border: '1px solid var(--founder-border)', borderRadius: '50%', flexShrink: 0 }}
+                    >
+                      <ArrowUpRight size={20} />
+                    </a>
+                  )}
                 </div>
                 
                 <p className="founder-body" style={{ marginBottom: '2rem' }}>
