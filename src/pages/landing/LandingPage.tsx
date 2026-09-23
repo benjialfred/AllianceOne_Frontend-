@@ -27,65 +27,25 @@ const FadeIn: React.FC<{ children: React.ReactNode; delay?: number; className?: 
   );
 };
 
+import allianceOneLogo from '../../assets/alliance-one.png';
+
 /* ── ANIMATION SIGNATURE AO (HERO) ── */
-const AOSignature: React.FC = () => {
-  const [isFormed, setIsFormed] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsFormed(true), 2800);
-    return () => clearTimeout(timer);
-  }, []);
-
+const HeroBranding: React.FC = () => {
   return (
-    <div className="ao-signature-container">
-      {/* Grille de construction (Fade out) */}
-      <motion.svg className="ao-svg-layer" viewBox="0 0 400 400"
-        animate={{ opacity: isFormed ? 0 : 1 }}
-        transition={{ duration: 1 }}
-      >
-        <motion.path 
-          className="ao-path" stroke="#E5E7EB" strokeWidth="1"
-          d="M0 200 H400 M200 0 V400 M100 0 V400 M300 0 V400 M0 100 H400 M0 300 H400"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+    <>
+      <div className="hero-glow-1" />
+      <div className="hero-glow-2" />
+      <div className="hero-content">
+        <motion.img 
+          src={allianceOneLogo} 
+          alt="Alliance One 3D Logo"
+          className="hero-logo-img"
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         />
-      </motion.svg>
-
-      {/* Lignes structurelles de l'A et du O */}
-      <motion.svg className="ao-svg-layer" viewBox="0 0 400 400">
-        {/* Le 'A' stylisé */}
-        <motion.path 
-          className="ao-path"
-          d="M 120 280 L 170 120 L 220 280 M 145 200 L 195 200"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        />
-        {/* Le 'O' parfait */}
-        <motion.circle 
-          className="ao-path"
-          cx="280" cy="200" r="50"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        />
-      </motion.svg>
-
-      {/* Nœuds de connexion animés */}
-      <motion.div 
-        style={{ position: 'absolute', width: 4, height: 4, background: '#111111', top: 118, left: 168 }}
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.2, duration: 0.5 }}
-      />
-      <motion.div 
-        style={{ position: 'absolute', width: 4, height: 4, background: '#111111', top: 278, left: 118 }}
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.4, duration: 0.5 }}
-      />
-      <motion.div 
-        style={{ position: 'absolute', width: 4, height: 4, background: '#111111', top: 278, left: 218 }}
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.6, duration: 0.5 }}
-      />
-    </div>
+      </div>
+    </>
   );
 };
 
@@ -139,13 +99,13 @@ export const LandingPage: React.FC = () => {
       <section className="hero-genesis">
         <div className="hero-grid-bg" />
         
-        <AOSignature />
+        <HeroBranding />
 
         <motion.div 
-          className="hero-text-overlay"
+          className="hero-content"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 3.5 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
         >
           <h1 className="hero-editorial-title">
             L'art de diriger.<br />Élevé au rang de standard.
