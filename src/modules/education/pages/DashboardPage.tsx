@@ -79,7 +79,7 @@ export const DashboardPage = () => {
     const formattedDate = today.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     
     return (
-        <div style={{ margin: 'calc(-1 * var(--spacing-8)) calc(-1 * var(--spacing-10))', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ margin: 'calc(-1 * var(--ao-space-8)) calc(-1 * var(--ao-space-10))', display: 'flex', flexDirection: 'column' }}>
             
             {/* HERO SECTION IMMERSIVE */}
             <VideoHero 
@@ -104,12 +104,12 @@ export const DashboardPage = () => {
                 }
             />
 
-            <div style={{ padding: '0 var(--spacing-10) var(--spacing-10)' }}>
+            <div style={{ padding: '0 var(--ao-space-10) var(--ao-space-10)' }}>
                 {/* INTELLIGENCE SECTION */}
                 <IntelligenceAlert alerts={alerts} onDismiss={dismissAlert} />
 
                 {/* PREMIUM KPIS */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--spacing-6)', marginBottom: 'var(--spacing-8)' }}>
+                <div className="ao-card-grid" style={{ marginBottom: 'var(--ao-space-8)' }}>
                     <PremiumKPICard 
                         title="Nouvelles Inscriptions"
                         value={kpis.new_enrollments || 0}
@@ -148,11 +148,11 @@ export const DashboardPage = () => {
                     />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 'var(--spacing-8)' }}>
+                <div className="ao-split-grid">
                     
                     {/* ANALYTICS SECTION */}
-                    <Card hoverable={false} style={{ padding: 'var(--spacing-6)' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-6)' }}>
+                    <Card hoverable={false} style={{ padding: 'var(--ao-space-6)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--ao-space-6)' }}>
                             <h3 className="t-h3" style={{ margin: 0 }}>Évolution Financière (Recettes)</h3>
                             <Button variant="secondary" size="sm" icon={BarChart3} onClick={() => navigate('/analytics')}>
                                 Vue Détaillée
@@ -181,12 +181,12 @@ export const DashboardPage = () => {
                     </Card>
 
                     {/* TIMELINE SECTION */}
-                    <Card hoverable={false} style={{ padding: 'var(--spacing-6)', display: 'flex', flexDirection: 'column' }}>
-                        <h3 className="t-h3" style={{ marginBottom: 'var(--spacing-6)' }}>Activités Récentes</h3>
+                    <Card hoverable={false} style={{ padding: 'var(--ao-space-6)', display: 'flex', flexDirection: 'column' }}>
+                        <h3 className="t-h3" style={{ marginBottom: 'var(--ao-space-6)' }}>Activités Récentes</h3>
                         <div style={{ flex: 1, overflowY: 'auto' }}>
                             <TimelineActivity activities={activities} />
                         </div>
-                        <div style={{ marginTop: 'var(--spacing-4)', textAlign: 'center', paddingTop: 'var(--spacing-4)', borderTop: '1px solid var(--color-surface-border)' }}>
+                        <div style={{ marginTop: 'var(--ao-space-4)', textAlign: 'center', paddingTop: 'var(--ao-space-4)', borderTop: '1px solid var(--color-surface-border)' }}>
                             <Button variant="ghost" fullWidth onClick={() => navigate('/audit')}>
                                 Voir tout l'historique
                             </Button>
@@ -195,7 +195,7 @@ export const DashboardPage = () => {
                 </div>
 
                 {/* PREMIUM PROMOTIONAL SECTION */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-6)', marginTop: 'var(--spacing-8)' }}>
+                <div className="ao-promo-grid" style={{ marginTop: 'var(--ao-space-8)' }}>
                     {/* Pub 1 */}
                     <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-sm)', height: '220px', cursor: 'pointer', transition: 'transform 0.3s ease, box-shadow 0.3s ease' }} className="hover-lift">
                         <video 
@@ -205,10 +205,10 @@ export const DashboardPage = () => {
                             loop 
                             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.2) 100%)', padding: 'var(--spacing-8)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.2) 100%)', padding: 'var(--ao-space-8)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                             <div style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '4px', width: 'max-content', fontSize: '10px', color: '#fff', fontWeight: 600, letterSpacing: '0.05em', marginBottom: '12px', backdropFilter: 'blur(4px)' }}>DÉCOUVERTE</div>
-                            <h4 style={{ color: '#fff', fontSize: 'var(--font-size-xl)', fontWeight: 700, marginBottom: 'var(--spacing-2)' }}>Le Nouveau Campus</h4>
-                            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--spacing-4)', maxWidth: '70%', lineHeight: 1.4 }}>Vivez l'expérience Alliance One dans nos nouvelles installations ultra-modernes.</p>
+                            <h4 style={{ color: '#fff', fontSize: 'var(--font-size-xl)', fontWeight: 700, marginBottom: 'var(--ao-space-2)' }}>Le Nouveau Campus</h4>
+                            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--ao-space-4)', maxWidth: '70%', lineHeight: 1.4 }}>Vivez l'expérience Alliance One dans nos nouvelles installations ultra-modernes.</p>
                         </div>
                     </div>
                     {/* Pub 2 */}
@@ -220,10 +220,10 @@ export const DashboardPage = () => {
                             loop 
                             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(79, 70, 229, 0.85) 0%, rgba(15, 23, 42, 0.2) 100%)', padding: 'var(--spacing-8)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(79, 70, 229, 0.85) 0%, rgba(15, 23, 42, 0.2) 100%)', padding: 'var(--ao-space-8)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                             <div style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '4px', width: 'max-content', fontSize: '10px', color: '#fff', fontWeight: 600, letterSpacing: '0.05em', marginBottom: '12px', backdropFilter: 'blur(4px)' }}>INNOVATION</div>
-                            <h4 style={{ color: '#fff', fontSize: 'var(--font-size-xl)', fontWeight: 700, marginBottom: 'var(--spacing-2)' }}>Alliance OS Entreprise</h4>
-                            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--spacing-4)', maxWidth: '70%', lineHeight: 1.4 }}>Passez à la vitesse supérieure avec nos solutions d'intelligence artificielle.</p>
+                            <h4 style={{ color: '#fff', fontSize: 'var(--font-size-xl)', fontWeight: 700, marginBottom: 'var(--ao-space-2)' }}>Alliance OS Entreprise</h4>
+                            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--ao-space-4)', maxWidth: '70%', lineHeight: 1.4 }}>Passez à la vitesse supérieure avec nos solutions d'intelligence artificielle.</p>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { Compass, MapPin, Sparkles } from 'lucide-react';
 import portfolioImg from '../../../../assets/portfolio.jpeg';
 
 // Complex SVG mask path for the portrait
@@ -79,15 +80,21 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
           style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', maxWidth: '400px' }}
         >
           <div>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Domaine</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Compass size={12} color="var(--founder-accent)" /> Domaine
+            </div>
             <div className="founder-sub">Systèmes / Produit / IA</div>
           </div>
           <div>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Localisation</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MapPin size={12} color="var(--founder-accent)" /> Localisation
+            </div>
             <div className="founder-sub">Cameroun</div>
           </div>
           <div style={{ gridColumn: 'span 2', marginTop: '1rem' }}>
-            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem' }}>Construit Actuellement</div>
+            <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={12} color="var(--founder-accent)" /> Construit Actuellement
+            </div>
             <div className="founder-sub">Des systèmes digitaux pour les organisations modernes.</div>
           </div>
         </motion.div>

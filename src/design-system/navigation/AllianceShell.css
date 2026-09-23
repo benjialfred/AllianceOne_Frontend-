@@ -18,8 +18,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 48px; /* Plus fin, plus technique */
-  padding: 0 var(--ao-space-4);
+  height: calc(48px + var(--ao-safe-top));
+  padding: var(--ao-safe-top) var(--ao-space-4) 0;
   background-color: var(--ao-color-bg-surface);
   border-bottom: 1px solid var(--ao-color-border-default);
   z-index: var(--ao-z-fixed);
@@ -250,7 +250,7 @@
 @media (max-width: 768px) {
   /* 1. TOP NAV COMPACT */
   .ao-top-nav {
-    padding: 0 var(--ao-space-2);
+    padding: var(--ao-safe-top) var(--ao-space-2) 0;
   }
 
   .ao-brand-text {

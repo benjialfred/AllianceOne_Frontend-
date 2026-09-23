@@ -31,46 +31,48 @@ export const Input = React.forwardRef<any, InputProps>(({
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-1)',
-    marginBottom: 'var(--spacing-4)',
+    gap: 'var(--ao-space-1)',
+    marginBottom: 'var(--ao-space-4)',
     width: '100%',
     ...style,
   };
 
   const labelStyle: React.CSSProperties = {
-    fontSize: 'var(--font-size-sm)',
-    fontWeight: 'var(--font-weight-medium)',
-    color: 'var(--color-text-primary)',
+    fontFamily: 'var(--ao-font-sans)',
+    fontSize: '12px',
+    fontWeight: 'var(--ao-weight-medium)',
+    color: 'var(--ao-color-text-primary)',
     display: 'flex',
     justifyContent: 'space-between',
   };
 
   // Determine border and ring colors
-  let borderColor = 'var(--color-surface-border)';
+  let borderColor = 'var(--ao-color-border-default)';
   let ringColor = 'transparent';
 
   if (error) {
-    borderColor = 'var(--color-danger-border)';
-    if (isFocused) ringColor = 'var(--color-danger-bg)';
+    borderColor = 'var(--ao-color-danger-text)';
+    if (isFocused) ringColor = 'var(--ao-color-danger-bg)';
   } else if (success) {
-    borderColor = 'var(--color-success-text)';
-    if (isFocused) ringColor = 'var(--color-success-bg)';
+    borderColor = 'var(--ao-color-success-text)';
+    if (isFocused) ringColor = 'var(--ao-color-success-bg)';
   } else if (isFocused) {
-    borderColor = 'var(--color-accent-500)';
-    ringColor = 'var(--color-accent-100)';
+    borderColor = 'var(--ao-color-alliance-blue)';
+    ringColor = 'rgba(11, 61, 145, 0.1)';
   }
 
   const inputBaseStyle: React.CSSProperties = {
-    padding: `var(--spacing-2) var(--spacing-3)`,
-    paddingLeft: icon ? 'var(--spacing-10)' : 'var(--spacing-3)',
-    borderRadius: 'var(--radius-md)',
+    padding: `var(--ao-space-2) var(--ao-space-3)`,
+    paddingLeft: icon ? 'var(--ao-space-10)' : 'var(--ao-space-3)',
+    borderRadius: 'var(--ao-radius-md)',
     border: `1px solid ${borderColor}`,
-    backgroundColor: 'var(--color-surface-card)',
-    color: 'var(--color-text-primary)',
-    fontSize: 'var(--font-size-base)',
+    backgroundColor: 'var(--ao-color-bg-surface)',
+    color: 'var(--ao-color-text-primary)',
+    fontSize: '13px',
+    height: 'clamp(36px, 5vw, 40px)',
     outline: 'none',
-    transition: 'all var(--transition-fast)',
-    boxShadow: isFocused ? `0 0 0 3px ${ringColor}` : 'var(--shadow-xs)',
+    transition: 'all var(--ao-duration-fast)',
+    boxShadow: isFocused ? `0 0 0 3px ${ringColor}` : 'var(--ao-shadow-sm)',
     width: '100%',
     appearance: type === 'select' ? 'none' : 'auto',
   };
@@ -80,7 +82,7 @@ export const Input = React.forwardRef<any, InputProps>(({
     style: inputBaseStyle,
     onFocus: (e: any) => { setIsFocused(true); onFocus?.(e); },
     onBlur: (e: any) => { setIsFocused(false); onBlur?.(e); },
-    className: `premium-input ${className}`,
+    className: `ao-input ${className}`,
     disabled: props.disabled,
   };
 
@@ -88,7 +90,7 @@ export const Input = React.forwardRef<any, InputProps>(({
     <div style={containerStyle}>
       {label && (
         <label style={labelStyle}>
-          <span>{label} {props.required && <span style={{color: 'var(--color-danger-text)'}}>*</span>}</span>
+          <span>{label} {props.required && <span style={{color: 'var(--ao-color-danger-text)'}}>*</span>}</span>
         </label>
       )}
       
@@ -96,14 +98,14 @@ export const Input = React.forwardRef<any, InputProps>(({
         {icon && (
           <div style={{
             position: 'absolute',
-            left: 'var(--spacing-3)',
+            left: 'var(--ao-space-3)',
             top: '50%',
             transform: 'translateY(-50%)',
-            color: isFocused ? 'var(--color-accent-500)' : 'var(--color-text-muted)',
+            color: isFocused ? 'var(--ao-color-alliance-blue)' : 'var(--ao-color-text-tertiary)',
             pointerEvents: 'none',
             display: 'flex',
             alignItems: 'center',
-            transition: 'color var(--transition-fast)'
+            transition: 'color var(--ao-duration-fast)'
           }}>
             {icon}
           </div>
@@ -115,14 +117,14 @@ export const Input = React.forwardRef<any, InputProps>(({
               <option value="" disabled hidden>Sélectionner...</option>
               {options?.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
-            <div style={{ position: 'absolute', right: 'var(--spacing-3)', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: 'var(--color-text-muted)'}}>
+            <div style={{ position: 'absolute', right: 'var(--ao-space-3)', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: 'var(--ao-color-text-tertiary)'}}>
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </div>
           </div>
         ) : type === 'textarea' ? (
-          <textarea {...commonProps} {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)} />
+          <textarea {...commonProps} style={{ ...inputBaseStyle, height: 'auto', minHeight: '80px' }} {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)} />
         ) : (
           <input type={type} {...commonProps} {...(props as React.InputHTMLAttributes<HTMLInputElement>)} />
         )}
@@ -133,7 +135,7 @@ export const Input = React.forwardRef<any, InputProps>(({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              style={{ position: 'absolute', right: 'var(--spacing-3)', top: '50%', translateY: '-50%', color: 'var(--color-danger-text)', pointerEvents: 'none' }}
+              style={{ position: 'absolute', right: 'var(--ao-space-3)', top: '50%', translateY: '-50%', color: 'var(--ao-color-danger-text)', pointerEvents: 'none' }}
             >
               <AlertCircle size={16} />
             </motion.div>
@@ -143,7 +145,7 @@ export const Input = React.forwardRef<any, InputProps>(({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              style={{ position: 'absolute', right: 'var(--spacing-3)', top: '50%', translateY: '-50%', color: 'var(--color-success-text)', pointerEvents: 'none' }}
+              style={{ position: 'absolute', right: 'var(--ao-space-3)', top: '50%', translateY: '-50%', color: 'var(--ao-color-success-text)', pointerEvents: 'none' }}
             >
               <CheckCircle2 size={16} />
             </motion.div>
@@ -157,7 +159,7 @@ export const Input = React.forwardRef<any, InputProps>(({
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
-            style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-danger-text)', fontWeight: 'var(--font-weight-medium)' }}
+            style={{ fontSize: '11px', color: 'var(--ao-color-danger-text)', fontWeight: 'var(--ao-weight-medium)' }}
           >
             {error}
           </motion.span>
@@ -165,7 +167,7 @@ export const Input = React.forwardRef<any, InputProps>(({
           <motion.span 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)' }}
+            style={{ fontSize: '11px', color: 'var(--ao-color-text-secondary)' }}
           >
             {helpText}
           </motion.span>

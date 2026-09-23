@@ -39,18 +39,33 @@
   --ao-color-info-bg: #ebf8ff;
   --ao-color-info-text: #2a4365;
 
-  /* SPATIAL GRID */
-  --ao-space-1: 0.25rem;  /* 4px */
-  --ao-space-2: 0.5rem;   /* 8px */
-  --ao-space-3: 0.75rem;  /* 12px */
-  --ao-space-4: 1rem;     /* 16px */
-  --ao-space-5: 1.25rem;  /* 20px */
-  --ao-space-6: 1.5rem;   /* 24px */
-  --ao-space-8: 2rem;     /* 32px */
-  --ao-space-10: 2.5rem;  /* 40px */
-  --ao-space-12: 3rem;    /* 48px */
-  --ao-space-16: 4rem;    /* 64px */
-  --ao-space-24: 6rem;    /* 96px */
+  /* RESPONSIVE SPATIAL GRID (FLUID) 
+     Calculated for seamless scaling from 320px to 1440px 
+  */
+  --ao-space-1: clamp(0.25rem, 0.5vw, 0.25rem); /* Stable */
+  --ao-space-2: clamp(0.375rem, 1vw, 0.5rem);   /* 6px -> 8px */
+  --ao-space-3: clamp(0.5rem, 1.5vw, 0.75rem);  /* 8px -> 12px */
+  --ao-space-4: clamp(0.75rem, 2vw, 1rem);      /* 12px -> 16px */
+  --ao-space-5: clamp(1rem, 2.5vw, 1.25rem);    /* 16px -> 20px */
+  --ao-space-6: clamp(1rem, 3vw, 1.5rem);       /* 16px -> 24px */
+  --ao-space-8: clamp(1.25rem, 4vw, 2rem);      /* 20px -> 32px */
+  --ao-space-10: clamp(1.5rem, 5vw, 2.5rem);    /* 24px -> 40px */
+  --ao-space-12: clamp(2rem, 6vw, 3rem);        /* 32px -> 48px */
+  --ao-space-16: clamp(2.5rem, 8vw, 4rem);      /* 40px -> 64px */
+  --ao-space-24: clamp(4rem, 12vw, 6rem);       /* 64px -> 96px */
+
+  /* GLOBAL CONTAINERS & DIMENSIONS */
+  --ao-max-width-desktop: 1600px;
+  --ao-max-width-ultrawide: 1920px;
+  --ao-sidebar-width-desktop: 260px;
+  --ao-sidebar-width-tablet: 80px;
+  --ao-header-height: 48px;
+  
+  /* MOBILE SAFE AREAS (iOS / Android) */
+  --ao-safe-top: env(safe-area-inset-top, 0px);
+  --ao-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ao-safe-left: env(safe-area-inset-left, 0px);
+  --ao-safe-right: env(safe-area-inset-right, 0px);
 
   /* RADIUS (Architectural, slightly sharp but friendly) */
   --ao-radius-sm: 4px;

@@ -178,7 +178,7 @@ export function Table<T>({
 
       {/* Table Container */}
       <div className="ao-glass-panel" style={{ overflow: 'hidden', padding: 0 }}>
-        <div style={{ overflowX: 'auto' }}>
+        <div className="ao-table-wrapper">
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', whiteSpace: 'nowrap' }}>
             <thead style={{ position: 'sticky', top: 0, zIndex: 10, backgroundColor: 'var(--ao-color-bg-secondary)' }}>
               <tr>

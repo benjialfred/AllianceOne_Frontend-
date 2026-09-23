@@ -52,7 +52,7 @@
 /* Section: For component blocks, panels, cards */
 .ao-t-section {
   font-family: var(--ao-font-sans);
-  font-size: 1.25rem;
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
   font-weight: var(--ao-weight-semibold);
   line-height: var(--ao-leading-snug);
   letter-spacing: var(--ao-tracking-tight);
@@ -62,7 +62,7 @@
 /* Body: The default reading text */
 .ao-t-body {
   font-family: var(--ao-font-sans);
-  font-size: 1rem;
+  font-size: clamp(0.9375rem, 1.5vw, 1rem);
   font-weight: var(--ao-weight-regular);
   line-height: var(--ao-leading-normal);
   color: var(--ao-color-text-secondary);
@@ -71,7 +71,7 @@
 /* Body Medium: For interactive elements (Buttons, Tabs) */
 .ao-t-body-md {
   font-family: var(--ao-font-sans);
-  font-size: 1rem;
+  font-size: clamp(0.9375rem, 1.5vw, 1rem);
   font-weight: var(--ao-weight-medium);
   line-height: var(--ao-leading-normal);
   color: var(--ao-color-text-primary);
@@ -80,7 +80,7 @@
 /* Metadata: For dense tables, auxiliary info */
 .ao-t-metadata {
   font-family: var(--ao-font-sans);
-  font-size: 0.875rem;
+  font-size: clamp(0.8125rem, 1vw, 0.875rem);
   font-weight: var(--ao-weight-regular);
   line-height: var(--ao-leading-normal);
   color: var(--ao-color-text-tertiary);
@@ -89,7 +89,7 @@
 /* Micro-label: For system states, kickers, tags */
 .ao-t-micro {
   font-family: var(--ao-font-sans);
-  font-size: 0.6875rem;
+  font-size: clamp(0.625rem, 0.8vw, 0.6875rem);
   font-weight: var(--ao-weight-semibold);
   line-height: var(--ao-leading-tight);
   letter-spacing: var(--ao-tracking-wider);
@@ -100,7 +100,7 @@
 /* Data Number: For metrics and stats */
 .ao-t-metric {
   font-family: var(--ao-font-sans);
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
   font-weight: var(--ao-weight-bold);
   line-height: var(--ao-leading-tight);
   letter-spacing: var(--ao-tracking-tighter);

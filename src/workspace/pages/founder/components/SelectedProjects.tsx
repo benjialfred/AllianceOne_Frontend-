@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Code, HeartPulse, Package } from 'lucide-react';
 
 const FadeUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -62,18 +62,21 @@ const COLLABORATIONS = [
     title: "Chezmoi",
     status: "En cours de développement",
     role: "Collaboration technique",
+    icon: <Code size={20} color="var(--founder-accent)" />,
     description: "Plateforme innovante (PropTech) conçue pour simplifier la recherche et la gestion de biens immobiliers."
   },
   {
     title: "Plateforme de Don de Sang",
     status: "Hôpital Général de Douala",
     role: "Aide au développement",
+    icon: <HeartPulse size={20} color="#ef4444" />,
     description: "Système critique de gestion des donneurs, des poches de sang et des besoins d'urgence pour optimiser la chaîne de solidarité médicale locale."
   },
   {
     title: "Plateforme de Gestion des Stocks",
     status: "Supply Chain",
     role: "Aide au développement",
+    icon: <Package size={20} color="#eab308" />,
     description: "Outil technologique d'optimisation et de suivi des inventaires en temps réel, conçu pour réduire les pertes et automatiser les réapprovisionnements."
   }
 ];
@@ -86,7 +89,9 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
   return (
     <section>
       <FadeUp>
-        <div className="founder-micro" style={{ marginBottom: '4rem' }}>05 — Projets Sélectionnés & Collaborations</div>
+        <div className="founder-micro" style={{ marginBottom: '4rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          05 — Projets Sélectionnés & Collaborations
+        </div>
       </FadeUp>
 
       {/* INDIVIDUAL PROJECTS */}
@@ -188,7 +193,9 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({ setCursorSta
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
-                  <h4 className="founder-subtitle" style={{ color: 'var(--founder-text-display)', margin: 0 }}>{collab.title}</h4>
+                  <h4 className="founder-subtitle" style={{ color: 'var(--founder-text-display)', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    {collab.icon} {collab.title}
+                  </h4>
                   <span className="founder-micro">{collab.status}</span>
                 </div>
                 <div className="founder-sub" style={{ color: 'var(--founder-accent)', marginBottom: '1rem' }}>{collab.role}</div>

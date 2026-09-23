@@ -34,6 +34,7 @@
   transition: all var(--ao-duration-normal) var(--ao-ease-out);
   position: relative;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 [data-theme='dark'] .ao-glass-panel {
@@ -93,7 +94,7 @@
 
 .ao-welcome-title {
   font-family: var(--ao-font-display);
-  font-size: 24px;
+  font-size: clamp(20px, 4vw, 24px);
   font-weight: var(--ao-weight-medium);
   color: var(--ao-color-text-primary);
   letter-spacing: var(--ao-tracking-tight);
@@ -101,7 +102,7 @@
 }
 
 .ao-welcome-subtitle {
-  font-size: 14px;
+  font-size: clamp(12px, 2vw, 14px);
   color: var(--ao-color-text-secondary);
 }
 
@@ -123,7 +124,7 @@
 /* --- MODULE SPACES GRID --- */
 .ao-spaces-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 30vw, 260px), 1fr));
   gap: var(--ao-space-4);
 }
 

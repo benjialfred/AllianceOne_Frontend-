@@ -1,0 +1,126 @@
+/* =========================================
+   ALLIANCE OS — GLOBAL RESPONSIVE SYSTEM
+   Utilitaires structurels et Container Queries
+   ========================================= */
+
+/* ── VISIBILITY UTILITIES ── */
+
+.ao-hide-mobile {
+  display: flex !important;
+}
+
+.ao-show-mobile {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .ao-hide-mobile {
+    display: none !important;
+  }
+  .ao-show-mobile {
+    display: flex !important;
+  }
+}
+
+.ao-hide-tablet {
+  display: flex !important;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ao-hide-tablet {
+    display: none !important;
+  }
+}
+
+/* ── FLUID GRIDS ── */
+
+/* A grid that automatically adapts to the container width, not the screen width */
+.ao-fluid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(250px, 30vw, 350px), 1fr));
+  gap: var(--ao-space-4);
+}
+
+.ao-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ao-space-4);
+}
+
+.ao-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ao-space-4);
+  flex-wrap: wrap; /* Allows wrapping on small screens */
+}
+
+/* ── REUSABLE GRIDS ── */
+.ao-split-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--ao-space-8);
+}
+@media (max-width: 1024px) {
+  .ao-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ao-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(240px, 30vw, 300px), 1fr));
+  gap: var(--ao-space-6);
+}
+
+.ao-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ao-space-6);
+}
+@media (max-width: 768px) {
+  .ao-promo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── CONTAINER QUERIES (For Modularity) ── */
+/* 
+   Appliquez `container-type: inline-size` sur les conteneurs parents (ex: Cards, Panels).
+   Les enfants pourront alors s'adapter à la largeur réelle du composant.
+*/
+
+.ao-container {
+  container-type: inline-size;
+  width: 100%;
+}
+
+/* Exemple : Si le composant fait moins de 400px, on empile les éléments */
+@container (max-width: 400px) {
+  .ao-cq-stack {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .ao-cq-hide {
+    display: none !important;
+  }
+}
+
+/* ── DATA TABLES RESPONSIVE BEHAVIOR ── */
+/*
+   Utilisé pour permettre au tableau de scroller horizontalement 
+   sans casser le conteneur principal.
+*/
+.ao-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  scrollbar-width: thin; /* Firefox */
+}
+
+/* Safe Area Paddings */
+.ao-safe-padding {
+  padding-top: var(--ao-safe-top);
+  padding-bottom: var(--ao-safe-bottom);
+  padding-left: var(--ao-safe-left);
+  padding-right: var(--ao-safe-right);
+}

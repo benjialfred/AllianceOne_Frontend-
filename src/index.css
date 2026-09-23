@@ -4,6 +4,7 @@
 @import './design-system/foundations/tokens.css';
 @import './design-system/foundations/typography.css';
 @import './design-system/foundations/motion.css';
+@import './design-system/foundations/responsive.css';
 
 /* We keep the old tokens for now to avoid breaking existing pages during the transition */
 @import './design-system/tokens.css';

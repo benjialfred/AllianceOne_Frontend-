@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useReducedMotion, useInView } from 'framer-motion';
+import { Fingerprint, MonitorSmartphone, Code2, GitCommit, Heart } from 'lucide-react';
 import { founderApi } from '../../../core/api/founder';
 import './FounderProfile.css';
 
@@ -125,7 +126,9 @@ export const FounderProfilePage: React.FC = () => {
           <FadeUp>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem', alignItems: 'start' }}>
               <div>
-                <div className="founder-micro" style={{ marginBottom: '2rem' }}>01 — Identité</div>
+                <div className="founder-micro" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Fingerprint size={16} color="var(--founder-accent)" /> 01 — Identité
+                </div>
                 <div className="founder-micro" style={{ color: 'var(--founder-text-display)', lineHeight: 2 }}>
                   INGÉNIEUR LOGICIEL<br/>
                   BÂTISSEUR DE PRODUITS<br/>
@@ -153,7 +156,9 @@ export const FounderProfilePage: React.FC = () => {
         <section>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
             <FadeUp>
-              <div className="founder-micro">02 — Méthodologie</div>
+              <div className="founder-micro" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <GitCommit size={16} color="var(--founder-accent)" /> 02 — Méthodologie
+              </div>
             </FadeUp>
             
             <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
@@ -218,7 +223,9 @@ export const FounderProfilePage: React.FC = () => {
         <section>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
             <FadeUp>
-              <div className="founder-micro">06 — Au-delà du Code</div>
+              <div className="founder-micro" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Heart size={16} color="var(--founder-accent)" /> 06 — Au-delà du Code
+              </div>
             </FadeUp>
             
             <div>
