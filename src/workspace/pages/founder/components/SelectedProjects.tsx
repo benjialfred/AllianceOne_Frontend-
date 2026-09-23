@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Code, HeartPulse, Package } from 'lucide-react';
+import allianceOneImg from '../../../../assets/alliance-one.png';
+import prophetieCoutureImg from '../../../../assets/prophetie-couture.png';
 
 const FadeUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -25,7 +27,7 @@ const INDIVIDUAL_PROJECTS = [
     year: "2024—PRÉS",
     description: "L'écosystème central. Une plateforme SaaS complète conçue pour la gestion unifiée des organisations modernes (écoles, cliniques, entreprises). Architecture modulaire, modélisation de données universelle, et intelligence artificielle intégrée pour automatiser les processus critiques de bout en bout.",
     tags: ["React", "Python", "Architecture Système", "IA"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+    image: allianceOneImg,
     link: "alliancefrontend.vercel.app",
   },
   {
@@ -43,7 +45,7 @@ const INDIVIDUAL_PROJECTS = [
     year: "2022",
     description: "Plateforme sur mesure conçue pour la gestion des ventes et des commandes en ligne d'un atelier de couture professionnel. Elle automatise la prise de mesures des clients, le suivi précis de la production des vêtements, et offre une vitrine e-commerce fluide. Une transformation digitale complète pour dynamiser l'artisanat local.",
     tags: ["E-commerce", "Automatisation", "Dashboard"],
-    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
+    image: prophetieCoutureImg,
     link: "https://prophetiecouture.vercel.app",
   },
   {
