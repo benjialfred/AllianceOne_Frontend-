@@ -135,6 +135,18 @@ const tasksNavigation: NavSection[] = [
   ]}
 ];
 
+// Global Navigation for the Hub
+const globalNavigation: NavSection[] = [
+  { section: 'PLATEFORME', items: [
+    { label: "Accueil", path: "/app", icon: LayoutDashboard, shortcut: '⌘ H' },
+    { label: "Marketplace", path: "/app/marketplace", icon: Package },
+    { label: "Réseau AO", path: "/app/community", icon: Users },
+  ]},
+  { section: 'ADMINISTRATION', items: [
+    { label: "Paramètres", path: "/app/settings", icon: Settings },
+  ]}
+];
+
 export const WorkspaceShell: React.FC = () => {
   const currentOrganization = usePlatformStore((s) => s.currentOrganization);
   const setOrganization = usePlatformStore((s) => s.setOrganization);
@@ -244,11 +256,15 @@ export const WorkspaceShell: React.FC = () => {
 
   const isModuleView = isEdu || isInv || isFin || isLib || isTsk;
 
-  let activeNav = educationNavigation;
-  let activeModuleName = 'Éducation Pro';
+  let activeNav = globalNavigation;
+  let activeModuleName = 'Espace Général';
   let activeModuleColor = 'var(--ao-color-alliance-blue)';
 
-  if (isInv) {
+  if (isEdu) {
+    activeNav = educationNavigation;
+    activeModuleName = 'Éducation Pro';
+    activeModuleColor = 'var(--ao-color-alliance-blue)';
+  } else if (isInv) {
     activeNav = inventoryNavigation;
     activeModuleName = 'Stocks & Logistique';
     activeModuleColor = '#0ea5e9';
@@ -272,7 +288,7 @@ export const WorkspaceShell: React.FC = () => {
       onOpenCreate={() => setIsCreateOpen(true)}
       onOpenNotifications={() => setIsNotifOpen(true)}
       onOpenAI={() => setIsAIOpen(true)}
-      activeModuleNav={isModuleView ? activeNav : undefined}
+      activeModuleNav={activeNav}
       activeModuleName={activeModuleName}
       activeModuleColor={activeModuleColor}
     >

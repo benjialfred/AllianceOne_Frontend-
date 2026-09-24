@@ -100,92 +100,60 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
         </motion.div>
       </motion.div>
 
-      {/* Right: SVG Portrait Wrapper (Signature Moment 1) */}
-      <div style={{ flex: 1, position: 'relative', height: '600px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+      {/* Right: Massive Portfolio Image Wrapper */}
+      <div style={{ flex: 1, position: 'relative', height: '90vh', display: 'flex', justifyContent: 'flex-end', alignItems: 'stretch' }}>
         
-        <svg viewBox="0 0 350 550" style={{ width: '100%', height: '100%', maxWidth: '450px', overflow: 'visible' }}>
-          
-          <defs>
-            <clipPath id="portrait-mask">
-              <path d={PORTRAIT_PATH} />
-            </clipPath>
-          </defs>
-
-          {/* Grid background drawing in */}
-          <motion.rect 
-            x="0" y="0" width="350" height="550" 
-            fill="none" 
-            stroke="var(--founder-border-light)" 
-            strokeWidth="0.5" 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 2 }}
-          />
-
-          {/* Geometric Outline drawing */}
-          <motion.path 
-            d={GEOMETRIC_PATH}
-            fill="none"
-            stroke="var(--founder-text-muted)"
-            strokeWidth="0.5"
-            strokeDasharray="10 5"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 2.5, ease: "easeInOut", delay: 0.5 }}
-          />
-
-          {/* Smooth Organic Outline drawing */}
-          <motion.path 
-            d={PORTRAIT_PATH}
-            fill="none"
-            stroke="var(--founder-text-display)"
-            strokeWidth="1.5"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 1 }}
-          />
-
-          {/* Orbiting / Connecting Nodes */}
-          {[
-            { cx: 50, cy: 10, delay: 1.5 },
-            { cx: 280, cy: 100, delay: 1.7 },
-            { cx: 150, cy: 490, delay: 1.9 },
-            { cx: 20, cy: 250, delay: 2.1 },
-          ].map((node, i) => (
-            <motion.circle 
-              key={i}
-              cx={node.cx} 
-              cy={node.cy} 
-              r="3"
-              fill="var(--founder-text-display)"
-              initial={{ scale: 0 }}
-              animate={{ scale: [0, 1.5, 1] }}
-              transition={{ delay: node.delay, duration: 1 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 50 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 1 }}
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '24px 0 0 24px',
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+          }}
+        >
+          {/* Parallax Image */}
+          <motion.div
+            style={{
+              width: '100%',
+              height: '120%',
+              y: useTransform(scrollYProgress, [0, 1], ['0%', '-10%'])
+            }}
+          >
+            <img 
+              src={portfolioImg} 
+              alt="Founder Portrait" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                objectPosition: 'center top'
+              }} 
             />
-          ))}
+          </motion.div>
 
-          {/* The Actual Image revealed through the mask */}
-          <foreignObject x="0" y="0" width="350" height="550" clipPath="url(#portrait-mask)">
-            <motion.div 
-              style={{ width: '100%', height: '100%', backgroundColor: 'var(--founder-bg-surface)' }}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 2.5, duration: 2, ease: "easeOut" }}
-            >
-              <img src={portfolioImg} alt="Founder Portrait" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </motion.div>
-          </foreignObject>
-          
-        </svg>
+          {/* Suble overlay gradient */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to top, rgba(28, 25, 23, 0.8) 0%, transparent 40%)'
+          }} />
+        </motion.div>
 
-        {/* Floating Labels around SVG */}
+        {/* Floating Labels */}
         <motion.div 
-          style={{ position: 'absolute', top: '10%', right: '10%' }}
+          style={{ position: 'absolute', bottom: '2rem', right: '2rem' }}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 3, duration: 1 }}
+          transition={{ delay: 2, duration: 1 }}
         >
-          <div className="founder-micro" style={{ fontSize: '8px' }}>NŒUD // 01</div>
+          <div className="founder-micro" style={{ fontSize: '10px', color: 'rgba(255,255,255,0.8)' }}>
+            NŒUD OPÉRATIONNEL // 01
+          </div>
         </motion.div>
       </div>
 
