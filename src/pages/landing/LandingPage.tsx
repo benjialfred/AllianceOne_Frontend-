@@ -27,7 +27,7 @@ const FadeIn: React.FC<{ children: React.ReactNode; delay?: number; className?: 
   );
 };
 
-import allianceOneLogo from '../../assets/alliance-one.png';
+import { AllianceLogo } from '../../design-system/components/AllianceLogo';
 
 /* ── ANIMATION SIGNATURE AO (HERO) ── */
 const HeroBranding: React.FC = () => {
@@ -36,14 +36,15 @@ const HeroBranding: React.FC = () => {
       <div className="hero-glow-1" />
       <div className="hero-glow-2" />
       <div className="hero-content">
-        <motion.img 
-          src={allianceOneLogo} 
-          alt="Alliance One 3D Logo"
-          className="hero-logo-img"
+        <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        />
+          className="hero-logo-img-wrapper"
+          style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
+        >
+          <AllianceLogo size={120} color="var(--ao-elegant-primary, #ffffff)" />
+        </motion.div>
       </div>
     </>
   );

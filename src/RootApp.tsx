@@ -25,6 +25,14 @@ const OnboardingFlow = React.lazy(() =>
   import('./pages/onboarding/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow }))
 );
 
+const PrivacyPolicyPage = React.lazy(() =>
+  import('./pages/legal/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage }))
+);
+
+const TermsOfServicePage = React.lazy(() =>
+  import('./pages/legal/TermsOfServicePage').then((m) => ({ default: m.TermsOfServicePage }))
+);
+
 /**
  * Auth guard: redirects to /login if not authenticated.
  */
@@ -47,31 +55,13 @@ const RequireGuest: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   return <>{children}</>;
 };
 
+import { AllianceLoader } from './design-system/components/AllianceLoader';
+
 /**
  * Loading fallback for Suspense boundaries
  */
 const LoadingScreen: React.FC = () => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    background: '#fafafa',
-    fontFamily: "'Inter', system-ui, sans-serif",
-    color: '#64748b',
-    fontSize: '14px',
-    gap: '12px',
-  }}>
-    <div style={{
-      width: '20px',
-      height: '20px',
-      border: '2.5px solid #e5e7eb',
-      borderTopColor: '#0B2B5C',
-      borderRadius: '50%',
-      animation: 'spin 0.6s linear infinite',
-    }} />
-    Chargement d'Alliance One...
-  </div>
+  <AllianceLoader text="Chargement d'Alliance One..." />
 );
 
 export const RootApp: React.FC = () => {
@@ -103,6 +93,20 @@ export const RootApp: React.FC = () => {
             <RequireGuest>
               <AuthPage mode="register" />
             </RequireGuest>
+          }
+        />
+
+        <Route
+          path="/privacy-policy"
+          element={
+            <PrivacyPolicyPage />
+          }
+        />
+
+        <Route
+          path="/terms"
+          element={
+            <TermsOfServicePage />
           }
         />
 

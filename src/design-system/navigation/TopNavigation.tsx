@@ -1,15 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Search, Plus, Bell, ChevronDown, LogOut, Settings, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Plus, ChevronDown, Settings, Bell, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../../core/stores/authStore';
 
 export interface TopNavigationProps {
   onOpenSearch: () => void;
   onOpenCreate: () => void;
-  onOpenNotifications: () => void;
-  onOpenAI: () => void;
-  unreadCount?: number;
   userName?: string;
   isHyperAdmin?: boolean;
 }
@@ -17,152 +14,108 @@ export interface TopNavigationProps {
 export const TopNavigation: React.FC<TopNavigationProps> = ({
   onOpenSearch,
   onOpenCreate,
-  onOpenNotifications,
-  onOpenAI,
-  unreadCount = 0,
-  userName = 'User',
   isHyperAdmin = false
 }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const navigate = useNavigate();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const displayName = user?.first_name || 'Utilisateur';
 
   const handleLogout = () => {
-    setDropdownOpen(false);
     logout();
-    navigate('/login');
+    navigate('/auth');
   };
 
   return (
-    <header className="ao-top-nav">
-      <div className="ao-nav-left">
-        <button className="ao-brand-btn" onClick={() => navigate('/app')}>
-          <div style={{ width: 16, height: 16, background: 'var(--ao-color-alliance-blue)', borderRadius: 2 }} />
-          <span className="ao-brand-text">Alliance One</span>
-        </button>
-
-        {/* Global Nav Links (Very subtle) */}
-        <div style={{ display: 'flex', gap: '4px' }}>
-          <NavLink to="/app" end className={({ isActive }) => `ao-sidebar-link ${isActive ? 'active' : ''}`} style={{ padding: '4px 8px', fontSize: '12px' }}>
-            Hub
-          </NavLink>
-          <NavLink to="/app/marketplace" className={({ isActive }) => `ao-sidebar-link ${isActive ? 'active' : ''}`} style={{ padding: '4px 8px', fontSize: '12px' }}>
-            Marketplace
-          </NavLink>
-        </div>
-      </div>
-
-      <div className="ao-nav-center">
-        <button className="ao-nav-tool-btn" onClick={onOpenSearch}>
-          <Search size={14} />
-          <span>Recherche globale...</span>
+    <header className="ao-top-header">
+      <div className="ao-top-center">
+        <button className="ao-search-bar" onClick={onOpenSearch}>
+          <Search size={14} color="#94a3b8" />
+          <span>Rechercher une personne, un module, une pièce...</span>
           <kbd>⌘K</kbd>
         </button>
       </div>
 
-      <div className="ao-nav-right">
-        <button className="ao-nav-tool-btn ao-ai-trigger" onClick={onOpenAI}>
-          <Zap size={14} fill="currentColor" />
-          <span>Alliance AI</span>
-          <kbd style={{ background: 'transparent', color: 'inherit' }}>⌘J</kbd>
+      <div className="ao-top-right">
+        <button className="ao-create-btn" onClick={onOpenCreate}>
+          <Plus size={14} />
+          <span>Créer</span>
         </button>
 
-        <button className="ao-universal-create" onClick={onOpenCreate} title="Universal Create">
-          <Plus size={16} />
-        </button>
-
-        <div style={{ width: 1, height: 16, background: 'var(--ao-color-border-default)', margin: '0 8px' }} />
-
-        <button className="ao-brand-btn" onClick={onOpenNotifications} style={{ position: 'relative' }}>
-          <Bell size={16} color="var(--ao-color-text-secondary)" />
-          {unreadCount > 0 && (
-            <div style={{
-              position: 'absolute', top: -2, right: -2,
-              width: 6, height: 6, borderRadius: '50%',
-              background: 'var(--ao-color-danger-text)',
-              border: '2px solid var(--ao-color-bg-surface)'
-            }} />
-          )}
-        </button>
-
-        <div style={{ position: 'relative', marginLeft: 8 }} ref={dropdownRef}>
+        <div style={{ position: 'relative' }}>
           <button 
-            className="ao-brand-btn" 
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="ao-profile-dropdown" 
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
             style={{ 
-              background: isHyperAdmin ? 'rgba(11, 43, 92, 0.1)' : 'transparent',
-              padding: '4px 8px', borderRadius: '20px', gap: '8px'
+              background: isProfileOpen ? 'var(--ao-elegant-bg)' : 'transparent',
+              borderColor: isProfileOpen ? 'var(--ao-elegant-border)' : 'transparent'
             }}
           >
-            <div style={{
-              width: 24, height: 24, borderRadius: '50%',
-              background: isHyperAdmin ? 'var(--ao-color-alliance-blue)' : 'var(--ao-color-bg-tertiary)',
-              color: isHyperAdmin ? '#fff' : 'var(--ao-color-text-primary)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '11px', fontWeight: 600
-            }}>
-              {userName.charAt(0)}
+            <div className="ao-profile-avatar" style={{ overflow: 'hidden' }}>
+              {user?.avatar_url ? (
+                <img src={user.avatar_url} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                displayName.charAt(0).toUpperCase()
+              )}
             </div>
-            <ChevronDown size={14} color="var(--ao-color-text-secondary)" />
+            <div className="ao-profile-info">
+              <span className="ao-profile-name">{displayName}</span>
+              <span className="ao-profile-role">{isHyperAdmin ? 'Administrateur' : 'Directeur'}</span>
+            </div>
+            <ChevronDown 
+              size={14} 
+              color="#94a3b8" 
+              style={{ 
+                transform: isProfileOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease'
+              }} 
+            />
           </button>
 
+          {/* DROPDOWN MENU */}
           <AnimatePresence>
-            {dropdownOpen && (
-              <motion.div
+            {isProfileOpen && (
+              <motion.div 
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
                 style={{
-                  position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                  width: 200, background: '#fff', borderRadius: 8,
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)',
-                  padding: 8, zIndex: 1000
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '8px',
+                  width: '240px',
+                  background: 'var(--ao-elegant-surface)',
+                  border: '1px solid var(--ao-elegant-border)',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
+                  zIndex: 50,
+                  padding: '8px'
                 }}
               >
-                <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--ao-color-border-subtle)', marginBottom: 4 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ao-color-text-primary)' }}>{userName}</div>
-                  <div style={{ fontSize: 11, color: 'var(--ao-color-text-secondary)' }}>{isHyperAdmin ? 'Administrateur Système' : 'Utilisateur'}</div>
+                <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--ao-elegant-border)', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ao-elegant-text-main)' }}>{user?.first_name} {user?.last_name}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--ao-elegant-text-muted)' }}>{user?.email}</div>
                 </div>
 
-                <button 
-                  onClick={() => { setDropdownOpen(false); navigate('/app/settings'); }}
-                  style={{ 
-                    width: '100%', display: 'flex', alignItems: 'center', gap: 10, 
-                    padding: '8px 12px', background: 'transparent', border: 'none', 
-                    cursor: 'pointer', fontSize: 13, color: 'var(--ao-color-text-primary)',
-                    borderRadius: 4, textAlign: 'left'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = 'var(--ao-color-bg-secondary)'}
-                  onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
-                >
-                  <Settings size={16} /> Mon Profil
-                </button>
-                
-                <button 
-                  onClick={handleLogout}
-                  style={{ 
-                    width: '100%', display: 'flex', alignItems: 'center', gap: 10, 
-                    padding: '8px 12px', background: 'transparent', border: 'none', 
-                    cursor: 'pointer', fontSize: 13, color: 'var(--ao-color-danger-text)',
-                    borderRadius: 4, textAlign: 'left'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = 'var(--ao-color-bg-secondary)'}
-                  onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
-                >
-                  <LogOut size={16} /> Se déconnecter
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <button onClick={() => { setIsProfileOpen(false); navigate('/app/settings'); }} className="ao-dropdown-item">
+                    <Settings size={16} />
+                    <span>Paramètres du compte</span>
+                  </button>
+                  <button onClick={() => { setIsProfileOpen(false); /* notifications logic */ }} className="ao-dropdown-item">
+                    <Bell size={16} />
+                    <span>Notifications</span>
+                  </button>
+                </div>
+
+                <div style={{ margin: '8px -8px', borderTop: '1px solid var(--ao-elegant-border)' }} />
+
+                <button onClick={handleLogout} className="ao-dropdown-item ao-dropdown-item-danger">
+                  <LogOut size={16} />
+                  <span>Se déconnecter</span>
                 </button>
               </motion.div>
             )}

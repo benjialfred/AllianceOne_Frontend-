@@ -230,9 +230,9 @@ export const SessionHistoryDrawer: React.FC<SessionHistoryDrawerProps> = ({
       <div className="ao-history-drawer-overlay" onClick={onClose}>
         <motion.div 
           className="ao-history-drawer"
-          initial={{ x: -320, opacity: 0 }}
+          initial={{ x: 320, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -320, opacity: 0 }}
+          exit={{ x: 320, opacity: 0 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
         >

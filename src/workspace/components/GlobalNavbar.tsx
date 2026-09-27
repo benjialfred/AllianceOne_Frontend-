@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Plus, Bell, ChevronDown, Moon, Sun, 
   Building2, Menu, X, Home, Boxes, Compass, 
-  LogOut, HelpCircle, Zap, Activity, Sparkles, Send, Shield
+  LogOut, HelpCircle, Zap, Activity, Sparkles, Send, Shield, Package
 } from 'lucide-react';
 import { Logo } from '../../design-system/components/Logo';
 import { usePlatformStore } from '../../core/stores/platformStore';
@@ -288,6 +288,10 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                   >
                     <Send size={16} color="#0088cc" />
                     <span style={{ fontWeight: 600, color: '#0088cc' }}>Connecter Telegram (Bot IA)</span>
+                  </button>
+                  <button className="ent-list-item" onClick={() => { navigate('/app/my-modules'); setUserDropdownOpen(false); }}>
+                    <Package size={16} />
+                    <span>Mes Modules Installés</span>
                   </button>
                   <button className="ent-list-item" onClick={() => navigate('/app/settings')}>
                     <Home size={16} />

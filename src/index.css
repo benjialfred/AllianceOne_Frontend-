@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* ALLIANCE OS - FOUNDATIONS */
 @import './design-system/foundations/tokens.css';
@@ -55,4 +55,30 @@ body {
 .focus-ring:focus-visible {
   outline: 2px solid var(--ao-color-alliance-blue);
   outline-offset: 2px;
+}
+
+/* Dropdown Menu Items */
+.ao-dropdown-item { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  width: 100%; 
+  padding: 8px 12px; 
+  border-radius: 6px; 
+  border: none; 
+  background: transparent; 
+  cursor: pointer; 
+  color: var(--ao-elegant-text-main); 
+  font-size: 13px; 
+  text-align: left; 
+  transition: background 0.15s ease; 
+} 
+.ao-dropdown-item:hover { 
+  background: var(--ao-elegant-border); 
+} 
+.ao-dropdown-item-danger { 
+  color: #ef4444; 
+} 
+.ao-dropdown-item-danger:hover { 
+  background: #fee2e2; 
 }

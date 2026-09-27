@@ -3,6 +3,7 @@
  * Toutes les requêtes vers le backend passent par ici.
  * Le header X-Tenant-ID est injecté automatiquement depuis le store.
  */
+import { useAuthStore } from '../stores/authStore';
 
 const isLocalhost = typeof window !== 'undefined' && (
   window.location.hostname === 'localhost' ||
@@ -55,6 +56,15 @@ class ApiClient {
     const tenantId = this.getTenantId?.();
     if (tenantId) {
       headers['X-Tenant-ID'] = tenantId;
+    }
+    const authState = useAuthStore.getState();
+    const token = authState.accessToken;
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const user = authState.user;
+    if (user && user.email) {
+      headers['X-User-Email'] = user.email;
     }
     return headers;
   }

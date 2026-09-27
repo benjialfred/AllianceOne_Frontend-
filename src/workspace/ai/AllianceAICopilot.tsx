@@ -5,9 +5,10 @@
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   X, Activity, ArrowDown, Maximize2, Minimize2, Check, AlertCircle, ChevronRight, RotateCcw, Sparkles,
-  MessageSquare, Plus, ChevronDown, History
+  MessageSquare, Plus, ChevronDown, History, ListTodo, ClipboardList, FileText, PieChart
 } from 'lucide-react';
 import { API_HOST_URL } from '../../core/api/client';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -40,6 +41,7 @@ const STORAGE_KEY_MISSION_ID = 'alliance_ai_active_mission_id';
 
 export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, onClose }) => {
   const shouldReduceMotion = useReducedMotion();
+  const user = useAuthStore((s) => s.user);
 
   // --- IDENTITY, MULTI-SESSION & CONVERSATION IDENTIFIERS ---
   const conversationIdRef = useRef<string>(`conv_${Date.now()}`);
@@ -636,11 +638,16 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
   const isMissionActive = activeMission && activeMission.steps.length > 0;
 
+  // Use useNavigate instead of onClose prop
+  const navigate = useNavigate();
+  const handleClose = () => {
+    navigate('/app');
+  };
+
   return (
     <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className={`ao-workspace-overlay ${isFocusMode ? 'focus-mode' : ''}`}
+      <motion.div
+        className={`ao-workspace-overlay ${isFocusMode ? 'focus-mode' : ''}`}
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
@@ -657,39 +664,22 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                 <div className="ao-brand-badge">
                   <AoIntelligenceMark state={operationalState} size={28} showHalo={operationalState !== 'IDLE'} />
                   <div className="ao-brand-text">
-                    <span className="ao-brand-name">ALLIANCE AI</span>
-                    <span className="ao-brand-context">Alliance One • Intelligence Opérationnelle</span>
+                    <span className="ao-brand-name">ALLIANCE AI <span style={{ fontSize: '10px', background: '#e2e8f0', color: '#0f172a', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px', verticalAlign: 'middle' }}>BÊTA</span></span>
+                    <span className="ao-brand-context">L'intelligence de votre organisation</span>
                   </div>
-                </div>
-
-                {/* Session Selector & New Session Button */}
-                <div className="ao-session-nav-group">
-                  <button 
-                    className="ao-session-selector-btn"
-                    onClick={() => setIsHistoryDrawerOpen(true)}
-                    title="Historique des sessions"
-                  >
-                    <History size={14} />
-                    <span className="ao-session-title-truncate">{conversationTitle}</span>
-                    <ChevronDown size={13} className="ao-chevron" />
-                  </button>
-                  <button 
-                    className="ao-new-session-btn"
-                    onClick={handleStartNewSession}
-                    title="Nouvelle session"
-                  >
-                    <Plus size={14} />
-                  </button>
                 </div>
 
                 <div className="ao-header-actions">
-                  {/* Real System Telemetry Status */}
-                  <div className="ao-status-indicator">
-                    <IntelligencePulse state={operationalState} size="sm" />
-                    <span className="ao-status-label">
-                      {operationalState === 'IDLE' ? 'Disponible' : operationalDetail || 'Traitement en cours...'}
-                    </span>
-                  </div>
+                  {/* Real System Telemetry Status REMOVED */}
+
+                  {/* History Drawer Toggle */}
+                  <button
+                    className="ao-btn-icon"
+                    onClick={() => setIsHistoryDrawerOpen(true)}
+                    title="Historique des sessions"
+                  >
+                    <History size={16} />
+                  </button>
 
                   {/* Toggle Mission Panel (Desktop) */}
                   {isMissionActive && (
@@ -737,40 +727,38 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                       <AoIntelligenceMark state="IDLE" size={64} showHalo />
                     </motion.div>
 
-                    <div className="ao-hero-line-rail">
-                      <AllianceLine activeStage={1} showLabels compact />
-                    </div>
-
-                    <h2 className="ao-hero-title">ALLIANCE AI</h2>
+                    <h2 className="ao-hero-title">Bonjour {useAuthStore.getState().user?.first_name || 'Benjamin'},</h2>
+                    <h3 className="ao-hero-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Je suis Alliance AI, votre assistant intelligent.</h3>
                     <p className="ao-hero-subtitle">
-                      Votre intelligence opérationnelle intégrée.
+                      Je peux analyser vos données, vous fournir des insights,
                       <br />
-                      Décrivez simplement ce que vous souhaitez accomplir sur votre organisation.
+                      créer des rapports, exécuter des missions et vous aider
+                      <br />
+                      à prendre les meilleures décisions.
                     </p>
 
-                    <div className="ao-hero-suggestions-grid">
-                      <button onClick={() => handleSendMessage("Analyser les présences et les anomalies de la semaine.")}>
-                        <span className="ao-sug-domain">ÉDUCATION</span>
-                        <span>Analyser les absences de la semaine</span>
-                        <ChevronRight size={13} className="ao-sug-arr" />
+                    <div style={{ alignSelf: 'flex-start', marginLeft: '12px', fontSize: '13px', fontWeight: 600, color: '#64748b', marginBottom: '12px' }}>
+                      Posez-moi vos questions pour démarrer :
+                    </div>
+                    <div className="ao-hero-suggestions-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                      <button onClick={() => handleSendMessage("Que fait exactement Alliance One ?")}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Sparkles size={16} color="#4f46e5" /></span>
+                        <span>Que fait exactement Alliance One ?</span>
                       </button>
 
-                      <button onClick={() => handleSendMessage("Prépare un état complet des stocks et alertes d'inventaire.")}>
-                        <span className="ao-sug-domain">INVENTAIRE</span>
-                        <span>État des stocks et alertes de rupture</span>
-                        <ChevronRight size={13} className="ao-sug-arr" />
+                      <button onClick={() => handleSendMessage("Quels sont les modules disponibles à l'installation ?")}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><ListTodo size={16} color="#8b5cf6" /></span>
+                        <span>Quels modules puis-je installer ?</span>
                       </button>
 
-                      <button onClick={() => handleSendMessage("Générer la synthèse financière du mois en cours.")}>
-                        <span className="ao-sug-domain">FINANCES</span>
-                        <span>Synthèse financière et factures en attente</span>
-                        <ChevronRight size={13} className="ao-sug-arr" />
+                      <button onClick={() => handleSendMessage("Comment Alliance m'aide en tant qu'organisation ?")}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><ClipboardList size={16} color="#059669" /></span>
+                        <span>Comment Alliance peut m'aider ?</span>
                       </button>
 
-                      <button onClick={() => handleSendMessage("Quels sont les effectifs actuels de mon organisation ?")}>
-                        <span className="ao-sug-domain">ORGANISATION</span>
-                        <span>Effectifs globaux et répartition</span>
-                        <ChevronRight size={13} className="ao-sug-arr" />
+                      <button onClick={() => handleSendMessage("Pourquoi choisir Alliance plutôt qu'une solution spécifique ?")}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Activity size={16} color="#f59e0b" /></span>
+                        <span>Pourquoi choisir Alliance One ?</span>
                       </button>
                     </div>
                   </div>
@@ -785,13 +773,29 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        {/* Meta Label */}
-                        <div className="ao-msg-meta-header">
-                          <span className="ao-msg-author">
-                            {msg.role === 'user' ? 'VOUS' : 'ALLIANCE AI'}
-                          </span>
-                          <span className="ao-msg-time">{msg.timestamp}</span>
-                        </div>
+                        {/* Avatar (Assistant on Left) */}
+                        {msg.role === 'assistant' && (
+                          <div className="ao-msg-avatar assistant" title="Alliance AI">
+                            <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+                              <defs>
+                                <linearGradient id="chat-ai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" stopColor="#163a2a" />
+                                  <stop offset="100%" stopColor="#2a6a4f" />
+                                </linearGradient>
+                                <linearGradient id="chat-ai-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" stopColor="#3b82f6" />
+                                  <stop offset="100%" stopColor="#10b981" />
+                                </linearGradient>
+                              </defs>
+                              <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" fill="url(#chat-ai-grad)" opacity="0.1" />
+                              <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" stroke="url(#chat-ai-grad)" strokeWidth="8" strokeLinejoin="round" />
+                              <path d="M50 25 Q 50 50 25 50 Q 50 50 50 75 Q 50 50 75 50 Q 50 50 50 25 Z" fill="url(#chat-ai-glow)" />
+                              <circle cx="50" cy="5" r="5" fill="#3b82f6" />
+                              <circle cx="90" cy="72.5" r="5" fill="#10b981" />
+                              <circle cx="10" cy="72.5" r="5" fill="#3b82f6" />
+                            </svg>
+                          </div>
+                        )}
 
                         {/* Content Area */}
                         <div className="ao-msg-body">
@@ -856,6 +860,19 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                             </div>
                           )}
                         </div>
+
+                        {/* Avatar (User on Right) */}
+                        {msg.role === 'user' && (
+                          <div className="ao-msg-avatar user" title={user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Vous'}>
+                            {user?.avatar_url ? (
+                              <img src={user.avatar_url} alt="Profile" />
+                            ) : (
+                              <div className="ao-user-initial">
+                                {user?.first_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </motion.div>
                     ))}
 
@@ -866,9 +883,22 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                       >
-                        <div className="ao-msg-meta-header">
-                          <span className="ao-msg-author">ALLIANCE AI</span>
-                          <span className="ao-msg-time">En cours</span>
+                        <div className="ao-msg-avatar assistant" title="Alliance AI">
+                          <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+                            <defs>
+                              <linearGradient id="chat-ai-grad-loading" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#163a2a" />
+                                <stop offset="100%" stopColor="#2a6a4f" />
+                              </linearGradient>
+                              <linearGradient id="chat-ai-glow-loading" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#3b82f6" />
+                                <stop offset="100%" stopColor="#10b981" />
+                              </linearGradient>
+                            </defs>
+                            <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" fill="url(#chat-ai-grad-loading)" opacity="0.1" />
+                            <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" stroke="url(#chat-ai-grad-loading)" strokeWidth="8" strokeLinejoin="round" />
+                            <path d="M50 25 Q 50 50 25 50 Q 50 50 50 75 Q 50 50 75 50 Q 50 50 50 25 Z" fill="url(#chat-ai-glow-loading)" />
+                          </svg>
                         </div>
                         <div className="ao-processing-card">
                           <AoIntelligenceMark state={operationalState} size={22} />
@@ -975,7 +1005,6 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
 
           </div>
         </motion.div>
-      )}
     </AnimatePresence>
   );
 };

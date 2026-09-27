@@ -1,271 +1,226 @@
-/**
- * ALLIANCE ONE — COMMUNITY PAGE
- * Fil d'actualité, showcase de réalisations, tutoriels et discussions des concepteurs.
- */
 import React, { useState } from 'react';
 import { 
   MessageSquare, 
   Heart, 
   Share2, 
-  Sparkles, 
-  Flame, 
-  Plus, 
-  User, 
-  ExternalLink, 
   CheckCircle2,
-  Tag
+  Users,
+  MessageCircle,
+  Plus,
+  Zap,
+  TrendingUp,
+  Lightbulb,
+  Building,
+  CalendarDays,
+  ArrowRight,
+  Sparkles,
+  Send,
+  MessageCircleCode
 } from 'lucide-react';
-import './EcosystemPages.css';
-
-interface CommunityPost {
-  id: string;
-  author: {
-    name: string;
-    role: string;
-    avatarInitials: string;
-    verified: boolean;
-  };
-  title: string;
-  content: string;
-  category: 'Showcase' | 'Tutoriel' | 'Mise à jour' | 'Discussion';
-  tags: string[];
-  likes: number;
-  commentsCount: number;
-  timestamp: string;
-  isLiked?: boolean;
-}
+import { useNavigate } from 'react-router-dom';
+import './Community.css';
 
 export const CommunityPage: React.FC = () => {
-  const [posts, setPosts] = useState<CommunityPost[]>([
-    {
-      id: 'post-1',
-      author: {
-        name: 'Benjamin Adzessa',
-        role: 'Architecte Système Lead',
-        avatarInitials: 'BA',
-        verified: true
-      },
-      title: 'Déploiement officiel d’Alliance One Hub v2.4 🚀',
-      content: 'Nous venons de finaliser l’architecture unifiée d’Alliance One avec la navigation globale, le flux d’activité universel et l’onboarding interactif. Tous les modules natifs (Éducation, Stock, Finance, Tâches, Bibliothèque) sont désormais synchronisés en temps réel.',
-      category: 'Mise à jour',
-      tags: ['AllianceHub', 'Architecture', 'Release'],
-      likes: 38,
-      commentsCount: 7,
-      timestamp: 'Il y a 2h'
-    },
-    {
-      id: 'post-2',
-      author: {
-        name: 'Équipe Tech Collège Émergence',
-        role: 'Responsable Pédagogique',
-        avatarInitials: 'CE',
-        verified: false
-      },
-      title: 'Retour d’expérience : 480 bulletins scolaires générés en 3 minutes',
-      content: 'La transition vers le module Éducation Pro a permis à notre secrétariat d’automatiser le calcul des moyennes pondérées et d’imprimer les bulletins officiels avec les logos de l’école sans la moindre erreur.',
-      category: 'Showcase',
-      tags: ['ÉducationPro', 'Productivité', 'Afrique'],
-      likes: 24,
-      commentsCount: 4,
-      timestamp: 'Il y a 5h'
-    },
-    {
-      id: 'post-3',
-      author: {
-        name: 'Alliance Dev Community',
-        role: 'Core Contributor',
-        avatarInitials: 'AC',
-        verified: true
-      },
-      title: 'Tutoriel : Comment créer un connecteur Mobile Money avec le SDK',
-      content: 'Voici un guide étape par étape pour intercepter l’événement `Finance:PaymentInitiated` et déclencher un push USSD Orange Money / MTN MoMo via l’EventBus Alliance.',
-      category: 'Tutoriel',
-      tags: ['SDK', 'MobileMoney', 'Webhooks'],
-      likes: 52,
-      commentsCount: 12,
-      timestamp: 'Hier'
-    }
-  ]);
-
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [newPostModalOpen, setNewPostModalOpen] = useState(false);
-  const [newPostText, setNewPostText] = useState('');
-  const [newPostTitle, setNewPostTitle] = useState('');
-
-  const handleLike = (id: string) => {
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === id
-          ? { ...p, likes: p.isLiked ? p.likes - 1 : p.likes + 1, isLiked: !p.isLiked }
-          : p
-      )
-    );
-  };
-
-  const handleCreatePost = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newPostTitle.trim() || !newPostText.trim()) return;
-
-    const post: CommunityPost = {
-      id: `post-${Date.now()}`,
-      author: {
-        name: 'Benjamin Adzessa',
-        role: 'Membre Actif',
-        avatarInitials: 'BA',
-        verified: true
-      },
-      title: newPostTitle,
-      content: newPostText,
-      category: 'Discussion',
-      tags: ['Communauté', 'Nouveau'],
-      likes: 1,
-      commentsCount: 0,
-      timestamp: 'À l’instant'
-    };
-
-    setPosts([post, ...posts]);
-    setNewPostTitle('');
-    setNewPostText('');
-    setNewPostModalOpen(false);
-  };
-
-  const filtered = posts.filter((p) => {
-    if (activeFilter === 'all') return true;
-    return p.category === activeFilter;
-  });
 
   return (
-    <div className="ecosystem-page-root">
-      {/* Header Banner */}
-      <div className="ecosystem-header-banner">
-        <div className="ecosystem-badge">
-          <MessageSquare size={14} />
-          <span>ALLIANCE COMMUNITY</span>
+    <div className="vs-community-root">
+      
+      {/* Header */}
+      <div className="vs-comm-header">
+        <div>
+          <h1 className="vs-comm-title">Écosystème & Réseau</h1>
+          <p className="vs-comm-subtitle">Restez connecté avec l'univers Alliance One, collaborez et grandissez ensemble.</p>
         </div>
-        <h1 className="ecosystem-title">Communauté des Bâtisseurs & Utilisateurs</h1>
-        <p className="ecosystem-subtitle">
-          Partagez vos retours, découvrez les projets conçus sur Alliance One et échangez avec les créateurs.
-        </p>
-
-        {/* Action Row */}
-        <div className="community-header-actions">
-          <div className="community-category-pills">
-            {['all', 'Showcase', 'Tutoriel', 'Mise à jour', 'Discussion'].map((cat) => (
-              <button
-                key={cat}
-                className={`category-pill-btn ${activeFilter === cat ? 'active' : ''}`}
-                onClick={() => setActiveFilter(cat)}
-              >
-                {cat === 'all' ? 'Tous les posts' : cat}
-              </button>
-            ))}
-          </div>
-
-          <button className="community-share-btn" onClick={() => setNewPostModalOpen(true)}>
-            <Plus size={15} />
-            <span>Publier un message</span>
+        <div className="vs-comm-toolbar">
+          <button className="vs-btn-publish" onClick={() => setNewPostModalOpen(true)}>
+            <Plus size={18} /> Proposer une idée
           </button>
         </div>
       </div>
 
-      <div className="community-feed-container">
-        {/* Posts List */}
-        <div className="community-posts-list">
-          {filtered.map((post) => (
-            <div key={post.id} className="community-post-card">
-              {/* Author Row */}
-              <div className="post-author-row">
-                <div className="post-avatar">{post.author.avatarInitials}</div>
-                <div className="post-author-meta">
-                  <div className="author-name-line">
-                    <span className="author-name">{post.author.name}</span>
-                    {post.author.verified && (
-                      <CheckCircle2 size={13} color="#4f46e5" title="Compte Certifié" />
-                    )}
-                    <span className="post-category-tag">{post.category}</span>
+      <div className="vs-comm-grid-master">
+        
+        {/* Main Feed Column */}
+        <div className="vs-comm-feed-col">
+          
+          {/* Important Alerts & AI Messages */}
+          <div className="vs-alert-banner">
+            <div className="vs-alert-icon">
+              <Sparkles size={24} color="#f59e0b" />
+            </div>
+            <div className="vs-alert-content">
+              <h3>2 messages non lus de votre Agent IA</h3>
+              <p>Votre copilote a analysé les données de la semaine et a 3 recommandations de croissance. Cliquez pour lire.</p>
+            </div>
+            <button className="vs-alert-action" onClick={() => navigate('/app/ai')}>
+              Voir <ArrowRight size={16} />
+            </button>
+          </div>
+
+          <div className="vs-feed-tabs">
+            {['À la une', 'Telegram (Officiel)', 'Mises à jour', 'Communauté'].map((tab, i) => (
+              <button 
+                key={tab} 
+                className={`vs-feed-tab ${i === 0 ? 'active' : ''}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Telegram Pinned Post */}
+          <div className="vs-comm-post featured">
+            <div className="vs-post-header">
+              <div className="vs-post-author">
+                <div className="vs-post-avatar" style={{ background: '#0088cc', color: 'white', border: 'none' }}>
+                  <Send size={24} />
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span className="vs-post-author-name">Canal Officiel Telegram</span>
+                    <CheckCircle2 size={16} color="#10b981" />
+                    <span className="vs-badge-important">Épinglé</span>
                   </div>
-                  <div className="author-sub">{post.author.role} · {post.timestamp}</div>
+                  <span className="vs-post-author-role">Il y a 2h</span>
                 </div>
               </div>
+            </div>
+            <div className="vs-post-title">Déploiement de l'API de paiement Nelsius V2 ! 🚀</div>
+            <div className="vs-post-body">
+              Excellente nouvelle pour tous les développeurs et marchands du réseau ! L'API Nelsius V2 est désormais en ligne avec le support complet du Split Payment et des commissions automatiques. 
+              <br/><br/>
+              Consultez la documentation mise à jour pour intégrer cette fonctionnalité dans vos applications personnalisées.
+            </div>
+            <div className="vs-post-footer">
+              <button className="vs-post-action liked">
+                <Heart size={16} fill="currentColor" />
+                <span>1.2k</span>
+              </button>
+              <button className="vs-post-action">
+                <MessageCircle size={16} />
+                <span>342</span>
+              </button>
+            </div>
+          </div>
 
-              {/* Title & Body */}
-              <h3 className="post-title">{post.title}</h3>
-              <p className="post-body">{post.content}</p>
-
-              {/* Tags */}
-              <div className="post-tags-row">
-                {post.tags.map((t) => (
-                  <span key={t} className="post-tag">#{t}</span>
-                ))}
-              </div>
-
-              {/* Actions Footer */}
-              <div className="post-footer-actions">
-                <button 
-                  className={`post-action-btn ${post.isLiked ? 'liked' : ''}`}
-                  onClick={() => handleLike(post.id)}
-                >
-                  <Heart size={15} fill={post.isLiked ? '#ef4444' : 'none'} color={post.isLiked ? '#ef4444' : 'currentColor'} />
-                  <span>{post.likes}</span>
-                </button>
-                <button className="post-action-btn">
-                  <MessageSquare size={15} />
-                  <span>{post.commentsCount} commentaires</span>
-                </button>
-                <button className="post-action-btn" onClick={() => alert('Lien copié dans le presse-papier')}>
-                  <Share2 size={15} />
-                  <span>Partager</span>
-                </button>
+          {/* Normal Post */}
+          <div className="vs-comm-post">
+            <div className="vs-post-header">
+              <div className="vs-post-author">
+                <div className="vs-post-avatar">CE</div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span className="vs-post-author-name">Collège Émergence</span>
+                  </div>
+                  <span className="vs-post-author-role">Recherche de partenaires · Hier</span>
+                </div>
               </div>
             </div>
-          ))}
+            <div className="vs-post-title">Recrutement Développeurs : Module de suivi de bus scolaire</div>
+            <div className="vs-post-body">
+              Nous cherchons à constituer un groupe de développement pour créer un module de suivi GPS des bus scolaires intégré à Alliance One. Si vous êtes un développeur spécialisé en cartographie et intéressé par le projet, rejoignez notre groupe de travail !
+            </div>
+            <div className="vs-post-footer">
+              <button className="vs-post-action">
+                <Heart size={16} />
+                <span>45</span>
+              </button>
+              <button className="vs-post-action">
+                <MessageCircle size={16} />
+                <span>12</span>
+              </button>
+              <button className="vs-post-btn-secondary">
+                <MessageCircleCode size={16} /> Rejoindre le groupe
+              </button>
+            </div>
+          </div>
+
+          {/* Ideas Post */}
+          <div className="vs-comm-post">
+            <div className="vs-post-header">
+              <div className="vs-post-author">
+                <div className="vs-post-avatar" style={{ background: '#fef3c7', color: '#d97706' }}>
+                  <Lightbulb size={24} />
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span className="vs-post-author-name">Boîte à idées</span>
+                  </div>
+                  <span className="vs-post-author-role">Proposition de la communauté</span>
+                </div>
+              </div>
+            </div>
+            <div className="vs-post-title">Ajouter un mode hors-ligne natif pour le module Éducation</div>
+            <div className="vs-post-body">
+              Ce serait fantastique si les enseignants pouvaient saisir les notes même sans connexion internet, avec une synchronisation automatique au retour réseau. 
+            </div>
+            <div className="vs-post-footer">
+              <button className="vs-post-action">
+                <TrendingUp size={16} />
+                <span>Voter (890)</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="vs-comm-sidebar-col">
+          
+          {/* Events & Formations */}
+          <div className="vs-widget-card">
+            <img src="/training.jpg" alt="Training" className="vs-widget-img" />
+            <div className="vs-widget-content">
+              <div className="vs-widget-badge">Formation Premium</div>
+              <h3 className="vs-widget-title">Masterclass : Intelligence Artificielle pour les Décideurs</h3>
+              <p className="vs-widget-desc">Apprenez à utiliser Alliance AI pour prédire vos flux de trésorerie.</p>
+              <div className="vs-widget-meta">
+                <CalendarDays size={14} /> 15 Novembre 2024 · En Ligne
+              </div>
+              <button className="vs-widget-btn">S'inscrire</button>
+            </div>
+          </div>
+
+          {/* Partners & Investors */}
+          <div className="vs-widget-card">
+            <img src="/network.jpg" alt="Partners" className="vs-widget-img" />
+            <div className="vs-widget-content">
+              <div className="vs-widget-badge" style={{ background: '#10b981', color: 'white' }}>Réseau Privé</div>
+              <h3 className="vs-widget-title">Fonds d'Investissement & Partenaires</h3>
+              <p className="vs-widget-desc">Accédez à notre annuaire d'investisseurs et de partenaires stratégiques pour lever des fonds et développer votre activité.</p>
+              <div className="vs-widget-meta">
+                <Building size={14} /> 150+ Partenaires actifs
+              </div>
+              <button className="vs-widget-btn" style={{ background: '#0f172a', color: 'white' }}>Explorer le réseau</button>
+            </div>
+          </div>
+
+          {/* Active Members */}
+          <div className="vs-members-panel">
+            <h2 className="vs-members-title">Membres Influents</h2>
+            <div className="vs-member-list">
+              <div className="vs-member-item">
+                <div className="vs-member-avatar">SA</div>
+                <div className="vs-member-info">
+                  <span className="vs-member-name">Sarah Amadou</span>
+                  <span className="vs-member-role">Directrice RH</span>
+                </div>
+              </div>
+              <div className="vs-member-item">
+                <div className="vs-member-avatar">MT</div>
+                <div className="vs-member-info">
+                  <span className="vs-member-name">Marc Traoré</span>
+                  <span className="vs-member-role">Investisseur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-
-      {/* New Post Modal */}
-      {newPostModalOpen && (
-        <div className="universal-modal-backdrop" onClick={() => setNewPostModalOpen(false)}>
-          <div className="universal-modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '520px' }}>
-            <div className="universal-modal-header">
-              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700 }}>Créer une publication</h3>
-            </div>
-            <form onSubmit={handleCreatePost} style={{ padding: '1.25rem' }}>
-              <div className="form-group" style={{ marginBottom: '12px' }}>
-                <label>Titre de votre sujet</label>
-                <input 
-                  type="text" 
-                  placeholder="Ex : Retour d'expérience sur le module Finance..."
-                  value={newPostTitle}
-                  onChange={(e) => setNewPostTitle(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label>Message ou description</label>
-                <textarea 
-                  rows={4}
-                  placeholder="Partagez vos conseils, questions ou réalisations..."
-                  value={newPostText}
-                  onChange={(e) => setNewPostText(e.target.value)}
-                  required
-                />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                <button 
-                  type="button" 
-                  className="step-action-btn" 
-                  onClick={() => setNewPostModalOpen(false)}
-                >
-                  Annuler
-                </button>
-                <button type="submit" className="hub-primary-btn" style={{ padding: '6px 14px' }}>
-                  Publier
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

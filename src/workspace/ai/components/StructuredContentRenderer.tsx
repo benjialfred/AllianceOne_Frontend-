@@ -66,11 +66,12 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
           )}
           <h3 
             style={{
-              fontSize: block.level === 1 ? '1.25rem' : block.level === 2 ? '1.1rem' : '0.98rem',
-              fontWeight: 600,
-              letterSpacing: '-0.02em',
-              color: 'var(--color-text-primary, #f8fafc)',
-              margin: '2px 0 6px 0'
+              fontFamily: "var(--ao-font-serif, 'Playfair Display', serif)",
+              fontSize: block.level === 1 ? '1.35rem' : block.level === 2 ? '1.15rem' : '1.05rem',
+              fontWeight: 700,
+              letterSpacing: '0',
+              color: '#0f172a',
+              margin: '4px 0 8px 0'
             }}
           >
             {block.text}
@@ -108,12 +109,12 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
             <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#94a3b8' }}>
               INSIGHT OPÉRATIONNEL
             </span>
-            <span style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--color-text-primary, #f8fafc)' }}>
+            <span style={{ fontSize: '0.92rem', fontWeight: 600, color: '#0f172a' }}>
               {block.title}
             </span>
           </div>
 
-          <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary, #cbd5e1)', lineHeight: 1.5, margin: 0 }}>
+          <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.5, margin: 0 }}>
             {block.summary}
           </p>
 
@@ -142,8 +143,8 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
                 alignItems: 'flex-start',
                 gap: '10px',
                 fontSize: '0.92rem',
-                color: 'var(--color-text-secondary, #cbd5e1)',
-                lineHeight: 1.55
+                color: '#1e293b',
+                lineHeight: 1.6
               }}
             >
               {block.ordered ? (
@@ -189,17 +190,17 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
         <div style={{ overflowX: 'auto', margin: '8px 0', borderRadius: '8px', border: '1px solid var(--color-surface-border, rgba(255, 255, 255, 0.08))' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
             <thead>
-              <tr style={{ background: 'rgba(255, 255, 255, 0.04)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <tr style={{ background: 'rgba(0, 0, 0, 0.02)', borderBottom: '1px solid rgba(0, 0, 0, 0.08)' }}>
                 {block.headers.map((h, i) => (
-                  <th key={i} style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 600, color: '#e2e8f0' }}>{h}</th>
+                  <th key={i} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 600, color: '#0f172a' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {block.rows.map((row, ri) => (
-                <tr key={ri} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                <tr key={ri} style={{ borderBottom: '1px solid rgba(0, 0, 0, 0.04)' }}>
                   {row.map((cell, ci) => (
-                    <td key={ci} style={{ padding: '8px 12px', color: '#94a3b8' }}>{cell}</td>
+                    <td key={ci} style={{ padding: '10px 12px', color: '#334155' }}>{cell}</td>
                   ))}
                 </tr>
               ))}
@@ -281,11 +282,11 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
             <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#34d399' }}>
               {block.verified ? '✓ RÉSULTAT VÉRIFIÉ' : 'RÉSULTAT'}
             </span>
-            <span style={{ fontSize: '0.95rem', fontWeight: 600, color: '#f8fafc' }}>
+            <span style={{ fontSize: '0.95rem', fontWeight: 600, color: '#0f172a' }}>
               {block.title}
             </span>
           </div>
-          <p style={{ fontSize: '0.88rem', color: '#cbd5e1', margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: '0.9rem', color: '#334155', margin: 0, lineHeight: 1.5 }}>
             {block.summary}
           </p>
           {block.metrics && block.metrics.length > 0 && (
@@ -314,11 +315,11 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
             padding: '6px 12px',
             borderRadius: '6px',
             fontSize: '0.84rem',
-            color: '#e2e8f0'
+            color: '#1e293b'
           }}
         >
-          <FileText size={15} style={{ color: '#60a5fa' }} />
-          <span>{block.name}</span>
+          <FileText size={15} style={{ color: '#2563eb' }} />
+          <span style={{ fontWeight: 500 }}>{block.name}</span>
           {block.size && <span style={{ fontSize: '0.72rem', color: '#64748b' }}>({block.size})</span>}
         </div>
       );
@@ -336,7 +337,7 @@ function renderBlock(block: ContentBlock, onActionClick?: (id: string, payload?:
     case 'text':
     default: {
       return (
-        <p style={{ margin: 0, fontSize: '0.94rem', lineHeight: 1.6, color: 'var(--color-text-secondary, #d4d4d8)' }}>
+        <p style={{ margin: 0, fontSize: '0.96rem', lineHeight: 1.7, color: '#1e293b', fontWeight: 400 }}>
           {block.content}
         </p>
       );

@@ -119,66 +119,33 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
   return (
     <div 
       ref={containerRef}
-      className={`ao-copilot-composer-container ${className}`} 
-      style={{ position: 'relative', width: '100%', maxWidth: '820px', margin: '0 auto' }}
+      className={`ao-composer-wrapper ${className}`}
     >
       {/* ─── QUICK COMMANDS PALETTE ─── */}
       <AnimatePresence>
         {showCommands && (
           <motion.div
+            className="ao-composer-palette"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              position: 'absolute',
-              bottom: 'calc(100% + 8px)',
-              left: 0,
-              right: 0,
-              background: 'var(--color-surface-card, #0e1422)',
-              border: '1px solid var(--color-surface-border, rgba(255, 255, 255, 0.12))',
-              borderRadius: '12px',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px',
-              boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.45)',
-              zIndex: 50,
-              backdropFilter: 'blur(16px)'
-            }}
           >
-            <div style={{ padding: '6px 10px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#64748b' }}>
+            <div className="ao-palette-header">
               Commandes Opérationnelles Rapides
             </div>
             {QUICK_COMMANDS.map((item) => (
               <button
                 key={item.cmd}
                 type="button"
+                className="ao-palette-item"
                 onClick={() => selectCommand(item.cmd)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '8px 10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s'
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.84rem', color: '#60a5fa' }}>
-                    {item.cmd}
-                  </span>
-                  <span style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>
-                    {item.label}
-                  </span>
+                <div className="ao-palette-item-content">
+                  <span className="cmd-text">{item.cmd}</span>
+                  <span className="cmd-label">{item.label}</span>
                 </div>
-                <ChevronRight size={13} style={{ color: '#64748b' }} />
+                <ChevronRight size={13} className="cmd-icon" />
               </button>
             ))}
           </motion.div>
@@ -189,55 +156,27 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
       <AnimatePresence>
         {showContexts && (
           <motion.div
+            className="ao-composer-palette"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              position: 'absolute',
-              bottom: 'calc(100% + 8px)',
-              left: 0,
-              maxWidth: '340px',
-              background: 'var(--color-surface-card, #0e1422)',
-              border: '1px solid var(--color-surface-border, rgba(255, 255, 255, 0.12))',
-              borderRadius: '12px',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px',
-              boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.45)',
-              zIndex: 50,
-              backdropFilter: 'blur(16px)'
-            }}
           >
-            <div style={{ padding: '6px 10px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#64748b' }}>
+            <div className="ao-palette-header">
               Ajouter un contexte sectoriel
             </div>
             {CONTEXT_TAGS.map((tag) => (
               <button
                 key={tag.id}
                 type="button"
+                className="ao-palette-item"
                 onClick={() => selectContext(tag.id)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '8px 10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s'
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
                 <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#f8fafc' }}>{tag.label}</div>
-                  <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{tag.desc}</div>
+                  <div className="ctx-label">{tag.label}</div>
+                  <div className="ctx-desc">{tag.desc}</div>
                 </div>
-                <Plus size={13} style={{ color: '#60a5fa' }} />
+                <Plus size={13} className="ctx-icon" />
               </button>
             ))}
           </motion.div>
@@ -247,18 +186,7 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
       {/* ─── MAIN ARCHITECTURAL INPUT DECK ─── */}
       <form
         onSubmit={handleSubmit}
-        style={{
-          position: 'relative',
-          background: isFocused ? 'var(--color-surface-card, #0e1422)' : 'var(--color-surface-card, #0b0f19)',
-          border: isFocused ? '1px solid #3b82f6' : '1px solid var(--color-surface-border, rgba(255, 255, 255, 0.1))',
-          borderRadius: '12px',
-          padding: '12px 14px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          boxShadow: isFocused ? '0 0 0 3px rgba(59, 130, 246, 0.15), 0 8px 24px rgba(0,0,0,0.3)' : '0 4px 16px rgba(0,0,0,0.2)',
-          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
-        }}
+        className={`ao-composer-form ${isFocused ? 'focused' : ''}`}
       >
         {/* Input Field */}
         <input
@@ -272,40 +200,19 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
           placeholder={CONTEXTUAL_PLACEHOLDERS[placeholderIndex]}
           disabled={isProcessing}
           autoComplete="off"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            fontSize: '0.98rem',
-            color: 'var(--color-text-primary, #f8fafc)',
-            lineHeight: 1.5,
-            width: '100%'
-          }}
+          className="ao-composer-input"
         />
 
         {/* Action Controls Toolbar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
+        <div className="ao-composer-toolbar">
           {/* Context & Command Badges */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div className="ao-composer-badges">
             <button
               type="button"
+              className={`ao-composer-badge ${showContexts ? 'active' : ''}`}
               onClick={() => {
                 setShowContexts((prev) => !prev);
                 setShowCommands(false);
-              }}
-              style={{
-                background: showContexts ? 'rgba(59, 130, 246, 0.18)' : 'rgba(255, 255, 255, 0.04)',
-                border: showContexts ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '6px',
-                padding: '3px 8px',
-                fontSize: '0.74rem',
-                fontWeight: 500,
-                color: showContexts ? '#60a5fa' : '#94a3b8',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
               }}
             >
               <Plus size={11} />
@@ -314,6 +221,7 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
 
             <button
               type="button"
+              className={`ao-composer-badge ${showCommands ? 'active' : ''}`}
               onClick={() => {
                 setShowCommands((prev) => !prev);
                 setShowContexts(false);
@@ -322,36 +230,13 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
                   inputRef.current?.focus();
                 }
               }}
-              style={{
-                background: showCommands ? 'rgba(59, 130, 246, 0.18)' : 'rgba(255, 255, 255, 0.04)',
-                border: showCommands ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '6px',
-                padding: '3px 8px',
-                fontSize: '0.74rem',
-                fontWeight: 500,
-                color: showCommands ? '#60a5fa' : '#94a3b8',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
             >
               <Command size={11} />
               <span>commandes</span>
             </button>
 
             {activeModule && (
-              <span 
-                style={{
-                  fontSize: '0.7rem',
-                  fontWeight: 600,
-                  color: '#64748b',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  marginLeft: '4px'
-                }}
-              >
+              <span className="ao-composer-module-tag">
                 [{activeModule}]
               </span>
             )}
@@ -361,24 +246,12 @@ export const CopilotComposer: React.FC<CopilotComposerProps> = ({
           <motion.button
             type="submit"
             disabled={!canSend}
-            whileHover={canSend && !shouldReduceMotion ? { scale: 1.06 } : {}}
-            whileTap={canSend && !shouldReduceMotion ? { scale: 0.94 } : {}}
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              border: 'none',
-              background: canSend ? '#3b82f6' : 'rgba(255, 255, 255, 0.05)',
-              color: canSend ? '#ffffff' : '#475569',
-              cursor: canSend ? 'pointer' : 'not-allowed',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'background 0.2s, color 0.2s'
-            }}
+            whileHover={canSend && !shouldReduceMotion ? { scale: 1.05 } : {}}
+            whileTap={canSend && !shouldReduceMotion ? { scale: 0.95 } : {}}
+            className={`ao-composer-send-btn ${canSend ? 'active' : ''}`}
             title="Lancer l'opération (Entrée)"
           >
-            <ArrowUp size={16} strokeWidth={2.4} />
+            <ArrowUp size={18} strokeWidth={2.4} />
           </motion.button>
         </div>
       </form>

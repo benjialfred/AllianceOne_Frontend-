@@ -170,14 +170,14 @@ export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
         )}
       </svg>
 
-      {/* ─── 3. OFFICIAL ALLIANCE ONE LOGO MEDALLION ─── */}
+      {/* ─── 3. UNIQUE ALLIANCE AI LOGO MEDALLION ─── */}
       <motion.div
         style={{
           position: 'relative',
           width: size,
           height: size,
           borderRadius: `${radius}px`,
-          background: '#ffffff',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
@@ -197,18 +197,36 @@ export const AoIntelligenceMark: React.FC<AoIntelligenceMarkProps> = ({
         }
         transition={{ duration: 0.35 }}
       >
-        <img
-          src={logoImg}
-          alt="Alliance One"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            display: 'block',
-            userSelect: 'none'
-          }}
-          draggable={false}
-        />
+        <svg
+          width={size * 0.7}
+          height={size * 0.7}
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="ao-ai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#163a2a" />
+              <stop offset="100%" stopColor="#2a6a4f" />
+            </linearGradient>
+            <linearGradient id="ao-ai-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3b82f6" />
+              <stop offset="100%" stopColor="#10b981" />
+            </linearGradient>
+          </defs>
+          
+          {/* Outer Dynamic Hexagon */}
+          <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" fill="url(#ao-ai-grad)" opacity="0.1" />
+          <path d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z" stroke="url(#ao-ai-grad)" strokeWidth="6" strokeLinejoin="round" />
+          
+          {/* Inner Neural Node (Spark) */}
+          <path d="M50 25 Q 50 50 25 50 Q 50 50 50 75 Q 50 50 75 50 Q 50 50 50 25 Z" fill="url(#ao-ai-glow)" />
+          
+          {/* Connecting Dots */}
+          <circle cx="50" cy="5" r="4" fill="#3b82f6" />
+          <circle cx="90" cy="72.5" r="4" fill="#10b981" />
+          <circle cx="10" cy="72.5" r="4" fill="#3b82f6" />
+        </svg>
       </motion.div>
 
       {/* ─── 4. STATUS COORDINATION MICRO-BADGE ─── */}

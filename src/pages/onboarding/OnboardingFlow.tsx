@@ -34,7 +34,7 @@ import { useAuthStore } from '../../core/stores/authStore';
 import { usePlatformStore } from '../../core/stores/platformStore';
 import { onboardingApi, type OnboardingSubmitPayload } from '../../core/api/onboarding';
 import { ALLIANCE_MODULES } from '../../core/modules/registry';
-import logoSrc from '../../assets/logo.png';
+import { AllianceLogo } from '../../design-system/components/AllianceLogo';
 import './OnboardingFlow.css';
 
 /* ─── Interfaces ─── */
@@ -341,7 +341,7 @@ export const OnboardingFlow: React.FC = () => {
         {/* ─── HEADER ─── */}
         <header className="onb-header">
           <div className="onb-logo-wrap">
-            <img src={logoSrc} alt="Alliance One" className="onb-logo-img" />
+            <AllianceLogo size={28} color="var(--ao-elegant-primary, #0f172a)" />
             <span className="onb-brand-name">Alliance One</span>
           </div>
 

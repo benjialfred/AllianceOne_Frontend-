@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImg from '../../assets/logo.png';
+import { AllianceLogo } from './AllianceLogo';
 
 export interface LogoProps {
   size?: number;
@@ -27,21 +27,7 @@ export const Logo: React.FC<LogoProps> = ({
         ...style
       }}
     >
-      <img 
-        src={logoImg} 
-        alt="Alliance One" 
-        width={size} 
-        height={size}
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          objectFit: 'contain',
-          borderRadius: '8px',
-          flexShrink: 0,
-          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08))',
-          display: 'block'
-        }}
-      />
+      <AllianceLogo size={size} color="var(--ao-elegant-primary, #4f46e5)" />
       {(showText || showMotto) && (
         <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15, justifyContent: 'center' }}>
           {showText && (

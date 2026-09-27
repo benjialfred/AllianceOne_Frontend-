@@ -4,7 +4,7 @@ import {
   Calendar, CreditCard, Edit3, Settings, Library, Package, 
   Warehouse as WarehouseIcon, History, ClipboardList, Truck, 
   ShoppingCart, Factory, FolderKanban, ListTodo, CheckSquare, 
-  Layers, Landmark, PieChart 
+  Layers, Landmark, PieChart, ShieldCheck
 } from 'lucide-react';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
@@ -21,17 +21,23 @@ import { UniversalCreateModal } from './components/UniversalCreateModal';
 import { NotificationsDrawer } from './components/NotificationsDrawer';
 import { AllianceAICopilot } from './ai/AllianceAICopilot';
 import { TelegramConnectModal } from './components/TelegramConnectModal';
+import { ModuleGuard } from './components/ModuleGuard';
 
 // Pages
 import { AllianceHub } from './hub/AllianceHub';
 import { MarketplacePage } from './pages/MarketplacePage';
+import { MyModulesPage } from './pages/MyModulesPage';
+import { ModuleDetailsPage } from './pages/ModuleDetailsPage';
 import { MarketplaceCallback } from './pages/MarketplaceCallback';
 import { DevelopersPage } from './pages/DevelopersPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { UnifiedHelpPage } from './pages/UnifiedHelpPage';
+import { TrustCenterPage } from './pages/TrustCenterPage';
 import { SettingsHubPage } from './pages/SettingsHubPage';
 import { HyperAdminDashboard } from './pages/hyperadmin/HyperAdminDashboard';
+import { WalletPage } from './pages/WalletPage';
+import { CertificationsPage } from './pages/CertificationsPage';
 
 // Module Routes
 import EducationModuleRoutes from '../modules/education/App';
@@ -142,7 +148,11 @@ const globalNavigation: NavSection[] = [
     { label: "Marketplace", path: "/app/marketplace", icon: Package },
     { label: "Réseau AO", path: "/app/community", icon: Users },
   ]},
+  { section: 'FINANCES', items: [
+    { label: "Mon Portefeuille", path: "/app/wallet", icon: CreditCard },
+  ]},
   { section: 'ADMINISTRATION', items: [
+    { label: "Vérifications", path: "/app/certifications", icon: ShieldCheck },
     { label: "Paramètres", path: "/app/settings", icon: Settings },
   ]}
 ];
@@ -240,7 +250,7 @@ export const WorkspaceShell: React.FC = () => {
       }
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
         e.preventDefault();
-        setIsAIOpen((prev) => !prev);
+        navigate(location.pathname === '/app/ai' ? '/app' : '/app/ai');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -287,7 +297,7 @@ export const WorkspaceShell: React.FC = () => {
       onOpenSearch={() => setIsSearchOpen(true)}
       onOpenCreate={() => setIsCreateOpen(true)}
       onOpenNotifications={() => setIsNotifOpen(true)}
-      onOpenAI={() => setIsAIOpen(true)}
+      onOpenAI={() => navigate('/app/ai')}
       activeModuleNav={activeNav}
       activeModuleName={activeModuleName}
       activeModuleColor={activeModuleColor}
@@ -304,35 +314,58 @@ export const WorkspaceShell: React.FC = () => {
           } 
         />
 
+        {/* AI Page */}
+        <Route path="/ai" element={<AllianceAICopilot />} />
+
         {/* Ecosystem Pages */}
         <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/my-modules" element={<MyModulesPage />} />
+        <Route path="/marketplace/module/:slug" element={<ModuleDetailsPage />} />
         <Route path="/marketplace/callback" element={<MarketplaceCallback />} />
+        <Route path="/wallet" element={<WalletPage />} />
+        <Route path="/certifications" element={<CertificationsPage />} />
         <Route path="/developers" element={<DevelopersPage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/help" element={<UnifiedHelpPage />} />
+        <Route path="/confiance" element={<TrustCenterPage />} />
         <Route path="/settings" element={<SettingsHubPage onOpenTelegram={() => setIsTelegramOpen(true)} />} />
 
         {/* HyperAdmin Central Cockpit */}
         <Route path="/hyperadmin" element={<HyperAdminDashboard />} />
 
         {/* Business Modules */}
-        <Route path="/education/*" element={<EducationModuleRoutes />} />
-        <Route path="/inventory/*" element={<InventoryModuleRoutes />} />
-        <Route path="/finance/*" element={<FinanceModuleRoutes />} />
-        <Route path="/library/*" element={<LibraryModuleRoutes />} />
-        <Route path="/tasks/*" element={<TasksModuleRoutes />} />
+        <Route path="/education/*" element={
+          <ModuleGuard moduleSlug="education" moduleName="Éducation Pro">
+            <EducationModuleRoutes />
+          </ModuleGuard>
+        } />
+        <Route path="/inventory/*" element={
+          <ModuleGuard moduleSlug="inventory" moduleName="Stocks & Logistique">
+            <InventoryModuleRoutes />
+          </ModuleGuard>
+        } />
+        <Route path="/finance/*" element={
+          <ModuleGuard moduleSlug="finance" moduleName="Finances & Trésorerie">
+            <FinanceModuleRoutes />
+          </ModuleGuard>
+        } />
+        <Route path="/library/*" element={
+          <ModuleGuard moduleSlug="library" moduleName="Bibliothèque & CDI">
+            <LibraryModuleRoutes />
+          </ModuleGuard>
+        } />
+        <Route path="/tasks/*" element={
+          <ModuleGuard moduleSlug="tasks" moduleName="Tâches & Projets">
+            <TasksModuleRoutes />
+          </ModuleGuard>
+        } />
       </Routes>
 
       {/* 3. UNIVERSAL MODALS & DRAWERS */}
       <UniversalCommandPalette 
         isOpen={isSearchOpen} 
         onClose={() => setIsSearchOpen(false)} 
-      />
-
-      <AllianceAICopilot 
-        isOpen={isAIOpen}
-        onClose={() => setIsAIOpen(false)}
       />
 
       <UniversalCreateModal 
