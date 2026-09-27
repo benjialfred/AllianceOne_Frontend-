@@ -1,277 +1,224 @@
 /**
  * ALLIANCE ONE — SIGNATURE DIGITALE (HOMEPAGE)
- * 
- * Expérience éditoriale, technologique et architecturale.
- * Zéro composant SaaS générique. Zéro gradient superflu.
+ * White, modern, NelsiusPay inspired layout.
  */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, ChevronDown, Moon, Globe, CheckCircle2 } from 'lucide-react';
 import './LandingPage.css';
-
-/* ── COMPOSANTS D'ANIMATION ── */
-const FadeIn: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({ children, delay = 0, className }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
 import { AllianceLogo } from '../../design-system/components/AllianceLogo';
-
-/* ── ANIMATION SIGNATURE AO (HERO) ── */
-const HeroBranding: React.FC = () => {
-  return (
-    <>
-      <div className="hero-glow-1" />
-      <div className="hero-glow-2" />
-      <div className="hero-content">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          className="hero-logo-img-wrapper"
-          style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
-        >
-          <AllianceLogo size={120} color="var(--ao-elegant-primary, #ffffff)" />
-        </motion.div>
-      </div>
-    </>
-  );
-};
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  
-  // Changement du thème de la navbar en fonction du défilement
-  useEffect(() => {
-    const handleScroll = () => {
-      const archSection = document.getElementById('architecture');
-      if (archSection) {
-        const rect = archSection.getBoundingClientRect();
-        // Si la section "Deep Navy" est en haut de l'écran, on passe la nav en dark mode
-        if (rect.top <= 80 && rect.bottom >= 80) {
-          setIsDarkMode(true);
-        } else {
-          setIsDarkMode(false);
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const toggleDropdown = (menu: string) => {
+    if (activeDropdown === menu) setActiveDropdown(null);
+    else setActiveDropdown(menu);
+  };
 
   return (
     <div className="landing-page">
-      {/* ═══════════════════════════════════════════════
-          1. NAVIGATION (ÉDITORIALE)
-          ═══════════════════════════════════════════════ */}
-      <header className={`landing-nav ${isDarkMode ? 'dark-mode' : 'scrolled'}`}>
-        <div className="landing-nav-inner">
-          <div className="landing-nav-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <span className="brand-text-logo">Alliance One</span>
+      {/* 1. HEADER (Top Navigation) */}
+      <header className="landing-header">
+        <div className="header-inner">
+          {/* Logo */}
+          <div className="header-brand" onClick={() => window.scrollTo(0, 0)}>
+            <AllianceLogo size={28} color="#0f172a" />
+            <span className="brand-name">ALLIANCE ONE</span>
           </div>
-          <nav className="landing-nav-links">
-            <a href="#thesis" className="landing-nav-link">Vision</a>
-            <a href="#architecture" className="landing-nav-link">Architecture</a>
-            <a href="#intelligence" className="landing-nav-link">Intelligence</a>
-            <a onClick={() => navigate('/founder')} className="landing-nav-link">Fondateur</a>
+
+          {/* Navigation Links with Dropdowns */}
+          <nav className="header-nav">
+            <div className="nav-item" onMouseEnter={() => toggleDropdown('produits')} onMouseLeave={() => toggleDropdown('')}>
+              <span>Produits <ChevronDown size={14} /></span>
+              {activeDropdown === 'produits' && (
+                <div className="dropdown-menu">
+                  <a onClick={() => navigate('/register')}>Finance & Trésorerie</a>
+                  <a onClick={() => navigate('/register')}>Stocks & Logistique</a>
+                  <a onClick={() => navigate('/register')}>Ressources Humaines</a>
+                  <a onClick={() => navigate('/register')}>Éducation & Santé</a>
+                </div>
+              )}
+            </div>
+            
+            <div className="nav-item" onMouseEnter={() => toggleDropdown('reseau')} onMouseLeave={() => toggleDropdown('')}>
+              <span>Réseau Alliance <ChevronDown size={14} /></span>
+              {activeDropdown === 'reseau' && (
+                <div className="dropdown-menu">
+                  <a onClick={() => navigate('/app/confiance')}>Organisations Certifiées</a>
+                  <a onClick={() => navigate('/app/confiance')}>Investisseurs</a>
+                  <a onClick={() => navigate('/app/confiance')}>Partenariats Stratégiques</a>
+                </div>
+              )}
+            </div>
+
+            <div className="nav-item">
+              <span>Ressources <ChevronDown size={14} /></span>
+            </div>
+
+            <div className="nav-item">
+              <span>Tarifs</span>
+            </div>
           </nav>
-          <button className="landing-nav-cta" onClick={() => navigate('/register')}>
-            Initier le déploiement
-          </button>
+
+          {/* Right Actions */}
+          <div className="header-actions">
+            <button className="icon-btn theme-btn">
+              <Moon size={16} /> SOMBRE
+            </button>
+            <button className="icon-btn lang-btn">
+              <Globe size={16} /> FR <ChevronDown size={14} />
+            </button>
+            <button className="cta-dashboard" onClick={() => navigate('/login')}>
+              Tableau de bord
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* ═══════════════════════════════════════════════
-          2. HERO : LA GENÈSE
-          ═══════════════════════════════════════════════ */}
-      <section className="hero-genesis">
-        <div className="hero-grid-bg" />
+      {/* 2. HERO SECTION */}
+      <section className="hero-section">
+        <div className="hero-blur-bg blur-pink"></div>
+        <div className="hero-blur-bg blur-blue"></div>
+        <div className="hero-blur-bg blur-yellow"></div>
         
-        <HeroBranding />
+        <div className="hero-inner">
+          <div className="hero-content">
+            <motion.h1 
+              className="hero-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              L'infrastructure globale pour développer <span className="highlight-text">votre entreprise.</span>
+            </motion.h1>
+            <motion.p 
+              className="hero-subtitle"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Gérez vos finances, vos stocks, et votre équipe avec une plateforme ERP modulaire conçue pour la vitesse et l'échelle. Rejoignez le réseau de confiance Alliance One.
+            </motion.p>
+            <motion.div 
+              className="hero-buttons"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <button className="btn-primary" onClick={() => navigate('/register')}>
+                Démarrer maintenant <ArrowRight size={16} />
+              </button>
+              <button className="btn-secondary">
+                Contacter l'équipe commerciale <ArrowRight size={16} />
+              </button>
+            </motion.div>
+          </div>
 
-        <motion.div 
-          className="hero-content"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-        >
-          <h1 className="hero-editorial-title">
-            L'art de diriger.<br />Élevé au rang de standard.
-          </h1>
-          <button className="hero-editorial-cta" onClick={() => {
-            document.getElementById('thesis')?.scrollIntoView({ behavior: 'smooth' });
-          }}>
-            Découvrir l'infrastructure
-            <ArrowRight size={14} />
-          </button>
-        </motion.div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════
-          3. LE MANIFESTE (THESIS)
-          ═══════════════════════════════════════════════ */}
-      <section id="thesis" className="section-thesis">
-        <div className="thesis-container">
-          <FadeIn>
-            <span className="thesis-kicker">Le Manifeste</span>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <h2 className="thesis-statement">
-              Nous n'avons pas créé un logiciel.<br />
-              <span>Nous avons conçu l'infrastructure absolue pour les organisations qui refusent le compromis.</span>
-            </h2>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════
-          4. L'ARCHITECTURE (MACRO UI / DEEP NAVY)
-          ═══════════════════════════════════════════════ */}
-      <section id="architecture" className="section-architecture">
-        <div className="arch-header">
-          <FadeIn>
-            <span className="arch-kicker">Maîtrise Technologique</span>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <h2 className="arch-title">
-              Conçu avec la précision de l'horlogerie. La forme suit la fonction.
-            </h2>
-          </FadeIn>
-        </div>
-
-        <div className="macro-ui-grid">
-          {/* Cell 1: Typographie et Entrée */}
-          <FadeIn delay={0.3}>
-            <div className="macro-ui-cell">
-              <div className="macro-ui-visual">
-                <div className="ui-perfect-input">
-                  &gt; Saisie_Sécurisée_
+          <motion.div 
+            className="hero-mockup"
+            initial={{ opacity: 0, scale: 0.9, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {/* Abstract Dashboard Mockup */}
+            <div className="mockup-frame">
+              <div className="mockup-header">
+                <div className="mockup-logo">
+                  <AllianceLogo size={20} color="#4f46e5" />
+                  <span>Alliance One</span>
                 </div>
+                <div className="mockup-user"></div>
               </div>
-              <div className="macro-ui-desc">
-                <span className="macro-ui-label">Interaction</span>
-                <p className="macro-ui-text">
-                  Chaque composant d'interaction est dépouillé du superflu pour garantir une vitesse de saisie maximale, sans distraction.
-                </p>
+              <div className="mockup-body">
+                <div className="mockup-balance">
+                  <span className="balance-label">SOLDE DE L'ENTREPRISE</span>
+                  <span className="balance-value">1 500 000 FCFA</span>
+                </div>
+                <div className="mockup-cards">
+                  <div className="m-card visa"><span className="visa-logo">VISA</span></div>
+                  <div className="m-card momo"><span className="momo-logo">MoMo</span></div>
+                </div>
+                <div className="mockup-form">
+                  <div className="m-input"></div>
+                  <div className="m-input"></div>
+                  <div className="m-btn">Confirmer le paiement</div>
+                </div>
               </div>
             </div>
-          </FadeIn>
-
-          {/* Cell 2: Données Financières */}
-          <FadeIn delay={0.4}>
-            <div className="macro-ui-cell">
-              <div className="macro-ui-visual" style={{ flexDirection: 'column', width: '100%', gap: '1px' }}>
-                <div className="ui-perfect-table-row" style={{ opacity: 0.5 }}>
-                  <span>TRX-00918</span><span>24/11/2026</span><span>+45 000</span>
-                </div>
-                <div className="ui-perfect-table-row">
-                  <span>TRX-00919</span><span>24/11/2026</span><span>+120 000</span>
-                </div>
-                <div className="ui-perfect-table-row" style={{ opacity: 0.5 }}>
-                  <span>TRX-00920</span><span>24/11/2026</span><span>-15 000</span>
-                </div>
-              </div>
-              <div className="macro-ui-desc">
-                <span className="macro-ui-label">Données</span>
-                <p className="macro-ui-text">
-                  La densité de l'information est calibrée mathématiquement. Vos finances et stocks sont lisibles instantanément, sans effort cognitif.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
+          </motion.div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════
-          5. L'INTELLIGENCE CONNEXE (DIAGRAMME)
-          ═══════════════════════════════════════════════ */}
-      <section id="intelligence" className="section-intelligence">
-        <div className="intel-container">
-          <div className="intel-content">
-            <FadeIn>
-              <h2>Une donnée saisie. Une vérité universelle.</h2>
-              <p>
-                L'architecture unifiée d'Alliance One éradique les silos. 
-                Une opération financière met automatiquement à jour la comptabilité, 
-                les inventaires, et les dossiers d'accès de votre personnel, en temps réel.
-                Aucune passerelle. Aucune double saisie. L'intégrité absolue.
-              </p>
-            </FadeIn>
+      {/* 3. PARTNERS TICKER */}
+      <section className="partners-section">
+        <h4 className="partners-title">RÉSEAUX ET PARTENAIRES INTERCONNECTÉS NATIVEMENT</h4>
+        <div className="partners-ticker-wrapper">
+          <div className="partners-ticker">
+            <span className="partner-logo">VISA</span>
+            <span className="partner-logo">NELSIUSPAY</span>
+            <span className="partner-logo">GROK</span>
+            <span className="partner-logo">Mastercard</span>
+            <span className="partner-logo">PayPal</span>
+            <span className="partner-logo" style={{ color: '#ff6600' }}>Orange Money</span>
+            <span className="partner-logo" style={{ color: '#ffcc00' }}>MTN MoMo</span>
+            <span className="partner-logo">OpenAI</span>
+            
+            {/* Duplicated for infinite scroll illusion */}
+            <span className="partner-logo">VISA</span>
+            <span className="partner-logo">NELSIUSPAY</span>
+            <span className="partner-logo">GROK</span>
+            <span className="partner-logo">Mastercard</span>
+            <span className="partner-logo">PayPal</span>
+            <span className="partner-logo" style={{ color: '#ff6600' }}>Orange Money</span>
+            <span className="partner-logo" style={{ color: '#ffcc00' }}>MTN MoMo</span>
+            <span className="partner-logo">OpenAI</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. NETWORK SECTION */}
+      <section className="network-section">
+        <div className="network-inner">
+          <div className="network-header">
+            <h2 className="network-title">Le Réseau Alliance</h2>
+            <p className="network-desc">Découvrez les organisations vérifiées et certifiées qui composent notre écosystème de confiance.</p>
           </div>
           
-          <div className="intel-diagram">
-            {/* Lignes de connexion */}
-            <div className="intel-line" style={{ width: '60%', height: 1, top: '15%', left: '20%' }} />
-            <div className="intel-line" style={{ width: 1, height: '70%', top: '15%', left: '20%' }} />
-            <div className="intel-line" style={{ width: '70%', height: 1, bottom: '25%', right: '10%' }} />
-            <div className="intel-line" style={{ width: 1, height: '45%', bottom: '25%', right: '20%' }} />
-
-            {/* Core */}
-            <motion.div 
-              className="intel-core"
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-            >
-              AO
-            </motion.div>
-
-            {/* Nodes */}
-            <motion.div className="intel-node node-1" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }}>Opérations</motion.div>
-            <motion.div className="intel-node node-2" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }}>Finances</motion.div>
-            <motion.div className="intel-node node-3" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }}>Ressources Humaines</motion.div>
-            <motion.div className="intel-node node-4" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1.0 }}>Logistique & Stocks</motion.div>
+          <div className="network-grid">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="network-card">
+                <div className="n-card-header">
+                  <div className="n-card-logo"></div>
+                  <div className="n-card-info">
+                    <h3>Organisation {i}</h3>
+                    <span className="n-badge"><CheckCircle2 size={12} /> Certifié</span>
+                  </div>
+                </div>
+                <p>Membre de l'Alliance depuis 2026. Secteur: Technologie et Finance.</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-
-      {/* ═══════════════════════════════════════════════
-          6. L'ÉPILOGUE (CTA)
-          ═══════════════════════════════════════════════ */}
-      <section className="section-epilogue">
-        <div className="epilogue-bg-logo">AO</div>
-        <div className="epilogue-content">
-          <FadeIn>
-            <h2 className="epilogue-title">
-              Votre organisation est prête pour son nouveau standard.
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <button className="epilogue-cta" onClick={() => navigate('/register')}>
-              Initier le déploiement
-            </button>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════
-          7. FOOTER ÉPURÉ
-          ═══════════════════════════════════════════════ */}
+      
+      {/* 5. FOOTER */}
       <footer className="landing-footer">
         <div className="footer-inner">
-          <div>
-            <span className="footer-brand">ALLIANCE ONE</span>
-            <span className="footer-copyright">© {new Date().getFullYear()} — L'infrastructure d'élite.</span>
+          <div className="footer-left">
+            <div className="footer-brand">
+              <AllianceLogo size={24} color="#0f172a" />
+              <span>ALLIANCE ONE</span>
+            </div>
+            <p>© {new Date().getFullYear()} — L'infrastructure d'élite.</p>
           </div>
           <div className="footer-links">
-            <a href="#thesis" className="footer-link">Vision</a>
-            <a href="#architecture" className="footer-link">Technologie</a>
-            <a onClick={() => navigate('/founder')} className="footer-link">Le Fondateur</a>
-            <a href="mailto:contact@allianceone.io" className="footer-link">Contact Privé</a>
+            <a href="#produits">Produits</a>
+            <a href="#reseau">Réseau</a>
+            <a href="#ressources">Ressources</a>
+            <a href="#contact">Contact</a>
           </div>
         </div>
       </footer>
