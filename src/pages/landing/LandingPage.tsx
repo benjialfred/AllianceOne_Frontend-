@@ -5,7 +5,7 @@ import React from 'react';
 import { PublicHeader } from './components/PublicHeader';
 import { HeroInfrastructure } from './components/HeroInfrastructure';
 import { EcosystemExplorer } from './components/EcosystemExplorer';
-import { SectionProblem, SectionInfrastructure, SectionEcosystem, SectionOneData, SectionAllianceAI, SectionDevelopersOrigin } from './components/LandingSections';
+import { AllianceAISection } from './components/AllianceAISection';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -47,10 +47,7 @@ export const LandingPage: React.FC = () => {
       <EcosystemExplorer />
 
       {/* STORYTELLING SECTIONS (AI) */}
-      <SectionAllianceAI />
-      
-      {/* DEVELOPERS & ORIGIN */}
-      <SectionDevelopersOrigin />
+      <AllianceAISection />
 
       {/* FOUNDER & FINAL CTA */}
       <section className="story-section bg-graphite text-white">
