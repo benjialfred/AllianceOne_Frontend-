@@ -40,7 +40,7 @@ export const PublicHeader: React.FC = () => {
       <div className="ph-inner">
         {/* LOGO */}
         <div className="ph-brand" onClick={() => navigate('/')}>
-          <AllianceLogo size={24} color="var(--ao-graphite)" />
+          <AllianceLogo size={36} color="var(--ao-graphite)" />
           <span className="ph-brand-text">ALLIANCE ONE</span>
         </div>
 
