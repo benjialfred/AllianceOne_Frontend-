@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers } from 'lucide-react';
+import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers, FileText } from 'lucide-react';
 import './AllianceAISection.css';
 import { useNavigate } from 'react-router-dom';
 

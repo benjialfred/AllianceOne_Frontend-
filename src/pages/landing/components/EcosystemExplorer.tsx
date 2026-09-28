@@ -27,10 +27,10 @@ export const EcosystemExplorer: React.FC = () => {
   };
 
   return (
-    <div className="ecosystem-explorer bg-ivory">
+    <div className="ecosystem-explorer bg-ivory" style={{ position: 'relative', zIndex: 1 }}>
       
       {/* 01. SECTION INTRO */}
-      <section className="eco-intro text-center py-24">
+      <section className="eco-intro text-center py-24" style={{ position: 'relative', zIndex: 2 }}>
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={layerVariants}>
           <span className="micro-label mb-6 block">THE ALLIANCE ONE ECOSYSTEM</span>
           <h2 className="eco-headline font-display">
@@ -44,7 +44,7 @@ export const EcosystemExplorer: React.FC = () => {
       </section>
 
       {/* 02. PLATFORM CORE & LAYERED ARCHITECTURE */}
-      <section className="eco-architecture py-24">
+      <section className="eco-architecture py-24" style={{ position: 'relative', zIndex: 3, overflow: 'hidden' }}>
         <div className="eco-inner">
           <motion.div 
             className="arch-layers"
@@ -111,14 +111,14 @@ export const EcosystemExplorer: React.FC = () => {
       </section>
 
       {/* 03. MODULES EXPLORER */}
-      <section className="eco-modules py-32 bg-white">
+      <section className="eco-modules py-32 bg-white" style={{ position: 'relative', zIndex: 4, clear: 'both' }}>
         <div className="eco-inner">
           <div className="mb-16 text-center">
             <span className="micro-label mb-4 block">APPLICATIONS MÉTIER</span>
             <h3 className="font-display text-4xl font-bold text-graphite">Les Modules Alliance One</h3>
           </div>
 
-          <div className="module-explorer-grid">
+          <div className="module-explorer-grid" style={{ alignItems: 'start' }}>
             <div className="module-list">
               {modules.map((m) => (
                 <div 
