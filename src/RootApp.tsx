@@ -36,6 +36,21 @@ const TermsOfServicePage = React.lazy(() =>
 /**
  * Auth guard: redirects to /login if not authenticated.
  */
+const NetworkPage = React.lazy(() => import('./pages/public/NetworkPage').then(m => ({ default: m.NetworkPage })));
+const PlatformPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.PlatformPage })));
+const ModulesPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ModulesPage })));
+const AIPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AIPage })));
+const SecurityPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.SecurityPage })));
+const PricingPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.PricingPage })));
+const MarketplacePage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.MarketplacePage })));
+const DevelopersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DevelopersPage })));
+const DocsPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DocsPage })));
+const AboutPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AboutPage })));
+const NewsPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.NewsPage })));
+const CareersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.CareersPage })));
+const ContactPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ContactPage })));
+const LegalPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.LegalPage })));
+
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   if (!isAuthenticated) {
@@ -117,6 +132,21 @@ export const RootApp: React.FC = () => {
             <FounderAppRoutes />
           }
         />
+
+        <Route path="/platform" element={<RequireGuest><PlatformPage /></RequireGuest>} />
+        <Route path="/modules" element={<RequireGuest><ModulesPage /></RequireGuest>} />
+        <Route path="/ai" element={<RequireGuest><AIPage /></RequireGuest>} />
+        <Route path="/security" element={<RequireGuest><SecurityPage /></RequireGuest>} />
+        <Route path="/pricing" element={<RequireGuest><PricingPage /></RequireGuest>} />
+        <Route path="/network" element={<RequireGuest><NetworkPage /></RequireGuest>} />
+        <Route path="/marketplace" element={<RequireGuest><MarketplacePage /></RequireGuest>} />
+        <Route path="/developers" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
+        <Route path="/docs" element={<RequireGuest><DocsPage /></RequireGuest>} />
+        <Route path="/about" element={<RequireGuest><AboutPage /></RequireGuest>} />
+        <Route path="/news" element={<RequireGuest><NewsPage /></RequireGuest>} />
+        <Route path="/careers" element={<RequireGuest><CareersPage /></RequireGuest>} />
+        <Route path="/contact" element={<RequireGuest><ContactPage /></RequireGuest>} />
+        <Route path="/legal" element={<RequireGuest><LegalPage /></RequireGuest>} />
 
         {/* ─── ONBOARDING (Authenticated) ─── */}
         <Route
