@@ -5,7 +5,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Network, Database, BrainCircuit, Blocks, Lock, ArrowRight, Code2, Globe2 } from 'lucide-react';
+import { Network, Database, BrainCircuit, Blocks, Lock, ArrowRight, Code2, Globe2, Users, Activity } from 'lucide-react';
 import './LandingSections.css';
 
 /* ======================================================================
