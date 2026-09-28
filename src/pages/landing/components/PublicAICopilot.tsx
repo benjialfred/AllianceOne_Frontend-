@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, User, Sparkles } from 'lucide-react';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
+import { API_HOST_URL } from '../../../core/api/client';
 import './PublicAICopilot.css';
 
 interface PublicAICopilotProps {
@@ -15,28 +16,41 @@ export const PublicAICopilot: React.FC<PublicAICopilotProps> = ({ isOpen, onClos
   ]);
   const [input, setInput] = useState('');
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
     
     const userMsg = input.trim();
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    const newMessages = [...messages, { role: 'user', content: userMsg }];
+    setMessages(newMessages as any);
     setInput('');
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      let reply = "Je suis conçu pour vous guider sur la présentation d'Alliance One. Pour gérer vos modules, veuillez vous connecter.";
+    try {
+      const response = await fetch(`${API_HOST_URL}/api/ai/public-ask/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: userMsg,
+          history: messages.map(m => ({ role: m.role, content: m.content }))
+        })
+      });
+
+      const data = await response.json();
       
-      const lower = userMsg.toLowerCase();
-      if (lower.includes('module') || lower.includes('gestion') || lower.includes('gérer')) {
-        reply = "Je ne peux malheureusement pas vous aider sur des questions qui concernent le management des modules. Pour cela, veuillez vous connecter à votre espace sécurisé.";
-      } else if (lower.includes('prix') || lower.includes('tarif')) {
-        reply = "Vous pouvez consulter l'ensemble de nos forfaits et solutions sur mesure sur notre page Tarification.";
-      } else if (lower.includes('sécurité') || lower.includes('données')) {
-        reply = "La sécurité est au cœur d'Alliance One. Notre architecture Zero Trust garantit l'intégrité de vos données. Visitez notre page Sécurité & Trust pour plus de détails.";
+      if (response.ok && data.status === 'SUCCESS') {
+        setMessages(prev => [...prev, { role: 'ai', content: data.answer }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'ai', content: "Désolé, une erreur est survenue lors de la communication avec l'intelligence artificielle." }]);
       }
-      
-      setMessages(prev => [...prev, { role: 'ai', content: reply }]);
-    }, 1000);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'ai', content: "Désolé, le réseau semble instable. Veuillez réessayer." }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -81,6 +95,18 @@ export const PublicAICopilot: React.FC<PublicAICopilotProps> = ({ isOpen, onClos
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="ai-msg-row ai">
+                  <div className="ai-msg-avatar">
+                    <Sparkles size={14} />
+                  </div>
+                  <div className="ai-msg-bubble" style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    <div className="ai-dot-flashing"></div>
+                    <div className="ai-dot-flashing" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="ai-dot-flashing" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="public-ai-input-area">
