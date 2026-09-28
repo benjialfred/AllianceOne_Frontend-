@@ -4,6 +4,7 @@
 import React from 'react';
 import { PublicHeader } from './components/PublicHeader';
 import { HeroInfrastructure } from './components/HeroInfrastructure';
+import { EcosystemExplorer } from './components/EcosystemExplorer';
 import { SectionProblem, SectionInfrastructure, SectionEcosystem, SectionOneData, SectionAllianceAI, SectionDevelopersOrigin } from './components/LandingSections';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -42,11 +43,10 @@ export const LandingPage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* STORYTELLING SECTIONS */}
-      <SectionProblem />
-      <SectionInfrastructure />
-      <SectionEcosystem />
-      <SectionOneData />
+      {/* ECOSYSTEM EXPLORER (ITERATION 03) */}
+      <EcosystemExplorer />
+
+      {/* STORYTELLING SECTIONS (AI) */}
       <SectionAllianceAI />
       
       {/* DEVELOPERS & ORIGIN */}
