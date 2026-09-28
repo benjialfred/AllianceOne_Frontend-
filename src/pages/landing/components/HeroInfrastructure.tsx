@@ -1,143 +1,161 @@
-/**
- * ALLIANCE ONE — HERO INFRASTRUCTURE
- * Visualizes the infrastructure aspect of AO.
- */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Database, BrainCircuit, Users, Layers, Activity } from 'lucide-react';
+import { motion, useAnimation } from 'framer-motion';
+import { ArrowRight, Database, Users, Briefcase, Layout, BrainCircuit } from 'lucide-react';
+import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 import './HeroInfrastructure.css';
 
 export const HeroInfrastructure: React.FC = () => {
   const navigate = useNavigate();
+  const controls = useAnimation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Séquence d'animation
+    const sequence = async () => {
+      // Step 1: Symbole AO apparait (automatique via initial/animate sur le composant)
+      await new Promise(r => setTimeout(r, 600));
+      // Step 2 & 3: Lignes et éléments
+      await controls.start("step2");
+      // Step 4: Connexion
+      await controls.start("step3");
+      // Step 5: Formation
+      await controls.start("step4");
+    };
+    sequence();
+  }, [controls]);
+
+  // Mouse parallax interaction (subtle)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isMobile) return;
+    const { clientX, clientY } = e;
+    const x = (clientX / window.innerWidth - 0.5) * 10; // Max 5px movement
+    const y = (clientY / window.innerHeight - 0.5) * 10;
+    setMousePosition({ x, y });
+  };
+
+  const nodeVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    step2: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
+    step3: { opacity: 1, scale: 1 },
+    step4: { opacity: 1, scale: 1, x: 0, y: 0, transition: { type: "spring", stiffness: 50 } }
+  };
+
+  const lineVariants = {
+    hidden: { pathLength: 0, opacity: 0 },
+    step2: { opacity: 1 },
+    step3: { pathLength: 1, transition: { duration: 1, ease: "easeInOut" } },
+    step4: { pathLength: 1, opacity: 0.4 } // fade out slightly when stable
+  };
 
   return (
-    <section className="hero-infra">
-      <div className="hero-infra-inner">
+    <section className="ao-hero" onMouseMove={handleMouseMove}>
+      <div className="ao-hero-inner">
         
         {/* TEXT CONTENT */}
-        <div className="hero-text-content">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h1 className="hero-title">
+        <div className="ao-hero-text">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
+            <span className="micro-label mb-4 block">ALLIANCE ONE / OPERATING INFRASTRUCTURE</span>
+            <h1 className="ao-hero-title">
               Une plateforme.<br />
               Tous vos métiers.<br />
-              <span className="text-highlight">Un seul écosystème.</span>
+              Un seul écosystème.
             </h1>
           </motion.div>
           
           <motion.p 
-            className="hero-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="ao-hero-desc"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Une infrastructure conçue pour connecter les applications, les données, 
-            les équipes, les processus et l'intelligence de votre organisation.
+            Alliance One connecte les applications, les données, les équipes, les opérations et l'intelligence de votre organisation dans une même infrastructure.
           </motion.p>
           
           <motion.div 
-            className="hero-actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="ao-hero-actions"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <button className="btn-primary" onClick={() => navigate('/register')}>
-              Découvrir Alliance One <ArrowRight size={16} />
+            <button className="ao-btn-primary ao-btn-large" onClick={() => navigate('/register')}>
+              Découvrir Alliance One
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/solutions')}>
+            <button className="ao-btn-ghost text-graphite" onClick={() => navigate('/solutions')}>
               Explorer les solutions
             </button>
+          </motion.div>
+
+          <motion.div 
+            className="ao-hero-signals"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1 }}
+          >
+            <span className="signal-badge">MODULAR</span>
+            <span className="signal-badge">AI-NATIVE</span>
+            <span className="signal-badge">MULTI-ORGANIZATION</span>
+            <span className="signal-badge">API READY</span>
           </motion.div>
         </div>
 
         {/* VISUAL ARCHITECTURE */}
-        <div className="hero-visual">
-          <div className="architecture-diagram">
-            {/* Core Element (AO) */}
+        <div className="ao-hero-visual">
+          <motion.div 
+            className="architecture-container"
+            animate={{ x: mousePosition.x, y: mousePosition.y }}
+            transition={{ type: 'tween', ease: 'linear', duration: 0.1 }}
+          >
+            {/* CENTRAL CORE */}
             <motion.div 
               className="arch-core"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.8, type: "spring" }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-              AO
+              <AllianceLogo size={48} color="white" />
             </motion.div>
 
-            {/* Connection Lines */}
-            <svg className="arch-lines" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
-              <motion.path 
-                d="M200 60 L200 160" 
-                stroke="var(--ao-alliance-blue)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1 }}
-              />
-              <motion.path 
-                d="M340 200 L240 200" 
-                stroke="var(--ao-alliance-blue)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.2 }}
-              />
-              <motion.path 
-                d="M200 340 L200 240" 
-                stroke="var(--ao-alliance-blue)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.4 }}
-              />
-              <motion.path 
-                d="M60 200 L160 200" 
-                stroke="var(--ao-alliance-blue)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.6 }}
-              />
-            </svg>
+            {/* SVG CONNECTIONS */}
+            {!isMobile && (
+              <svg className="arch-svg" viewBox="0 0 600 600">
+                {/* Lines converging to center (300,300) */}
+                <motion.line x1="150" y1="150" x2="280" y2="280" className="arch-line" variants={lineVariants} initial="hidden" animate={controls} />
+                <motion.line x1="450" y1="150" x2="320" y2="280" className="arch-line" variants={lineVariants} initial="hidden" animate={controls} />
+                <motion.line x1="100" y1="300" x2="270" y2="300" className="arch-line" variants={lineVariants} initial="hidden" animate={controls} />
+                <motion.line x1="500" y1="300" x2="330" y2="300" className="arch-line" variants={lineVariants} initial="hidden" animate={controls} />
+                <motion.line x1="300" y1="450" x2="300" y2="330" className="arch-line" variants={lineVariants} initial="hidden" animate={controls} />
+              </svg>
+            )}
 
-            {/* Nodes */}
-            <motion.div className="arch-node node-top" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1 }}>
-              <Users size={20} />
-              <span>Organization</span>
+            {/* NODES */}
+            <motion.div className="arch-node node-1" variants={nodeVariants} initial="hidden" animate={controls}>
+              <Database size={20} className="mb-2 text-alliance-blue" />
+              <span>DATA</span>
             </motion.div>
 
-            <motion.div className="arch-node node-right" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 1.2 }}>
-              <Database size={20} />
-              <span>Data</span>
+            <motion.div className="arch-node node-2" variants={nodeVariants} initial="hidden" animate={controls}>
+              <Users size={20} className="mb-2 text-alliance-blue" />
+              <span>PEOPLE</span>
             </motion.div>
 
-            <motion.div className="arch-node node-bottom" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1.4 }}>
-              <BrainCircuit size={20} />
-              <span>Alliance AI</span>
+            <motion.div className="arch-node node-3" variants={nodeVariants} initial="hidden" animate={controls}>
+              <Briefcase size={20} className="mb-2 text-alliance-blue" />
+              <span>OPERATIONS</span>
             </motion.div>
 
-            <motion.div className="arch-node node-left" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 1.6 }}>
-              <Layers size={20} />
-              <span>Modules</span>
+            <motion.div className="arch-node node-4" variants={nodeVariants} initial="hidden" animate={controls}>
+              <Layout size={20} className="mb-2 text-alliance-blue" />
+              <span>APPLICATIONS</span>
             </motion.div>
 
-            {/* Orbiting Particles */}
-            <motion.div 
-              className="arch-particle p1"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-            >
-              <div className="particle-dot"></div>
-            </motion.div>
-            
-            <motion.div 
-              className="arch-particle p2"
-              animate={{ rotate: -360 }}
-              transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-            >
-              <div className="particle-dot"></div>
+            <motion.div className="arch-node node-5" variants={nodeVariants} initial="hidden" animate={controls}>
+              <BrainCircuit size={20} className="mb-2 text-alliance-blue" />
+              <span>INTELLIGENCE</span>
             </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
