@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ArrowRight, BookOpen, Layers, Users, Rocket, Database, Code2, Cpu, LineChart, Globe, Zap, Network, Scale, Layout } from 'lucide-react';
+import { ChevronDown, ArrowRight, BookOpen, Layers, Users, Rocket, Database, Code2, Cpu, LineChart, Globe, Zap, Network, Scale, Layout, BrainCircuit } from 'lucide-react';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 import './PublicHeader.css';
 
