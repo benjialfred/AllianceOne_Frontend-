@@ -98,6 +98,20 @@ export const HeroInfrastructure: React.FC = () => {
             <span className="signal-badge">MULTI-ORGANIZATION</span>
             <span className="signal-badge">API READY</span>
           </motion.div>
+
+          <motion.div 
+            className="trust-banner"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.2 }}
+          >
+            <span className="trust-banner-text">Plus de 15 organisations opèrent déjà sur l'infrastructure.</span>
+            <div className="trust-banner-logos">
+              <div className="trust-logo-circle">AO</div>
+              <div className="trust-logo-circle" style={{ color: '#0f766e' }}>EI</div>
+              <div className="trust-logo-circle" style={{ color: '#854d0e' }}>FZ</div>
+              <div className="trust-logo-circle" style={{ color: '#6d28d9' }}>MK</div>
+              <div className="trust-logo-more">+11</div>
+            </div>
+          </motion.div>
         </div>
 
         {/* VISUAL ARCHITECTURE */}
