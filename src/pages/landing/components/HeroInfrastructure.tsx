@@ -57,6 +57,7 @@ export const HeroInfrastructure: React.FC = () => {
 
   return (
     <section className="ao-hero" onMouseMove={handleMouseMove}>
+      <div className="ao-hero-mesh"></div>
       <div className="ao-hero-inner">
         
         {/* TEXT CONTENT */}

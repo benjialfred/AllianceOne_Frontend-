@@ -20,21 +20,49 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(22, 58, 42, 0.03) 0%, rgba(42, 106, 79, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
   z-index: 0;
 }
 
 .ao-hero::after {
   content: '';
   position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 60%;
-  height: 140%;
-  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.9) 60%, transparent 60%);
+  top: -50%;
+  right: -20%;
+  width: 80%;
+  height: 200%;
+  background: linear-gradient(
+    105deg, 
+    transparent 35%, 
+    rgba(37, 99, 235, 0.03) 35%, 
+    rgba(37, 99, 235, 0.08) 45%, 
+    rgba(255, 255, 255, 0.8) 45%, 
+    rgba(255, 255, 255, 1) 60%, 
+    transparent 60%
+  );
   transform: rotate(-15deg);
   z-index: 0;
   pointer-events: none;
+  box-shadow: -20px 0 60px rgba(0,0,0,0.02);
+}
+
+/* Add an extra diagonal line for a more "tech" feel */
+.ao-hero-mesh {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
 }
 
 .ao-hero-inner {
@@ -226,12 +254,12 @@
  * TRUST BANNER (+15 Organisations)
  * ------------------------------------- */
 .trust-banner {
-  margin-top: 64px;
-  padding-top: 32px;
+  margin-top: 32px;
+  padding-top: 16px;
   border-top: 1px solid rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .trust-banner-text {

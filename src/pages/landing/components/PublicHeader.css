@@ -6,10 +6,10 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  background: rgba(248, 247, 243, 0.8); /* IVORY base */
+  background: linear-gradient(90deg, rgba(248, 247, 243, 0.8) 0%, rgba(226, 232, 240, 0.6) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--ao-font-sans);
 }
