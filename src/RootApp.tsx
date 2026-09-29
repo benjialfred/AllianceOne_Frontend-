@@ -41,7 +41,7 @@ const PlatformPage = React.lazy(() => import('./pages/public/PublicPagesStubs').
 const ModulesPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ModulesPage })));
 const AIPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AIPage })));
 const SecurityPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.SecurityPage })));
-const PricingPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.PricingPage })));
+const PricingPage = React.lazy(() => import('./pages/public/PricingPage').then(m => ({ default: m.PricingPage })));
 const MarketplacePage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.MarketplacePage })));
 const DevelopersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DevelopersPage })));
 const DocsPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DocsPage })));

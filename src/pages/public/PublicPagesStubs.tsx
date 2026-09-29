@@ -25,11 +25,7 @@ export const SecurityPage: React.FC = () => (
   </GenericPublicPage>
 );
 
-export const PricingPage: React.FC = () => (
-  <GenericPublicPage title="Tarification" subtitle="Des modèles économiques adaptés à votre échelle.">
-    <p>Informations sur les forfaits, le licensing par module, et les solutions sur mesure pour les grandes organisations.</p>
-  </GenericPublicPage>
-);
+
 
 export const MarketplacePage: React.FC = () => (
   <GenericPublicPage title="Marketplace" subtitle="Étendez les capacités d'Alliance One.">
