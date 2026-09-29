@@ -15,33 +15,9 @@
   padding-top: 60px; /* Offset for header */
 }
 
-/* Background Effects */
-.ao-dark-hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 64px 64px;
-  background-position: center center;
-  mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
-  -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
-  z-index: 1;
-}
+/* Motion Background handles the void */
 
-.ao-glow-orb {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 70%);
-  filter: blur(80px);
-  z-index: 1;
-  pointer-events: none;
-}
+
 
 .ao-hero-container {
   position: relative;
