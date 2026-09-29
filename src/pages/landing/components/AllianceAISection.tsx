@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers, FileText } from 'lucide-react';
+import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers, FileText, Users } from 'lucide-react';
 import './AllianceAISection.css';
 import { useNavigate } from 'react-router-dom';
+import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 
 export const AllianceAISection: React.FC = () => {
   const navigate = useNavigate();
