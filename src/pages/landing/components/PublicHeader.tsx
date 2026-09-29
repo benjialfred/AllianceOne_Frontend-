@@ -54,51 +54,32 @@ export const PublicHeader: React.FC = () => {
         </motion.div>
 
         {/* NAVIGATION */}
-        <nav className="ao-header-nav">
-          {/* Produits */}
-          <motion.div 
-            className={`ao-nav-item ${activeMenu === 'produits' ? 'active' : ''}`}
-            onMouseEnter={() => handleMouseEnter('produits')}
-            variants={navItem}
-          >
-            <span className="alliance-signal">Produits</span>
-          </motion.div>
-
-          {/* Réseau Alliance */}
-          <motion.div 
-            className="ao-nav-item" 
-            onClick={() => navigate('/network')}
-            variants={navItem}
-          >
-            <span className="alliance-signal">Réseau Alliance</span>
-          </motion.div>
-
-          {/* Solutions */}
-          <motion.div 
-            className={`ao-nav-item ${activeMenu === 'solutions' ? 'active' : ''}`}
-            onMouseEnter={() => handleMouseEnter('solutions')}
-            variants={navItem}
-          >
-            <span className="alliance-signal">Solutions</span>
-          </motion.div>
-
-          {/* Ressources */}
-          <motion.div 
-            className={`ao-nav-item ${activeMenu === 'ressources' ? 'active' : ''}`}
-            onMouseEnter={() => handleMouseEnter('ressources')}
-            variants={navItem}
-          >
-            <span className="alliance-signal">Ressources</span>
-          </motion.div>
-
-          {/* Fondateur */}
-          <motion.div 
-            className="ao-nav-item" 
-            onClick={() => navigate('/founder')}
-            variants={navItem}
-          >
-            <span className="alliance-signal">Fondateur</span>
-          </motion.div>
+        <nav className="ao-header-nav" onMouseLeave={handleMouseLeave}>
+          {[
+            { id: 'produits', label: 'Produits' },
+            { id: 'network', label: 'Réseau Alliance', path: '/network' },
+            { id: 'solutions', label: 'Solutions' },
+            { id: 'ressources', label: 'Ressources' },
+            { id: 'founder', label: 'Fondateur', path: '/founder' }
+          ].map((item) => (
+            <motion.div
+              key={item.id}
+              className={`ao-nav-item ${activeMenu === item.id ? 'active' : ''}`}
+              onMouseEnter={() => handleMouseEnter(item.id)}
+              onClick={() => item.path && navigate(item.path)}
+              variants={navItem}
+            >
+              {activeMenu === item.id && (
+                <motion.div
+                  layoutId="nav-pill"
+                  className="ao-nav-hover-bg"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              )}
+              <span style={{ position: 'relative', zIndex: 1 }}>{item.label}</span>
+            </motion.div>
+          ))}
         </nav>
 
         {/* ACTIONS */}

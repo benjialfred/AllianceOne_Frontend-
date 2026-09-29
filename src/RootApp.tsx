@@ -78,15 +78,19 @@ import { AllianceLoader } from './design-system/components/AllianceLoader';
 /**
  * Loading fallback for Suspense boundaries
  */
+import { PremiumPreloader } from './pages/landing/components/PremiumPreloader';
+
 const LoadingScreen: React.FC = () => (
   <AllianceLoader text="Chargement d'Alliance One..." />
 );
 
 export const RootApp: React.FC = () => {
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      <Routes>
-        {/* ─── PUBLIC ROUTES ─── */}
+    <>
+      <PremiumPreloader />
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          {/* ─── PUBLIC ROUTES ─── */}
         <Route
           path="/"
           element={
@@ -180,6 +184,7 @@ export const RootApp: React.FC = () => {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
+    </>
   );
 };
 

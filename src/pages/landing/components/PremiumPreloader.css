@@ -1,0 +1,61 @@
+.premium-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: var(--ao-deep-navy); /* Dark, premium background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+/* Add a subtle background grid/glow for a 3D feel */
+.premium-preloader::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.15) 0%, transparent 60%);
+  transform: rotateX(60deg) translateY(-100px) scale(2);
+  pointer-events: none;
+}
+
+.preloader-scene {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.preloader-svg {
+  width: 120px;
+  height: 120px;
+  overflow: visible;
+  filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.4));
+}
+
+.preloader-text {
+  margin-top: 40px;
+  font-family: var(--ao-font-sans);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 2s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
