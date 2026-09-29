@@ -27,7 +27,7 @@ export const AllianceAISection: React.FC = () => {
           >
             <motion.div className="ai-intro-text" variants={layerVariants}>
               <span className="micro-label mb-6 block" style={{ color: '#10B981' }}>BUILT-IN INTELLIGENCE</span>
-              <h2 className="font-display ai-headline">
+              <h2 className="font-sans ai-headline">
                 L'intelligence artificielle <br/>
                 <span className="ai-headline-gradient">nativement intégrée.</span>
               </h2>

@@ -75,7 +75,7 @@ export const PublicAICopilot: React.FC<PublicAICopilotProps> = ({ isOpen, onClos
                   <AllianceLogo size={16} color="var(--ao-alliance-blue)" />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, color: 'white', fontSize: '16px', fontFamily: 'var(--ao-font-display)' }}>Alliance AI</h3>
+                  <h3 style={{ margin: 0, color: 'white', fontSize: '16px', fontFamily: 'var(--ao-font-sans)' }}>Alliance AI</h3>
                   <p style={{ margin: 0, color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>Assistant Public</p>
                 </div>
               </div>

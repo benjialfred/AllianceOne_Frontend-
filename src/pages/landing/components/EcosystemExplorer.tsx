@@ -30,7 +30,7 @@ export const EcosystemExplorer: React.FC = () => {
       {/* 01. SECTION INTRO */}
       <section className="eco-intro text-center pt-12 pb-24 relative z-20">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={layerVariants}>
-          <h2 className="eco-headline font-display">
+          <h2 className="eco-headline font-sans">
             Une architecture unifiée.
           </h2>
           <p className="eco-desc font-sans mx-auto mt-6">
@@ -101,7 +101,7 @@ export const EcosystemExplorer: React.FC = () => {
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={layerVariants}
           >
             <span className="micro-label mb-4 block" style={{ color: 'var(--ao-alliance-blue)' }}>4. LA SUITE APPLICATIVE</span>
-            <h2 className="text-4xl font-display font-extrabold text-graphite mb-4">
+            <h2 className="text-4xl font-sans font-extrabold text-graphite mb-4">
               Des modules métiers natifs.
             </h2>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto">

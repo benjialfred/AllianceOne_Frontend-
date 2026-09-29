@@ -41,7 +41,7 @@ export const LandingPage: React.FC = () => {
           style={{ padding: '160px 24px 120px' }}
         >
           <span className="micro-label mb-6 block">THE NEW STANDARD</span>
-          <h2 className="font-display" style={{ fontSize: '48px', fontWeight: 800, color: 'var(--ao-graphite)', letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+          <h2 className="font-sans" style={{ fontSize: '48px', fontWeight: 800, color: 'var(--ao-graphite)', letterSpacing: '-0.04em', lineHeight: '1.1' }}>
             Organizations are becoming more connected.
           </h2>
           <p className="font-sans mx-auto mt-6" style={{ fontSize: '20px', color: 'var(--ao-text-secondary)', maxWidth: '640px', lineHeight: '1.6' }}>

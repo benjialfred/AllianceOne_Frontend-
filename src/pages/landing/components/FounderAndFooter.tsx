@@ -42,7 +42,7 @@ export const FounderAndFooter: React.FC = () => {
                   <div className="founder-logo-mini">
                     <AllianceLogo size={24} color="white" />
                   </div>
-                  <h4 className="font-display founder-name">Adzessa Benjamin Fraide</h4>
+                  <h4 className="font-sans founder-name">Adzessa Benjamin Fraide</h4>
                   <p className="micro-label founder-title">Founder & Software Engineer</p>
                 </div>
               </div>
@@ -61,7 +61,7 @@ export const FounderAndFooter: React.FC = () => {
                 <span className="micro-label text-champagne">LA VISION</span>
               </div>
               <Quote size={48} className="vision-quote-icon" />
-              <h3 className="font-display vision-headline">
+              <h3 className="font-sans vision-headline">
                 "Nous ne construisons pas simplement un autre logiciel métier. Nous construisons le <span className="vision-highlight">système nerveux central</span> des organisations de demain."
               </h3>
               
@@ -98,7 +98,7 @@ export const FounderAndFooter: React.FC = () => {
               <span className="micro-label text-alliance-blue">LE NOUVEAU STANDARD</span>
             </div>
             
-            <h2 className="font-display cta-headline">
+            <h2 className="font-sans cta-headline">
               Prêt pour un nouveau <br/> standard ?
             </h2>
             <p className="font-sans cta-desc">
@@ -124,7 +124,7 @@ export const FounderAndFooter: React.FC = () => {
             <div className="footer-brand">
               <div className="footer-brand-logo mb-6">
                 <AllianceLogo size={24} color="var(--ao-graphite)" />
-                <span className="font-display font-bold text-lg text-graphite tracking-wide">ALLIANCE ONE</span>
+                <span className="font-sans font-bold text-lg text-graphite tracking-wide">ALLIANCE ONE</span>
               </div>
               <p className="text-sm text-gray-500 font-sans max-w-xs leading-relaxed mb-8">
                 Operating Infrastructure for Modern Organizations. Built in Africa. Designed for the world.
