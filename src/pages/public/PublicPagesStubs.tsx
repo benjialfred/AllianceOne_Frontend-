@@ -33,27 +33,9 @@ export const MarketplacePage: React.FC = () => (
   </GenericPublicPage>
 );
 
-export const DevelopersPage: React.FC = () => (
-  <GenericPublicPage title="Developer Platform" subtitle="Construisez sur l'infrastructure Alliance.">
-    <p>Ressources pour les développeurs : SDKs, APIs REST/GraphQL, webhooks, et guides d'intégration.</p>
-  </GenericPublicPage>
-);
-
-export const DocsPage: React.FC = () => (
-  <GenericPublicPage title="Documentation" subtitle="Le centre de connaissances officiel d'Alliance One.">
-    <p>Manuels d'utilisation, guides de déploiement et documentation technique approfondie.</p>
-  </GenericPublicPage>
-);
-
 export const AboutPage: React.FC = () => (
   <GenericPublicPage title="À propos d'Alliance One" subtitle="Notre mission, notre vision, notre histoire.">
     <p>Alliance One a été conçue pour redéfinir les standards mondiaux de l'ingénierie logicielle d'entreprise. Apprenez-en plus sur notre parcours.</p>
-  </GenericPublicPage>
-);
-
-export const NewsPage: React.FC = () => (
-  <GenericPublicPage title="Actualités" subtitle="Les dernières nouveautés de l'écosystème.">
-    <p>Mises à jour de la plateforme, annonces de partenariats, et événements à venir.</p>
   </GenericPublicPage>
 );
 

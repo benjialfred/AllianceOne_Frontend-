@@ -43,10 +43,11 @@ const AIPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m
 const SecurityPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.SecurityPage })));
 const PricingPage = React.lazy(() => import('./pages/public/PricingPage').then(m => ({ default: m.PricingPage })));
 const MarketplacePage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.MarketplacePage })));
-const DevelopersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DevelopersPage })));
-const DocsPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.DocsPage })));
+const DevelopersPage = React.lazy(() => import('./pages/public/DevelopersPage').then(m => ({ default: m.DevelopersPage })));
+const DocsPage = React.lazy(() => import('./pages/public/GuidesPage').then(m => ({ default: m.GuidesPage })));
 const AboutPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AboutPage })));
-const NewsPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.NewsPage })));
+const NewsPage = React.lazy(() => import('./pages/public/NewsPage').then(m => ({ default: m.NewsPage })));
+const InsightsPage = React.lazy(() => import('./pages/public/InsightsPage').then(m => ({ default: m.InsightsPage })));
 const CareersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.CareersPage })));
 const ContactPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ContactPage })));
 const LegalPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.LegalPage })));
@@ -140,8 +141,10 @@ export const RootApp: React.FC = () => {
         <Route path="/pricing" element={<RequireGuest><PricingPage /></RequireGuest>} />
         <Route path="/network" element={<RequireGuest><NetworkPage /></RequireGuest>} />
         <Route path="/marketplace" element={<RequireGuest><MarketplacePage /></RequireGuest>} />
-        <Route path="/developers" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
+        <Route path="/developer-center" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
         <Route path="/docs" element={<RequireGuest><DocsPage /></RequireGuest>} />
+        <Route path="/guides" element={<RequireGuest><DocsPage /></RequireGuest>} />
+        <Route path="/insights" element={<RequireGuest><InsightsPage /></RequireGuest>} />
         <Route path="/about" element={<RequireGuest><AboutPage /></RequireGuest>} />
         <Route path="/news" element={<RequireGuest><NewsPage /></RequireGuest>} />
         <Route path="/careers" element={<RequireGuest><CareersPage /></RequireGuest>} />

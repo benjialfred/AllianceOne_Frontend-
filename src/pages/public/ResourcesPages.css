@@ -1,0 +1,209 @@
+.resource-page-main {
+  padding-top: 120px;
+  background-color: var(--ao-ivory);
+  min-height: 100vh;
+}
+
+.resource-hero {
+  position: relative;
+  padding: 80px 32px 60px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.resource-hero-bg {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 150%;
+  background: radial-gradient(ellipse at top, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.resource-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.resource-hero-badge {
+  display: inline-block;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-family: var(--ao-font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--ao-alliance-blue);
+  margin-bottom: 24px;
+}
+
+.resource-hero h1 {
+  font-family: var(--ao-font-display);
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--ao-graphite);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.resource-hero p {
+  font-family: var(--ao-font-sans);
+  font-size: 20px;
+  color: var(--ao-text-secondary);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.resource-grid-section {
+  padding: 40px 32px 100px;
+  position: relative;
+  z-index: 2;
+}
+
+.resource-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 32px;
+}
+
+.resource-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.resource-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+}
+
+.resource-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ao-alliance-blue);
+  margin-bottom: 24px;
+}
+
+.resource-card h3 {
+  font-family: var(--ao-font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ao-graphite);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.resource-card p {
+  font-family: var(--ao-font-sans);
+  font-size: 15px;
+  color: var(--ao-text-secondary);
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 24px;
+}
+
+.resource-card-link {
+  font-family: var(--ao-font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ao-alliance-blue);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.2s ease;
+}
+
+.resource-card:hover .resource-card-link {
+  gap: 12px;
+}
+
+/* Feature/Article Layouts for News & Insights */
+.article-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.article-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+}
+
+.article-image {
+  width: 100%;
+  height: 200px;
+  background-color: var(--ao-alliance-blue);
+  background-image: linear-gradient(135deg, #2563EB, #10B981);
+}
+
+.article-content {
+  padding: 32px;
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ao-font-sans);
+  font-size: 13px;
+  color: var(--ao-text-tertiary);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.article-meta span.tag {
+  color: var(--ao-alliance-blue);
+  background: rgba(37, 99, 235, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.article-content h3 {
+  font-family: var(--ao-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ao-graphite);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.article-content p {
+  font-family: var(--ao-font-sans);
+  font-size: 15px;
+  color: var(--ao-text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .resource-hero h1 {
+    font-size: 40px;
+  }
+  .resource-grid {
+    grid-template-columns: 1fr;
+  }
+}

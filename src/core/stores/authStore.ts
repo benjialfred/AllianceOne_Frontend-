@@ -31,6 +31,7 @@ interface AuthState {
   // Actions
   login: (email: string, password: string) => Promise<boolean>;
   loginWithGoogle: (credential: string) => Promise<boolean>;
+  loginWithGithub: (code: string) => Promise<boolean>;
   register: (data: RegisterPayload) => Promise<boolean>;
   logout: () => void;
   setUser: (user: AuthUser) => void;
@@ -199,6 +200,44 @@ export const useAuthStore = create<AuthState>()(
             return true;
           }
 
+          set({ error: err.message, isLoading: false });
+          return false;
+        }
+      },
+
+      loginWithGithub: async (code: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const res = await fetch(`${API_BASE_URL}/core/auth/github/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code }),
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.user?.onboarding_completed) {
+              if (data.user.email) {
+                localStorage.setItem(`alliance-onboarding-completed_${data.user.email}`, 'true');
+              }
+              localStorage.setItem('alliance-onboarding-completed', 'true');
+            } else if (data.user?.email) {
+              localStorage.removeItem(`alliance-onboarding-completed_${data.user.email}`);
+              localStorage.removeItem('alliance-onboarding-completed');
+            }
+            set({
+              user: data.user,
+              accessToken: data.access,
+              refreshToken: data.refresh,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            return true;
+          }
+
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || 'Échec de l\'authentification GitHub');
+        } catch (err: any) {
           set({ error: err.message, isLoading: false });
           return false;
         }
