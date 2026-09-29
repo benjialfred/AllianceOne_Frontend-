@@ -101,7 +101,7 @@ export const EcosystemExplorer: React.FC = () => {
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={layerVariants}
           >
             <span className="micro-label mb-4 block" style={{ color: 'var(--ao-alliance-blue)' }}>4. LA SUITE APPLICATIVE</span>
-            <h2 className="text-4xl font-sans font-extrabold text-graphite mb-4">
+            <h2 className="text-4xl font-sans font-extrabold text-white mb-4">
               Des modules métiers natifs.
             </h2>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto">
@@ -110,7 +110,7 @@ export const EcosystemExplorer: React.FC = () => {
           </motion.div>
 
           <motion.div 
-            className="eco-modules-bento"
+            className="apps-grid"
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             variants={{
               visible: { transition: { staggerChildren: 0.1 } }
@@ -119,16 +119,16 @@ export const EcosystemExplorer: React.FC = () => {
             {modules.map(mod => (
               <motion.div 
                 key={mod.id} 
-                className="bento-card"
+                className="app-card"
                 variants={layerVariants}
                 onClick={() => navigate(`/modules/${mod.id}`)}
               >
-                <div className="bento-icon-wrapper">
+                <div className="app-icon-wrapper">
                   {mod.icon}
                 </div>
-                <h3>{mod.name}</h3>
-                <p>{mod.desc}</p>
-                <div className="bento-metrics">
+                <h3 className="app-title">{mod.name}</h3>
+                <p className="app-desc">{mod.desc}</p>
+                <div className="app-tags">
                   {mod.metrics}
                 </div>
               </motion.div>

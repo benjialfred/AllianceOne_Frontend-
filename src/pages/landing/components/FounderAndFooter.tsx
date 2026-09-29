@@ -117,16 +117,16 @@ export const FounderAndFooter: React.FC = () => {
       </section>
 
       {/* 03. INSTITUTIONAL FOOTER */}
-      <footer className="ff-footer bg-ivory">
+      <footer className="ff-footer bg-black text-white">
         <div className="eco-inner">
           <div className="footer-grid">
             
             <div className="footer-brand">
               <div className="footer-brand-logo mb-6">
-                <AllianceLogo size={24} color="var(--ao-graphite)" />
-                <span className="font-sans font-bold text-lg text-graphite tracking-wide">ALLIANCE ONE</span>
+                <AllianceLogo size={24} color="white" />
+                <span className="font-sans font-bold text-lg text-white tracking-wide">ALLIANCE ONE</span>
               </div>
-              <p className="text-sm text-gray-500 font-sans max-w-xs leading-relaxed mb-8">
+              <p className="text-sm text-zinc-400 font-sans max-w-xs leading-relaxed mb-8">
                 Operating Infrastructure for Modern Organizations. Built in Africa. Designed for the world.
               </p>
               <div className="footer-socials">
@@ -137,7 +137,7 @@ export const FounderAndFooter: React.FC = () => {
             </div>
 
             <div className="footer-links-group">
-              <span className="micro-label text-graphite mb-6 block">PLATFORM</span>
+              <span className="micro-label text-white mb-6 block">PLATFORM</span>
               <a onClick={() => navigate('/platform')}>Architecture Core</a>
               <a onClick={() => navigate('/modules')}>Modules Métier</a>
               <a onClick={() => navigate('/ai')}>Alliance AI</a>
@@ -146,7 +146,7 @@ export const FounderAndFooter: React.FC = () => {
             </div>
 
             <div className="footer-links-group">
-              <span className="micro-label text-graphite mb-6 block">ECOSYSTEM</span>
+              <span className="micro-label text-white mb-6 block">ECOSYSTEM</span>
               <a onClick={() => navigate('/network')}>Réseau Alliance</a>
               <a onClick={() => navigate('/marketplace')}>Marketplace</a>
               <a onClick={() => navigate('/developers')}>Developer Platform</a>
@@ -154,7 +154,7 @@ export const FounderAndFooter: React.FC = () => {
             </div>
 
             <div className="footer-links-group">
-              <span className="micro-label text-graphite mb-6 block">COMPANY</span>
+              <span className="micro-label text-white mb-6 block">COMPANY</span>
               <a onClick={() => navigate('/about')}>À propos</a>
               <a onClick={() => navigate('/founder')}>Le Fondateur</a>
               <a onClick={() => navigate('/news')}>Actualités</a>
