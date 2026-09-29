@@ -13,7 +13,7 @@ export const AllianceAISection: React.FC = () => {
   };
 
   return (
-    <div className="alliance-ai-section bg-deep-navy text-white">
+    <div className="alliance-ai-section">
       {/* 01. INTRO: WHAT IS ALLIANCE AI */}
       <section className="ai-intro-container">
         <div className="eco-inner">
@@ -25,37 +25,38 @@ export const AllianceAISection: React.FC = () => {
             }}
           >
             <motion.div className="ai-intro-text" variants={layerVariants}>
+              <span className="micro-label mb-6 block" style={{ color: '#10B981' }}>BUILT-IN INTELLIGENCE</span>
               <h2 className="font-display ai-headline">
-                L'intelligence intégrée <br/>
-                <span className="text-alliance-blue">à la racine</span> du système.
+                L'intelligence artificielle <br/>
+                <span className="ai-headline-gradient">nativement intégrée.</span>
               </h2>
               <p className="font-sans ai-desc">
-                Alliance AI n'est pas une surcouche cosmétique ou un assistant déconnecté. 
-                C'est un agent d'intelligence opérationnelle qui possède un accès natif, 
-                sécurisé et contextuel à l'ensemble des modules de votre infrastructure.
+                Alliance AI n'est pas un simple chatbot ajouté en surcouche. 
+                C'est le véritable système nerveux de votre infrastructure, doté d'un accès sécurisé 
+                et contextuel à l'ensemble de vos modules métiers.
               </p>
             </motion.div>
 
             <motion.div className="ai-capabilities" variants={layerVariants}>
               <div className="ai-capability-item">
-                <Shield size={20} className="text-alliance-blue" />
+                <div className="ai-cap-icon"><Shield size={24} /></div>
                 <div>
-                  <h4>Privacy-First</h4>
-                  <p>Vos données ne sont jamais utilisées pour entraîner des modèles publics.</p>
+                  <h4>Privacy-First & Sovereign</h4>
+                  <p>Vos données de l'entreprise ne sont jamais utilisées pour entraîner des modèles publics externes.</p>
                 </div>
               </div>
               <div className="ai-capability-item">
-                <Database size={20} className="text-alliance-blue" />
+                <div className="ai-cap-icon"><Database size={24} /></div>
                 <div>
-                  <h4>Cross-Module</h4>
-                  <p>Croise nativement les données RH, Finance et Opérations.</p>
+                  <h4>Cross-Module Analytics</h4>
+                  <p>Croise instantanément les informations RH, Finance et Supply Chain pour des insights précis.</p>
                 </div>
               </div>
               <div className="ai-capability-item">
-                <Zap size={20} className="text-alliance-blue" />
+                <div className="ai-cap-icon"><Zap size={24} /></div>
                 <div>
                   <h4>Action-Oriented</h4>
-                  <p>Ne se contente pas de répondre. Planifie et exécute des workflows.</p>
+                  <p>Alliance AI peut configurer des rapports, envoyer des alertes et automatiser des workflows complexes.</p>
                 </div>
               </div>
             </motion.div>
@@ -64,7 +65,7 @@ export const AllianceAISection: React.FC = () => {
       </section>
 
       {/* 02. INTERACTIVE TERMINAL / UI PREVIEW */}
-      <section className="ai-demo-container py-24">
+      <section className="ai-demo-container py-32">
         <div className="eco-inner">
           <motion.div 
             className="ai-window-mockup"
@@ -85,8 +86,8 @@ export const AllianceAISection: React.FC = () => {
                   transition={{ delay: 0.5, duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  <Sparkles size={16} className="text-alliance-blue mt-1" />
-                  <p>Analyse les performances du département Finance par rapport aux objectifs fixés le mois dernier, et prépare un brouillon de rapport.</p>
+                  <Sparkles size={20} className="text-emerald-500 mt-1" />
+                  <p>Analyse les dépenses du module Finance sur le Q3, croise-les avec les recrutements du module RH, et génère un rapport d'optimisation budgétaire.</p>
                 </motion.div>
 
                 <motion.div 
@@ -97,12 +98,13 @@ export const AllianceAISection: React.FC = () => {
                   viewport={{ once: true }}
                 >
                   <div className="processing-step">
-                    <div className="spinner"></div>
-                    <span>Querying Finance Module...</span>
+                    <Database size={14} /> Accès sécurisé au module Finance...
                   </div>
-                  <div className="processing-step delayed">
-                    <div className="spinner"></div>
-                    <span>Correlating with HR (Department objectives)...</span>
+                  <div className="processing-step">
+                    <Users size={14} /> Croisement avec les données RH...
+                  </div>
+                  <div className="processing-step active">
+                    <div className="spinner"></div> Génération des insights prédictifs...
                   </div>
                 </motion.div>
 
@@ -113,17 +115,31 @@ export const AllianceAISection: React.FC = () => {
                   transition={{ delay: 3, duration: 0.5 }}
                   viewport={{ once: true }}
                 >
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
+                    <AllianceLogo size={20} />
+                  </div>
                   <div className="response-card">
-                    <div className="response-header">
-                      <FileText size={16} className="text-gray-400" />
-                      <span>Rapport_Performance_Finance.md</span>
+                    <h4>Rapport Q3 : Finance vs HR généré.</h4>
+                    <p className="text-sm text-gray-400 mb-6">J'ai identifié une corrélation forte entre l'augmentation des coûts logiciels et les nouveaux recrutements IT.</p>
+                    
+                    <div className="rc-metrics">
+                      <div className="rc-stat">
+                        <span className="label">OPEX Q3</span>
+                        <span className="value">+14.2%</span>
+                      </div>
+                      <div className="rc-stat">
+                        <span className="label">Headcount</span>
+                        <span className="value">+22</span>
+                      </div>
+                      <div className="rc-stat">
+                        <span className="label">Optimization Potential</span>
+                        <span className="value">45K €</span>
+                      </div>
                     </div>
-                    <div className="response-body">
-                      Le département Finance a dépassé ses objectifs de réduction des coûts de 12% ce mois-ci. Cependant, le délai moyen de recouvrement (DSO) a augmenté de 4 jours. Le brouillon complet est prêt pour votre révision.
-                    </div>
-                    <div className="response-actions">
-                      <button className="btn-micro">Ouvrir</button>
-                      <button className="btn-micro primary">Générer PDF</button>
+
+                    <div className="rc-actions">
+                      <button className="rc-btn primary">Voir le rapport complet</button>
+                      <button className="rc-btn">Planifier une réunion</button>
                     </div>
                   </div>
                 </motion.div>
@@ -132,39 +148,6 @@ export const AllianceAISection: React.FC = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* 03. ARCHITECTURE DEPLOYMENT & ORIGINS (Replacement for SectionDevelopersOrigin) */}
-      <section className="global-origins-container bg-graphite pt-32 pb-48">
-        <div className="eco-inner text-center">
-          <motion.div 
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={layerVariants}
-          >
-            <span className="micro-label text-champagne mb-6 block">INFRASTRUCTURE MONDIALE</span>
-            <h2 className="font-display text-4xl font-bold mb-8">
-              Built in Africa.<br/>Designed for the world.
-            </h2>
-            <p className="font-sans text-gray-400 max-w-2xl mx-auto mb-16 text-lg">
-              Une ingénierie de pointe et une architecture capable de soutenir les opérations des organisations du monde entier, sans compromis sur la sécurité et la souveraineté des données.
-            </p>
-
-            <div className="origin-metrics flex justify-center gap-16">
-              <div>
-                <div className="metric-value font-display text-white text-3xl font-bold">API-First</div>
-                <div className="metric-label text-gray-500 font-sans text-sm mt-2 uppercase tracking-widest">Architecture</div>
-              </div>
-              <div>
-                <div className="metric-value font-display text-white text-3xl font-bold">End-to-End</div>
-                <div className="metric-label text-gray-500 font-sans text-sm mt-2 uppercase tracking-widest">Encryption</div>
-              </div>
-              <div>
-                <div className="metric-value font-display text-white text-3xl font-bold">Zero</div>
-                <div className="metric-label text-gray-500 font-sans text-sm mt-2 uppercase tracking-widest">Data Lock-in</div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
     </div>
   );
 };
