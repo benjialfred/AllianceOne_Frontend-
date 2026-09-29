@@ -166,14 +166,25 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px; height: 100px;
-  background: var(--ao-deep-navy);
+  width: 110px; height: 110px;
+  background: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  box-shadow: 0 0 50px rgba(11, 19, 43, 0.2);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2), 0 0 0 1px rgba(37, 99, 235, 0.15) inset, 0 0 80px rgba(37, 99, 235, 0.15);
+}
+
+.arch-core::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: -8px; right: -8px; bottom: -8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563EB, #10B981);
+  z-index: -1;
+  opacity: 0.2;
+  filter: blur(12px);
 }
 
 .arch-node {
