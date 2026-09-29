@@ -37,12 +37,14 @@ const TermsOfServicePage = React.lazy(() =>
  * Auth guard: redirects to /login if not authenticated.
  */
 const NetworkPage = React.lazy(() => import('./pages/public/NetworkPage').then(m => ({ default: m.NetworkPage })));
-const PlatformPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.PlatformPage })));
-const ModulesPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ModulesPage })));
-const AIPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AIPage })));
+const PlatformPage = React.lazy(() => import('./pages/public/PlatformPage').then(m => ({ default: m.PlatformPage })));
+const ModulesPage = React.lazy(() => import('./pages/public/ModulesPage').then(m => ({ default: m.ModulesPage })));
+const AIPage = React.lazy(() => import('./pages/public/AIPage').then(m => ({ default: m.AIPage })));
+const HelpCenterPage = React.lazy(() => import('./pages/public/HelpCenterPage').then(m => ({ default: m.HelpCenterPage })));
 const SecurityPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.SecurityPage })));
 const PricingPage = React.lazy(() => import('./pages/public/PricingPage').then(m => ({ default: m.PricingPage })));
-const MarketplacePage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.MarketplacePage })));
+const MarketplacePage = React.lazy(() => import('./pages/public/MarketplacePage').then(m => ({ default: m.MarketplacePage })));
+const IntegrationsPage = React.lazy(() => import('./pages/public/IntegrationsPage').then(m => ({ default: m.IntegrationsPage })));
 const DevelopersPage = React.lazy(() => import('./pages/public/DevelopersPage').then(m => ({ default: m.DevelopersPage })));
 const DocsPage = React.lazy(() => import('./pages/public/GuidesPage').then(m => ({ default: m.GuidesPage })));
 const AboutPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.AboutPage })));
@@ -136,11 +138,14 @@ export const RootApp: React.FC = () => {
 
         <Route path="/platform" element={<RequireGuest><PlatformPage /></RequireGuest>} />
         <Route path="/modules" element={<RequireGuest><ModulesPage /></RequireGuest>} />
+        <Route path="/modules/*" element={<RequireGuest><ModulesPage /></RequireGuest>} />
         <Route path="/ai" element={<RequireGuest><AIPage /></RequireGuest>} />
+        <Route path="/help" element={<RequireGuest><HelpCenterPage /></RequireGuest>} />
         <Route path="/security" element={<RequireGuest><SecurityPage /></RequireGuest>} />
         <Route path="/pricing" element={<RequireGuest><PricingPage /></RequireGuest>} />
         <Route path="/network" element={<RequireGuest><NetworkPage /></RequireGuest>} />
         <Route path="/marketplace" element={<RequireGuest><MarketplacePage /></RequireGuest>} />
+        <Route path="/integrations" element={<RequireGuest><IntegrationsPage /></RequireGuest>} />
         <Route path="/developer-center" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
         <Route path="/docs" element={<RequireGuest><DocsPage /></RequireGuest>} />
         <Route path="/guides" element={<RequireGuest><DocsPage /></RequireGuest>} />
