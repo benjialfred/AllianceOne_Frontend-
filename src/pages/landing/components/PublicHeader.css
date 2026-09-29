@@ -1,43 +1,34 @@
 /**
- * ALLIANCE ONE — PREMIUM DYNAMIC ISLAND HEADER
+ * ALLIANCE ONE — ULTRA PREMIUM ENTERPRISE HEADER
  */
 
-.ao-header {
+ .ao-header {
   position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 10000;
-  width: calc(100% - 48px);
-  max-width: 1200px;
-  display: flex;
-  justify-content: center;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   font-family: var(--ao-font-sans);
+  transition: background 0.3s ease, border-bottom 0.3s ease;
+}
+
+.ao-header.active-menu-open {
+  background: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .ao-header-inner {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
-  border-radius: 100px;
-  height: 64px;
-  padding: 0 12px 0 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 72px; /* Sleek and structured */
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ao-header-scrolled {
-  top: 16px;
-}
-.ao-header-scrolled .ao-header-inner {
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 1);
 }
 
 /* BRAND */
@@ -52,8 +43,8 @@
 .ao-brand-text {
   font-family: var(--ao-font-display);
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.02em;
+  font-size: 18px;
+  letter-spacing: -0.01em;
   color: var(--ao-graphite);
 }
 
@@ -62,61 +53,75 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  position: relative;
+  height: 100%;
 }
 
 .ao-nav-item {
   position: relative;
-  height: 40px;
+  height: 100%;
   padding: 0 16px;
   display: flex;
   align-items: center;
+  gap: 6px;
   font-size: 14px;
   font-weight: 600;
   color: var(--ao-text-secondary);
   cursor: pointer;
-  border-radius: 20px;
-  transition: color 0.2s ease, background 0.2s ease;
-  z-index: 10;
+  transition: color 0.2s ease;
 }
 
 .ao-nav-item:hover, .ao-nav-item.active {
   color: var(--ao-graphite);
 }
 
-/* The floating pill hover effect background is implemented via framer-motion in JS, or we can use CSS */
-.ao-nav-hover-bg {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.04);
-  border-radius: 20px;
-  z-index: 0;
+.nav-chevron {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.5;
+}
+
+.ao-nav-item.active .nav-chevron {
+  transform: rotate(180deg);
+  opacity: 1;
 }
 
 /* ACTIONS */
 .ao-header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   z-index: 10;
 }
 
-.ao-btn-ghost {
-  background: transparent;
-  border: none;
+.ao-btn-text {
   font-size: 14px;
   font-weight: 600;
   color: var(--ao-text-secondary);
   cursor: pointer;
-  padding: 10px 16px;
-  border-radius: 20px;
+  transition: color 0.2s;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.ao-btn-text:hover {
+  color: var(--ao-graphite);
+}
+
+.ao-btn-outline {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ao-graphite);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
   transition: all 0.2s;
 }
 
-.ao-btn-ghost:hover {
-  color: var(--ao-graphite);
-  background: rgba(0, 0, 0, 0.04);
+.ao-btn-outline:hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .ao-btn-primary {
@@ -125,33 +130,36 @@
   border: none;
   font-size: 14px;
   font-weight: 600;
-  padding: 10px 24px;
-  border-radius: 100px;
+  padding: 9px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .ao-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* MEGA MENU */
-.ao-mega-menu {
+/* ENTERPRISE MEGA MENU - FLUSH TO HEADER */
+.ao-mega-menu-wrapper {
   position: absolute;
-  top: calc(100% + 16px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 32px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
-  padding: 32px;
-  z-index: 9999;
-  min-width: 800px;
+  top: 72px;
+  left: 0;
+  width: 100vw;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
   overflow: hidden;
+  z-index: 9999;
+}
+
+.ao-mega-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 32px;
 }
 
 .micro-label {
@@ -159,48 +167,71 @@
   font-size: 12px;
   font-weight: 700;
   color: var(--ao-text-tertiary);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 /* Grid Layouts inside Mega Menu */
 .grid-produits {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.2fr;
-  gap: 32px;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 64px;
 }
 .grid-solutions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 32px 48px;
 }
 .grid-ressources {
   display: grid;
   grid-template-columns: 1fr 1fr 1.5fr;
-  gap: 32px;
+  gap: 64px;
 }
 
-/* Cards & Lists */
-.mega-editorial-card {
-  cursor: pointer;
-  border-radius: 16px;
+/* Premium Links & Cards */
+.mega-link-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
   padding: 16px;
   margin: -16px;
-  transition: background 0.2s;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
-.mega-editorial-card:hover {
-  background: rgba(37, 99, 235, 0.04);
+
+.mega-link-block:hover {
+  background: rgba(37, 99, 235, 0.03);
 }
-.mega-editorial-card h4 {
-  font-size: 16px;
+
+.ml-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--ao-alliance-blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.mega-link-block:hover .ml-icon {
+  transform: scale(1.05);
+}
+
+.ml-content h4 {
+  font-size: 15px;
   font-weight: 700;
   color: var(--ao-graphite);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
-.mega-editorial-card p {
+
+.ml-content p {
   font-size: 14px;
   color: var(--ao-text-secondary);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .mega-list {
@@ -210,58 +241,21 @@
 }
 .mega-list a {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ao-text-secondary);
   cursor: pointer;
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .mega-list a:hover {
   color: var(--ao-alliance-blue);
 }
 
-.mega-solution-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  cursor: pointer;
-  padding: 16px;
+.support-card {
+  background: var(--ao-ivory);
+  border: 1px solid rgba(0,0,0,0.05);
   border-radius: 16px;
-  transition: background 0.2s;
-}
-.mega-solution-card:hover {
-  background: rgba(37, 99, 235, 0.04);
-}
-.ms-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(37, 99, 235, 0.1);
-  color: var(--ao-alliance-blue);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.mega-solution-card h4 {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ao-graphite);
-  margin-bottom: 4px;
-}
-.mega-solution-card p {
-  font-size: 14px;
-  color: var(--ao-text-secondary);
-}
-
-@media (max-width: 1024px) {
-  .ao-header {
-    width: 100%;
-    top: 0;
-    border-radius: 0;
-  }
-  .ao-header-inner {
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-  }
+  padding: 32px;
 }

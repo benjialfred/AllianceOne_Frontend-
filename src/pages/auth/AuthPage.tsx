@@ -39,7 +39,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     try {
       const success = await loginWithGithub(code);
       if (success) {
-        redirectAfterAuth();
+        setStep('welcome'); // Show welcome animation
+        setTimeout(() => {
+          redirectAfterAuth();
+        }, 3000);
       } else {
         setStep('login');
       }
