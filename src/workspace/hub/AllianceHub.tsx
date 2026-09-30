@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { usePlatformStore } from '../../../core/stores/platformStore';
-import { useAuthStore } from '../../../core/stores/authStore';
+import { usePlatformStore } from '../../core/stores/platformStore';
+import { useAuthStore } from '../../core/stores/authStore';
 import { 
   Users, Activity, Boxes, Settings, Clock, CheckCircle, 
   ChevronRight, Command, Search, Sparkles 
