@@ -117,20 +117,20 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.4);
-    margin-bottom: 24px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 16px;
     font-weight: 700;
   }
 
   .mobile-nav-group a {
     display: block;
     color: #ffffff;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 500;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-decoration: none;
     cursor: pointer;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     transition: opacity 0.2s, transform 0.2s;
   }
   
@@ -140,7 +140,11 @@
     transform-origin: left;
   }
 
-  .mobile-nav-group a:last-child {
+  .mobile-nav-group {
+    margin-bottom: 32px;
+  }
+
+  .mobile-nav-group:last-child {
     margin-bottom: 0;
   }
 
