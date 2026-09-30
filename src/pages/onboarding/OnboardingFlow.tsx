@@ -253,7 +253,7 @@ export const OnboardingFlow: React.FC = () => {
       case 3:
         return !!data.sector;
       case 4:
-        return data.selected_modules.length > 0;
+        return true; // Les modules sont désormais une suggestion, pas une obligation
       case 5:
         return true;
       default:

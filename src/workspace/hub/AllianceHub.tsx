@@ -60,10 +60,10 @@ export const AllianceHub: React.FC = () => {
             >
               <div className="os-banner-content">
                 <h1 className="os-banner-title">
-                  Bienvenue sur Alliance One.
+                  Bienvenue, {user?.first_name || user?.email?.split('@')[0] || 'Utilisateur'}.
                 </h1>
                 <p className="os-banner-desc">
-                  Votre centre de commandement organisationnel unifié. Alliance One orchestre vos finances, centralise votre logistique et pilote vos opérations académiques en temps réel, grâce à l'intelligence artificielle.
+                  Votre centre de commandement unifié pour <strong>{currentOrg?.name || 'votre organisation'}</strong>. Alliance One orchestre vos finances, centralise votre logistique et pilote vos opérations académiques en temps réel, grâce à l'intelligence artificielle.
                 </p>
                 <div className="os-banner-stats">
                   <div className="os-banner-stat">

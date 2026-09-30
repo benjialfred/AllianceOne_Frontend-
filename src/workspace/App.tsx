@@ -39,12 +39,12 @@ import { HyperAdminDashboard } from './pages/hyperadmin/HyperAdminDashboard';
 import { WalletPage } from './pages/WalletPage';
 import { CertificationsPage } from './pages/CertificationsPage';
 
-// Module Routes
-import EducationModuleRoutes from '../modules/education/App';
-import InventoryModuleRoutes from '../modules/inventory/App';
-import FinanceModuleRoutes from '../modules/finance/App';
-import LibraryModuleRoutes from '../modules/library/App';
-import TasksModuleRoutes from '../modules/tasks/App';
+// Lazy Loaded Module Routes (Performance Optimization)
+const EducationModuleRoutes = React.lazy(() => import('../modules/education/App'));
+const InventoryModuleRoutes = React.lazy(() => import('../modules/inventory/App'));
+const FinanceModuleRoutes = React.lazy(() => import('../modules/finance/App'));
+const LibraryModuleRoutes = React.lazy(() => import('../modules/library/App'));
+const TasksModuleRoutes = React.lazy(() => import('../modules/tasks/App'));
 
 // Legacy CSS (kept for any remaining dependencies, though AllianceShell.css is now dominant)
 import './Workspace.css';
@@ -302,8 +302,9 @@ export const WorkspaceShell: React.FC = () => {
       activeModuleName={activeModuleName}
       activeModuleColor={activeModuleColor}
     >
-      <Routes>
-        {/* Primary Entry Point: Alliance Hub */}
+      <React.Suspense fallback={<div className="flex h-full w-full items-center justify-center p-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div></div>}>
+        <Routes>
+          {/* Primary Entry Point: Alliance Hub */}
         <Route 
           path="/" 
           element={
@@ -360,7 +361,8 @@ export const WorkspaceShell: React.FC = () => {
             <TasksModuleRoutes />
           </ModuleGuard>
         } />
-      </Routes>
+        </Routes>
+      </React.Suspense>
 
       {/* 3. UNIVERSAL MODALS & DRAWERS */}
       <UniversalCommandPalette 
