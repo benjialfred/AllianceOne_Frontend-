@@ -95,7 +95,7 @@ export const FounderAndFooter: React.FC = () => {
           >
             <div className="cta-pulse-label">
               <div className="pulse-dot"></div>
-              <span className="micro-label text-alliance-blue">LE NOUVEAU STANDARD</span>
+              <span className="micro-label text-zinc-400">LE NOUVEAU STANDARD</span>
             </div>
             
             <h2 className="font-sans cta-headline">

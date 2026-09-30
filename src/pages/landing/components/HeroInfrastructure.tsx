@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Database, Users, Briefcase, Layout, BrainCircuit, Box } from 'lucide-react';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
-import { MotionBackground } from './motion-background/MotionBackground';
+import { LivingMotionBackground } from './motion-background/LivingMotionBackground';
 import './HeroInfrastructure.css';
 
 export const HeroInfrastructure: React.FC = () => {
@@ -30,7 +30,7 @@ export const HeroInfrastructure: React.FC = () => {
 
   return (
     <section className="ao-dark-hero" onMouseMove={handleMouseMove}>
-      <MotionBackground />
+      <LivingMotionBackground />
       
       <div className="ao-hero-container">
         

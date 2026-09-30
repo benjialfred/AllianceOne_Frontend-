@@ -92,10 +92,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/app', { replace: true });
+    if (isAuthenticated && step !== 'welcome') {
+      redirectAfterAuth();
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, step]);
 
   useEffect(() => {
     clearError();
@@ -144,8 +144,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     const isCompleted = currentUser?.onboarding_completed ||
       (currentUser?.email && localStorage.getItem(`alliance-onboarding-completed_${currentUser.email}`) === 'true');
 
+    const from = location.state?.from?.pathname || '/app';
+
     if (isCompleted) {
-      navigate('/app', { replace: true });
+      navigate(from, { replace: true });
     } else {
       navigate('/app/onboarding', { replace: true });
     }
@@ -198,150 +200,129 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   };
 
   return (
-    <div className="gh-auth-page">
-      {/* LEFT SIDE - VISUAL */}
-      <div className="gh-auth-left">
-        <div className="gh-leaf-wrapper">
-          {/* Decorative background lines */}
-          <svg className="gh-leaf-deco" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 100 Q 50 10 100 100 T 190 100" stroke="rgba(0,0,0,0.1)" strokeWidth="4" fill="none" />
-            <path d="M10 120 Q 60 30 100 120 T 190 120" stroke="rgba(0,0,0,0.1)" strokeWidth="4" fill="none" />
-            <path d="M10 140 Q 70 50 100 140 T 190 140" stroke="rgba(0,0,0,0.1)" strokeWidth="4" fill="none" />
-            <path d="M10 160 Q 80 70 100 160 T 190 160" stroke="rgba(0,0,0,0.1)" strokeWidth="4" fill="none" />
-            <path d="M10 180 Q 90 90 100 180 T 190 180" stroke="rgba(0,0,0,0.1)" strokeWidth="4" fill="none" />
-          </svg>
-          
-          <div className="gh-leaf-shape">
-            <img 
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800" 
-              alt="Professional" 
-              className="gh-leaf-img"
-            />
-          </div>
-        </div>
+    <div className="auth-page-root">
+      {/* Immersive Animated Background */}
+      <div className="auth-ambient-bg">
+        <div className="auth-ambient-blob-1"></div>
+        <div className="auth-ambient-blob-2"></div>
       </div>
 
-      {/* RIGHT SIDE - FORM */}
-      <div className="gh-auth-right">
+      <motion.div 
+        className="auth-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="auth-brand" onClick={() => navigate('/')}>
+          <AllianceLogo size={28} color="#ffffff" />
+          <span className="auth-brand-text">Alliance One</span>
+        </div>
+
         {isTokenVerifying ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '20px' }}>
+          <div className="flex flex-col items-center justify-center py-12 gap-6 w-full">
             <AllianceLoader />
-            <h2 style={{ color: '#0f172a', fontWeight: 600 }}>Vérification sécurisée...</h2>
+            <h2 className="text-xl font-bold text-white">Vérification sécurisée...</h2>
           </div>
         ) : step === 'welcome' ? (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '20px', textAlign: 'center' }}
+            className="flex flex-col items-center justify-center py-8 text-center"
           >
-            <div style={{ background: '#d1fae5', padding: '24px', borderRadius: '50%', color: '#10b981' }}>
-              <Sparkles size={48} />
+            <div className="auth-icon-circle text-green-400 border-green-400/20 bg-green-400/10">
+              <Sparkles size={32} />
             </div>
-            <h1 style={{ color: '#0f172a', fontWeight: 800, fontSize: '32px', fontFamily: "var(--ao-font-serif, 'Playfair Display', serif)" }}>
-              Bienvenue dans l'ère de l'intelligence.
-            </h1>
-            <p style={{ color: '#64748b' }}>Préparation de votre espace d'excellence...</p>
+            <h1 className="auth-title">Authentification réussie</h1>
+            <p className="auth-subtitle">Préparation de votre espace de travail intelligent...</p>
           </motion.div>
         ) : step === '2fa' ? (
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="gh-auth-container"
+            className="flex flex-col items-center w-full text-center"
           >
-            <div className="gh-brand" style={{ marginBottom: '32px' }}>
-              <AllianceLogo size={32} color="var(--ao-elegant-primary, #0f172a)" />
-              <span className="gh-brand-text">Alliance One</span>
+            <div className="auth-icon-circle text-white">
+              <Mail size={28} />
             </div>
-            <div style={{ background: '#e0e7ff', padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
-              <Mail size={32} color="#4f46e5" />
-            </div>
-            <h1 className="gh-heading" style={{ fontSize: '28px' }}>
-              Vérifiez votre boîte mail
-            </h1>
-            <p className="gh-subheading" style={{ marginBottom: '32px' }}>
-              Pour des raisons de sécurité (2FA), nous vous avons envoyé un lien de confirmation à l'adresse <strong>{email}</strong>. Cliquez dessus pour accéder à votre espace.
+            <h1 className="auth-title">Vérifiez votre boîte mail</h1>
+            <p className="auth-subtitle">
+              Pour des raisons de sécurité, nous vous avons envoyé un lien de connexion magique à l'adresse <br/><strong className="text-white mt-1 block">{email}</strong>
             </p>
-            <button onClick={() => setStep('login')} className="gh-submit-btn" style={{ background: '#f1f5f9', color: '#0f172a', border: '1px solid #e2e8f0' }}>
-              Retour à la connexion
+            <button onClick={() => setStep('login')} className="auth-btn-primary !bg-transparent !text-white border !border-white/20 hover:!bg-white/5">
+              Retour
             </button>
           </motion.div>
         ) : (
-          <div className="gh-auth-container">
-            <div className="gh-brand">
-              <AllianceLogo size={32} color="var(--ao-elegant-primary, #0f172a)" />
-              <span className="gh-brand-text">Alliance One</span>
-            </div>
-
-            <h1 className="gh-heading">
-              <span className="gh-heading-italic">{mode === 'login' ? 'Accédez' : 'Rejoignez'}</span> à<br/>
-              votre espace.
+          <div className="w-full">
+            <h1 className="auth-title">
+              {mode === 'login' ? 'Bienvenue' : 'Créer un compte'}
             </h1>
-
-            <p className="gh-subheading">
-              Travaillez plus intelligemment, collaborez plus rapidement et prenez le contrôle de votre organisation avec Alliance One.
+            <p className="auth-subtitle">
+              {mode === 'login' 
+                ? 'Connectez-vous pour accéder à votre infrastructure unifiée.'
+                : 'Déployez votre espace de travail intelligent en quelques secondes.'}
             </p>
 
-          <form className="gh-form" onSubmit={handleSubmit}>
-            <div className="gh-input-group">
+            <form className="auth-form" onSubmit={handleSubmit}>
               <input
                 type="email"
-                className="gh-input"
-                placeholder="Email"
+                className="auth-input"
+                placeholder="vous@entreprise.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </div>
 
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  className="gh-error"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  {error}
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="auth-error-msg">{error}</div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            <button type="submit" className="gh-submit-btn" disabled={isLoading}>
-              {isLoading ? 'Chargement...' : (mode === 'login' ? 'Se connecter' : 'Créer un compte')}
-            </button>
-          </form>
+              <button type="submit" className="auth-btn-primary" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                    Traitement...
+                  </>
+                ) : (
+                  mode === 'login' ? 'Continuer avec l\'Email' : 'Continuer avec l\'Email'
+                )}
+              </button>
+            </form>
 
-          <div className="gh-social-section">
-            <span className="gh-social-text">Ou continuer avec</span>
-            <div className="gh-social-buttons">
-              <div id="google-signin-mount" className="gh-social-btn-google"></div>
-              <button type="button" className="gh-social-btn" onClick={handleGithubLogin}>
+            <div className="auth-divider">Ou continuer avec</div>
+
+            <div className="auth-social-group">
+              <div id="google-signin-mount" className="auth-google-wrapper"></div>
+              <button type="button" className="auth-social-btn" onClick={handleGithubLogin}>
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
               </button>
-              <button className="gh-social-btn">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </button>
             </div>
-          </div>
 
-          <p className="gh-legal">
-            En continuant, vous acceptez la <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Politique de confidentialité</a> et les <a href="/terms" target="_blank" rel="noopener noreferrer">Conditions d'utilisation</a> d'Alliance One.
-          </p>
+            <div className="auth-footer">
+              {mode === 'login' ? (
+                <span>Pas encore de compte ? <a href="#" onClick={(e) => { e.preventDefault(); navigate('/register'); }}>Rejoignez-nous</a></span>
+              ) : (
+                <span>Déjà membre ? <a href="#" onClick={(e) => { e.preventDefault(); navigate('/login'); }}>Connectez-vous</a></span>
+              )}
+            </div>
 
-          <div className="gh-toggle-mode">
-            {mode === 'login' ? (
-              <p>Pas de compte ? <a onClick={() => navigate('/register')}>Rejoignez-nous</a></p>
-            ) : (
-              <p>Déjà membre ? <a onClick={() => navigate('/login')}>Connectez-vous</a></p>
-            )}
+            <p className="auth-legal">
+              En continuant, vous acceptez notre <a href="/privacy-policy" target="_blank">Politique de confidentialité</a> et nos <a href="/terms" target="_blank">Conditions d'utilisation</a>.
+            </p>
           </div>
-        </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

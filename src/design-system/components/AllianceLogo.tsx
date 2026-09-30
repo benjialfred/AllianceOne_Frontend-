@@ -11,7 +11,7 @@ export const AllianceLogo: React.FC<AllianceLogoProps> = ({
   color = 'currentColor', 
   className 
 }) => {
-  // A beautiful abstract logo representing a glowing node / alliance connection
+  // A sleek, unified geometric nexus representing 'Alliance' and 'One'. No letters.
   return (
     <svg
       width={size}
@@ -31,35 +31,32 @@ export const AllianceLogo: React.FC<AllianceLogoProps> = ({
           <stop offset="0%" stopColor="#10B981" /> {/* Emerald */}
           <stop offset="100%" stopColor="#34D399" />
         </linearGradient>
-        <filter id="ao-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Abstract 'A' geometry */}
+      {/* The Unified Nexus - A beautiful intersecting 3D-like rhombus/diamond */}
       <path
-        d="M50 15 L85 80 H60 L50 60 L40 80 H15 Z"
+        d="M50 10 L85 50 L50 90 L15 50 Z"
         fill="url(#ao-grad-main)"
-        filter="url(#ao-glow)"
+        fillOpacity="0.8"
+      />
+      <path
+        d="M50 10 L85 50 L50 60 L15 50 Z"
+        fill="url(#ao-grad-accent)"
+        fillOpacity="0.9"
       />
       
-      {/* Interlocking 'O' / Core Ring */}
+      {/* Central 'One' Core - A glowing inner element */}
       <circle
         cx="50"
-        cy="55"
-        r="16"
-        fill="none"
-        stroke="url(#ao-grad-accent)"
-        strokeWidth="8"
-      />
-      
-      {/* Central Node Dot */}
-      <circle
-        cx="50"
-        cy="55"
-        r="4"
+        cy="40"
+        r="6"
         fill="#ffffff"
+      />
+      <path
+        d="M50 40 L50 80"
+        stroke="#ffffff"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
     </svg>
   );

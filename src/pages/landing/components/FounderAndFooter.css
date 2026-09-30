@@ -30,7 +30,7 @@
 .blue-blob {
   top: -30%; right: -10%;
   width: 70%; height: 70%;
-  background-color: rgba(79, 70, 229, 0.1); /* alliance blue */
+  background-color: rgba(255, 255, 255, 0.05); /* sleek white */
 }
 .white-blob {
   bottom: 0; left: 0;
@@ -218,21 +218,21 @@
   gap: 8px;
   padding: 8px 16px;
   border-radius: 99px;
-  background-color: rgba(79, 70, 229, 0.05);
-  border: 1px solid rgba(79, 70, 229, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 32px;
 }
 .pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--ao-alliance-blue);
+  background-color: #fff;
   animation: pulse-anim 2s infinite;
 }
 @keyframes pulse-anim {
-  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(79, 70, 229, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
 .cta-headline {

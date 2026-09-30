@@ -1,107 +1,269 @@
 /* =========================================
-   ALLIANCE OS HUB — CORE STYLES
-   Titanium Dark & Ivory Light themes
+   ALLIANCE OS — LAUNCHPAD & HUB
+   Design Aesthetic: VisionOS / macOS / Glassmorphism
    ========================================= */
 
-/* --- THEME VARIABLES (Scoped to Hub) --- */
 .os-hub-root {
-  /* LIGHT THEME (Ivory/Graphite) */
-  --os-bg: #fdfdfc; /* Ivory */
-  --os-panel-bg: #ffffff;
-  --os-panel-hover: #fafafa;
-  --os-border: #eaeaea;
-  --os-text-primary: #111827;
-  --os-text-secondary: #6b7280;
-  --os-text-muted: #9ca3af;
-  --os-accent: #2563eb;
-  
-  /* Semantic Colors Light */
-  --os-edu: #4f46e5;
-  --os-fin: #059669;
-  --os-inv: #0ea5e9;
-  --os-task: #f59e0b;
-
-  min-height: calc(100vh - 56px);
-  background-color: var(--os-bg);
-  color: var(--os-text-primary);
-  font-family: 'Inter', -apple-system, sans-serif;
-  transition: background-color 0.3s ease;
+  min-height: 100vh;
+  background-color: #030712; /* Deep space navy/black */
+  color: #f8fafc;
+  font-family: var(--ao-font-sans);
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 4rem;
 }
 
-[data-theme='dark'] .os-hub-root {
-  /* DARK THEME (Titanium / Obsidian) */
-  --os-bg: #0a0a0b; /* Very deep warm black */
-  --os-panel-bg: #121214; /* Graphite 1 */
-  --os-panel-hover: #18181b; /* Graphite 2 */
-  --os-border: rgba(255, 255, 255, 0.04); /* Nearly invisible */
-  --os-text-primary: #f4f4f5;
-  --os-text-secondary: #a1a1aa;
-  --os-text-muted: #52525b;
-  --os-accent: #3b82f6;
-
-  /* Semantic Colors Dark */
-  --os-edu: #818cf8;
-  --os-fin: #34d399;
-  --os-inv: #38bdf8;
-  --os-task: #fbbf24;
+/* BACKGROUND EFFECTS */
+.os-hub-bg-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 800px;
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15) 0%, rgba(3, 7, 18, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* --- LAYOUT GRID --- */
+.os-hub-mesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(circle at 50% 30%, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black, transparent 80%);
+}
+
 .os-hub-container {
-  max-width: 1400px;
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 2rem 5rem;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  align-items: center;
 }
 
-/* Main Two-Column Split for OS sections */
-.os-split-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 3rem;
+/* OMNIBAR */
+.os-omnibar-container {
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 4rem;
 }
 
-@media (max-width: 1024px) {
-  .os-split-layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-}
-
-/* --- UTILITIES --- */
-.os-panel {
-  background: var(--os-panel-bg);
-  border: 1px solid var(--os-border);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-}
-
-[data-theme='dark'] .os-panel {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02);
-}
-
-.os-section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--os-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1.25rem;
+.os-omnibar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Scrollbar styling for panels */
-.os-scrollable::-webkit-scrollbar {
-  width: 4px;
+.os-omnibar.focused {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(1.02);
 }
-.os-scrollable::-webkit-scrollbar-track {
+
+.os-omnibar-icon {
+  color: #94a3b8;
+}
+
+.os-omnibar-input {
+  flex: 1;
   background: transparent;
+  border: none;
+  outline: none;
+  color: #f8fafc;
+  font-size: 1.125rem;
+  font-family: inherit;
 }
-.os-scrollable::-webkit-scrollbar-thumb {
-  background: var(--os-border);
-  border-radius: 4px;
+.os-omnibar-input::placeholder {
+  color: #64748b;
+}
+
+.os-omnibar-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* WELCOME */
+.os-welcome-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.os-welcome-text {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: var(--ao-font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.os-welcome-subtext {
+  font-size: 1.125rem;
+  color: #94a3b8;
+}
+
+/* CRITICAL INFOS */
+.os-critical-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 5rem;
+}
+
+.os-critical-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(10px);
+}
+
+.os-critical-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.os-critical-card.warning .os-critical-icon { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.os-critical-card.success .os-critical-icon { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+
+.os-critical-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.os-critical-content h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.os-critical-content p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.os-critical-arrow {
+  margin-left: auto;
+  color: #64748b;
+  align-self: center;
+}
+
+/* LAUNCHPAD */
+.os-launchpad {
+  width: 100%;
+}
+
+.os-launchpad-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #e2e8f0;
+}
+
+.os-app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 2rem 1.5rem;
+  justify-items: center;
+}
+
+.os-app-card {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  width: 100%;
+}
+
+.os-app-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.os-app-icon-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0);
+  transition: box-shadow 0.2s;
+}
+
+.os-app-card:hover .os-app-icon-wrapper {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+}
+.os-app-card:focus-visible .os-app-icon-wrapper::after {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.5);
+}
+
+.os-app-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f8fafc;
+  margin-bottom: 0.25rem;
+}
+
+.os-app-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s;
+}
+
+.os-app-card:hover .os-app-desc {
+  opacity: 1;
+  transform: translateY(0);
 }

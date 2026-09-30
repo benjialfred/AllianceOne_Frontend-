@@ -6,9 +6,9 @@ export const WaveField: React.FC = () => {
     <svg className="lmb-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
       <defs>
         <linearGradient id="wave-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgba(37, 99, 235, 0)" />
-          <stop offset="50%" stopColor="rgba(37, 99, 235, 0.15)" />
-          <stop offset="100%" stopColor="rgba(37, 99, 235, 0)" />
+          <stop offset="0%" stopColor="rgba(255, 255, 255, 0)" />
+          <stop offset="50%" stopColor="rgba(255, 255, 255, 0.15)" />
+          <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
         </linearGradient>
         <linearGradient id="wave-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="rgba(16, 185, 129, 0)" />

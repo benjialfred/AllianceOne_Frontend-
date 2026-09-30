@@ -4,7 +4,7 @@
  * The WorkspaceShell is only mounted under /app/* and requires authentication.
  */
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './core/stores/authStore';
 import { AuthPage } from './pages/auth/AuthPage';
 
@@ -51,13 +51,14 @@ const AboutPage = React.lazy(() => import('./pages/public/PublicPagesStubs').the
 const NewsPage = React.lazy(() => import('./pages/public/NewsPage').then(m => ({ default: m.NewsPage })));
 const InsightsPage = React.lazy(() => import('./pages/public/InsightsPage').then(m => ({ default: m.InsightsPage })));
 const CareersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.CareersPage })));
-const ContactPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.ContactPage })));
+const ContactPage = React.lazy(() => import('./pages/contact/ContactPage').then(m => ({ default: m.ContactPage })));
 const LegalPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.LegalPage })));
 
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const location = useLocation();
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
   return <>{children}</>;
 };
@@ -80,6 +81,9 @@ import { AllianceLoader } from './design-system/components/AllianceLoader';
  */
 import { PremiumPreloader } from './pages/landing/components/PremiumPreloader';
 
+const CheckoutPage = React.lazy(() => import('./pages/cart/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
+import { CartDrawer } from './pages/cart/CartDrawer';
+
 const LoadingScreen: React.FC = () => (
   <AllianceLoader text="Chargement d'Alliance One..." />
 );
@@ -88,6 +92,7 @@ export const RootApp: React.FC = () => {
   return (
     <>
       <PremiumPreloader />
+      <CartDrawer />
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* ─── PUBLIC ROUTES ─── */}
@@ -102,20 +107,12 @@ export const RootApp: React.FC = () => {
 
         <Route
           path="/login"
-          element={
-            <RequireGuest>
-              <AuthPage mode="login" />
-            </RequireGuest>
-          }
+          element={<AuthPage mode="login" />}
         />
 
         <Route
           path="/register"
-          element={
-            <RequireGuest>
-              <AuthPage mode="register" />
-            </RequireGuest>
-          }
+          element={<AuthPage mode="register" />}
         />
 
         <Route
@@ -158,6 +155,7 @@ export const RootApp: React.FC = () => {
         <Route path="/news" element={<RequireGuest><NewsPage /></RequireGuest>} />
         <Route path="/careers" element={<RequireGuest><CareersPage /></RequireGuest>} />
         <Route path="/contact" element={<RequireGuest><ContactPage /></RequireGuest>} />
+        <Route path="/checkout" element={<RequireGuest><CheckoutPage /></RequireGuest>} />
         <Route path="/legal" element={<RequireGuest><LegalPage /></RequireGuest>} />
 
         {/* ─── ONBOARDING (Authenticated) ─── */}

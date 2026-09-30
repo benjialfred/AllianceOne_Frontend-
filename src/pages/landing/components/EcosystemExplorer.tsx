@@ -100,7 +100,7 @@ export const EcosystemExplorer: React.FC = () => {
             className="text-center mb-16"
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={layerVariants}
           >
-            <span className="micro-label mb-4 block" style={{ color: 'var(--ao-alliance-blue)' }}>4. LA SUITE APPLICATIVE</span>
+            <span className="micro-label mb-4 block" style={{ color: '#a1a1aa' }}>4. LA SUITE APPLICATIVE</span>
             <h2 className="text-4xl font-sans font-extrabold text-white mb-4">
               Des modules métiers natifs.
             </h2>

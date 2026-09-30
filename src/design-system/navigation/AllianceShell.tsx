@@ -4,6 +4,7 @@ import { useAuthStore } from '../../core/stores/authStore';
 import { ModuleSidebar } from './ModuleSidebar';
 import type { NavSection } from './ModuleSidebar';
 import { TopNavigation } from './TopNavigation';
+import { MobileNavigation } from './MobileNavigation';
 import { FloatingAIWidget } from '../../workspace/ai/components/FloatingAIWidget';
 import './AllianceShell.css';
 
@@ -72,6 +73,15 @@ export const AllianceShell: React.FC<AllianceShellProps> = ({
         </main>
 
         <FloatingAIWidget onClick={onOpenAI} />
+        
+        {/* Mobile Specific Navigation */}
+        <MobileNavigation 
+          navigation={activeModuleNav}
+          onOpenSearch={onOpenSearch}
+          onOpenCreate={onOpenCreate}
+          onOpenNotifications={onOpenNotifications}
+          onOpenAI={onOpenAI}
+        />
       </div>
     </div>
   );
