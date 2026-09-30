@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { usePlatformStore } from '../../../core/stores/platformStore';
-import { useAuthStore } from '../../../core/stores/authStore';
+import { usePlatformStore } from '../../core/stores/platformStore';
+import { useAuthStore } from '../../core/stores/authStore';
 import { 
   Users, Activity, Boxes, Settings, Clock, CheckCircle, 
   ChevronRight, Command, Search, Sparkles, TrendingUp, AlertTriangle, Shield, Wallet
@@ -171,6 +171,95 @@ export const AllianceHub: React.FC = () => {
                   </div>
                 </div>
 
+              </div>
+
+              {/* CENTRAL GRAPH */}
+              <div style={{ marginTop: '2rem' }}>
+                <h2 className="os-section-title">Performances & Croissance</h2>
+                <div className="os-chart-container" style={{ 
+                  background: 'rgba(255,255,255,0.02)', 
+                  border: '1px solid rgba(255,255,255,0.05)', 
+                  borderRadius: '16px', 
+                  padding: '1.5rem',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                    <div>
+                      <div style={{ fontSize: '1.2rem', fontWeight: 600, color: '#f8fafc' }}>Volume Transactionnel Global</div>
+                      <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Sur les 30 derniers jours</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#94a3b8' }}>
+                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#3b82f6' }} /> Revenus
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#94a3b8' }}>
+                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} /> Opérations
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* BEAUTIFUL SVG CHART */}
+                  <div style={{ width: '100%', height: '220px', position: 'relative' }}>
+                    <svg viewBox="0 0 800 200" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                      <defs>
+                        <linearGradient id="chart-grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="rgba(59, 130, 246, 0.3)" />
+                          <stop offset="100%" stopColor="rgba(59, 130, 246, 0)" />
+                        </linearGradient>
+                        <linearGradient id="chart-grad-green" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="rgba(16, 185, 129, 0.3)" />
+                          <stop offset="100%" stopColor="rgba(16, 185, 129, 0)" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Grid Lines */}
+                      {[0, 50, 100, 150].map((y, i) => (
+                        <g key={`grid-${i}`}>
+                          <line x1="0" y1={y} x2="800" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                          <text x="0" y={y - 5} fill="#475569" fontSize="10" fontFamily="sans-serif">
+                            {((150 - y) / 1.5)}k
+                          </text>
+                        </g>
+                      ))}
+
+                      {/* Green Line (Operations) */}
+                      <path 
+                        d="M 50 160 C 150 150, 250 180, 350 120 C 450 60, 550 140, 650 90 C 750 40, 800 20, 800 20 L 800 200 L 50 200 Z" 
+                        fill="url(#chart-grad-green)" 
+                      />
+                      <motion.path 
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 2, ease: "easeOut", delay: 0.2 }}
+                        d="M 50 160 C 150 150, 250 180, 350 120 C 450 60, 550 140, 650 90 C 750 40, 800 20, 800 20" 
+                        fill="none" 
+                        stroke="#10b981" 
+                        strokeWidth="3" 
+                        strokeLinecap="round"
+                      />
+
+                      {/* Blue Line (Revenue) */}
+                      <path 
+                        d="M 50 180 C 200 160, 300 90, 450 100 C 600 110, 650 50, 800 30 L 800 200 L 50 200 Z" 
+                        fill="url(#chart-grad-blue)" 
+                      />
+                      <motion.path 
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 2, ease: "easeOut", delay: 0.4 }}
+                        d="M 50 180 C 200 160, 300 90, 450 100 C 600 110, 650 50, 800 30" 
+                        fill="none" 
+                        stroke="#3b82f6" 
+                        strokeWidth="3" 
+                        strokeLinecap="round"
+                      />
+                      
+                      {/* Interactive / Hover Dots (simulated) */}
+                      <circle cx="800" cy="30" r="5" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" />
+                      <circle cx="800" cy="20" r="5" fill="#0f172a" stroke="#10b981" strokeWidth="2" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>

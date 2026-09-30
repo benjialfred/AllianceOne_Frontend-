@@ -12,14 +12,34 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FloatingAIWidget } from '../../workspace/ai/components/FloatingAIWidget';
 import { PublicAICopilot } from './components/PublicAICopilot';
+import { useMarketingStore } from '../../core/stores/marketingStore';
+import { SEO } from '../../core/components/SEO';
 import './LandingPage.css';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const showModal = useMarketingStore((s) => s.showModal);
+
+  React.useEffect(() => {
+    // Show marketing modal after 8 seconds
+    const timer = setTimeout(() => {
+      showModal({
+        type: 'newsletter',
+        title: 'Rejoignez la communauté',
+        description: "Recevez nos dernières actualités, nos conseils d'intégration et un accès anticipé à nos nouvelles fonctionnalités.",
+        primaryActionText: 'Rejoindre la liste VIP',
+      });
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [showModal]);
 
   return (
     <div className="landing-page">
+      <SEO 
+        title="L'OS de votre entreprise" 
+        description="Alliance One est le système nerveux central des organisations de demain. Découvrez l'écosystème cloud intégré." 
+      />
       {/* HEADER & MEGA MENUS */}
       <PublicHeader />
 

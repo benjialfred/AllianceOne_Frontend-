@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle2, AlertCircle, Mail, MessageSquare } from 'lucide-react';
 import { PublicHeader } from '../landing/components/PublicHeader';
 import { FounderAndFooter } from '../landing/components/FounderAndFooter';
+import { SEO } from '../../core/components/SEO';
 import './ContactPage.css';
 
 export const ContactPage: React.FC = () => {
@@ -39,6 +40,10 @@ export const ContactPage: React.FC = () => {
 
   return (
     <div className="contact-page min-h-screen bg-[#000000] text-white font-sans selection:bg-white/20">
+      <SEO 
+        title="Contactez-nous" 
+        description="Une question ou un projet sur-mesure ? L'équipe d'experts Alliance One est prête à vous accompagner." 
+      />
       <PublicHeader />
       
       <main className="pt-40 pb-32 relative overflow-hidden flex flex-col items-center justify-center min-h-screen">

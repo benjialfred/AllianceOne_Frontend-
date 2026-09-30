@@ -83,6 +83,7 @@ import { PremiumPreloader } from './pages/landing/components/PremiumPreloader';
 
 const CheckoutPage = React.lazy(() => import('./pages/cart/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 import { CartDrawer } from './pages/cart/CartDrawer';
+import { MarketingModal } from './design-system/components/MarketingModal';
 
 const LoadingScreen: React.FC = () => (
   <AllianceLoader text="Chargement d'Alliance One..." />
@@ -93,6 +94,7 @@ export const RootApp: React.FC = () => {
     <>
       <PremiumPreloader />
       <CartDrawer />
+      <MarketingModal />
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* ─── PUBLIC ROUTES ─── */}

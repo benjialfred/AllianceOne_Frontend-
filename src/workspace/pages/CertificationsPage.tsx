@@ -63,7 +63,7 @@ export const CertificationsPage: React.FC = () => {
                 ? "Vos documents sont en cours d'analyse par l'équipe Alliance One. (Délai estimé: 24h-48h)"
                 : "Uploadez vos documents légaux pour obtenir le badge de confiance."}
             </p>
-          </div>
+          </div> 
         </div>
 
         {status === 'unverified' && (

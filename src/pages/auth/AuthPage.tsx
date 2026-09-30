@@ -5,6 +5,7 @@ import { Mail, Sparkles } from 'lucide-react';
 import { useAuthStore } from '../../core/stores/authStore';
 import { AllianceLogo } from '../../design-system/components/AllianceLogo';
 import { AllianceLoader } from '../../design-system/components/AllianceLoader';
+import { SEO } from '../../core/components/SEO';
 import './AuthPage.css';
 
 const GOOGLE_CLIENT_ID = '596917773675-hdbgpl1ftu0hok87imssjndmt9vtvdqs.apps.googleusercontent.com';
@@ -201,6 +202,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
 
   return (
     <div className="auth-page-root">
+      <SEO 
+        title={mode === 'login' ? 'Connexion' : 'Créer un compte'} 
+        description="Accédez à votre espace Alliance One ou déployez une nouvelle infrastructure cloud." 
+      />
       {/* Immersive Animated Background */}
       <div className="auth-ambient-bg">
         <div className="auth-ambient-blob-1"></div>

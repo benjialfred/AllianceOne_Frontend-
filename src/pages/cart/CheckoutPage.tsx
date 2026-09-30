@@ -4,6 +4,7 @@ import { ShieldCheck, CheckCircle2, ArrowRight, Package, CreditCard, Loader2 } f
 import { useCartStore } from '../../core/stores/cartStore';
 import { useNavigate } from 'react-router-dom';
 import { PublicHeader } from '../landing/components/PublicHeader';
+import { SEO } from '../../core/components/SEO';
 
 export const CheckoutPage: React.FC = () => {
   const { items, getTotal, clearCart } = useCartStore();
@@ -54,6 +55,10 @@ export const CheckoutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#000] text-white font-sans selection:bg-white/20">
+      <SEO 
+        title="Paiement Sécurisé" 
+        description="Finalisez votre commande sur Alliance One en toute sécurité." 
+      />
       <PublicHeader />
       
       <main className="pt-40 pb-32 max-w-7xl mx-auto px-6 relative">
