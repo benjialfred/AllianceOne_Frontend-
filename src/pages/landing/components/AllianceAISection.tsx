@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers, FileText, Users } from 'lucide-react';
+import { Terminal, Database, Shield, Zap, Sparkles, ArrowRight, BrainCircuit, Code2, Layers, FileText, Users, CheckCircle2 } from 'lucide-react';
 import './AllianceAISection.css';
 import { useNavigate } from 'react-router-dom';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
@@ -39,22 +39,22 @@ export const AllianceAISection: React.FC = () => {
             </motion.div>
 
             <motion.div className="ai-capabilities" variants={layerVariants}>
-              <div className="ai-capability-item">
-                <div className="ai-cap-icon"><Shield size={24} /></div>
+              <div className="ai-capability-item floating-card-effect">
+                <div className="ai-cap-icon"><CheckCircle2 size={24} /></div>
                 <div>
                   <h4>Privacy-First & Sovereign</h4>
                   <p>Vos données de l'entreprise ne sont jamais utilisées pour entraîner des modèles publics externes.</p>
                 </div>
               </div>
-              <div className="ai-capability-item">
-                <div className="ai-cap-icon"><Database size={24} /></div>
+              <div className="ai-capability-item floating-card-effect">
+                <div className="ai-cap-icon"><CheckCircle2 size={24} /></div>
                 <div>
                   <h4>Cross-Module Analytics</h4>
                   <p>Croise instantanément les informations RH, Finance et Supply Chain pour des insights précis.</p>
                 </div>
               </div>
-              <div className="ai-capability-item">
-                <div className="ai-cap-icon"><Zap size={24} /></div>
+              <div className="ai-capability-item floating-card-effect">
+                <div className="ai-cap-icon"><CheckCircle2 size={24} /></div>
                 <div>
                   <h4>Action-Oriented</h4>
                   <p>Alliance AI peut configurer des rapports, envoyer des alertes et automatiser des workflows complexes.</p>

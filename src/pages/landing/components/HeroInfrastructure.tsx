@@ -122,9 +122,21 @@ export const HeroInfrastructure: React.FC = () => {
                     marginLeft: '-55px', // half of width
                     marginTop: '-45px'
                   }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 1 + i * 0.1, type: "spring", stiffness: 200 }}
+                  initial={{ opacity: 0, scale: 0, y: 0 }}
+                  animate={{ opacity: 1, scale: 1, y: [0, -12, 0] }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: 1 + i * 0.1, 
+                    type: "spring", 
+                    stiffness: 200,
+                    y: {
+                      duration: 4 + (i * 0.5),
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      ease: "easeInOut",
+                      delay: 2 + i * 0.3
+                    }
+                  }}
                 >
                   <div className="satellite-icon">{node.icon}</div>
                   <span>{node.label}</span>

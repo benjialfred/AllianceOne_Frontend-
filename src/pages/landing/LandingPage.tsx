@@ -6,6 +6,7 @@ import { PublicHeader } from './components/PublicHeader';
 import { HeroInfrastructure } from './components/HeroInfrastructure';
 import { EcosystemExplorer } from './components/EcosystemExplorer';
 import { AllianceAISection } from './components/AllianceAISection';
+import { WaveDivider } from './components/WaveDivider';
 import { FounderAndFooter } from './components/FounderAndFooter';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -48,8 +49,18 @@ export const LandingPage: React.FC = () => {
 
 
 
+      {/* WAVE TRANSITION (Dark to Slightly Dark) */}
+      <div className="relative">
+        <WaveDivider position="bottom" color="#050505" />
+      </div>
+
       {/* ECOSYSTEM EXPLORER (ITERATION 04) */}
       <EcosystemExplorer />
+
+      {/* WAVE TRANSITION (Slightly Dark to Dark) */}
+      <div className="relative bg-[#050505]">
+        <WaveDivider position="bottom" color="#000000" />
+      </div>
 
       {/* STORYTELLING SECTIONS (AI) */}
       <AllianceAISection />
