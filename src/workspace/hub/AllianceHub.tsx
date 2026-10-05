@@ -37,7 +37,7 @@ export const AllianceHub: React.FC = () => {
               placeholder="Que souhaitez-vous accomplir aujourd'hui ?" 
               className="os-omnibar-input"
               onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
+              onBlur={() => setSearchFocused(false)}va
             />
             <div className="os-omnibar-shortcut">
               <Command size={14} /> K

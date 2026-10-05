@@ -74,27 +74,61 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
     checkTelegramStatus();
   }, [token, user]);
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    setTimeout(() => {
+    try {
+      // Assuming apiClient is correctly configured and available
+      // Import apiClient at the top of the file if not already imported
+      const { apiClient } = await import('../../core/api/client');
+      
+      const payload = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        avatar_url: avatarPreview || undefined
+      };
+      
+      const updatedUser = await apiClient.patch<any>('/core/identity/users/me/', payload);
+      
       if (user) {
-        setUser({ ...user, first_name: firstName, last_name: lastName, email: email, avatar_url: avatarPreview || undefined });
+        setUser({ ...user, ...updatedUser });
       }
-      setIsSaving(false);
       setSuccessType('profile');
       setShowSuccessModal(true);
-    }, 800);
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour du profil :", err);
+      // Optional: show error toast here
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleSaveOrg = (e: React.FormEvent) => {
+  const handleSaveOrg = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!currentOrg) return;
     setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      const { apiClient } = await import('../../core/api/client');
+      
+      const payload = {
+        name: orgName,
+        legal_name: orgRegistration,
+        // add more fields as needed that backend supports
+      };
+      
+      const updatedOrg = await apiClient.patch<any>(`/core/identity/organizations/${currentOrg.id}/`, payload);
+      
+      const setCurrentOrg = usePlatformStore.getState().setCurrentOrganization;
+      setCurrentOrg({ ...currentOrg, ...updatedOrg });
+      
       setSuccessType('organization');
       setShowSuccessModal(true);
-    }, 800);
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour de l'organisation :", err);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setPreview: React.Dispatch<React.SetStateAction<string | null>>) => {

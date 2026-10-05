@@ -19,10 +19,21 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   const location = useLocation();
   const { loginWithGoogle, loginWithGithub, isLoading, error, isAuthenticated, clearError } = useAuthStore();
 
-  const [email, setEmail] = useState('');
+  const [searchParams] = useSearchParams();
+  const [email, setEmail] = useState(location.state?.email || searchParams.get('email') || '');
   const [step, setStep] = useState<'login' | '2fa' | 'welcome'>('login');
   const [isTokenVerifying, setIsTokenVerifying] = useState(false);
-  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (location.state?.autoSubmit && email) {
+      // Create a synthetic event to trigger handleSubmit
+      const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+      handleSubmit(fakeEvent);
+      // Clear autoSubmit state so it doesn't loop on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, []);
+
 
   // Vérification 2FA via URL token (Magic Link)
   useEffect(() => {

@@ -24,36 +24,33 @@ export const Logo: React.FC<LogoProps> = ({
         alignItems: 'center',
         gap: '10px',
         userSelect: 'none',
+        flexDirection: showMotto ? 'column' : 'row',
+        alignItems: showMotto ? 'flex-start' : 'center',
         ...style
       }}
     >
-      <AllianceLogo size={size} color="var(--ao-elegant-primary, #4f46e5)" />
-      {(showText || showMotto) && (
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15, justifyContent: 'center' }}>
-          {showText && (
-            <span style={{ 
-              fontWeight: 800, 
-              fontSize: `${Math.max(13, size * 0.42)}px`, 
-              letterSpacing: '0.04em', 
-              color: 'var(--color-text-primary, #0f172a)',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}>
-              ALLIANCE ONE
-            </span>
-          )}
-          {showMotto && (
-            <span style={{ 
-              fontSize: `${Math.max(9, size * 0.26)}px`, 
-              fontWeight: 700, 
-              letterSpacing: '0.12em', 
-              color: '#d97706', 
-              textTransform: 'uppercase',
-              marginTop: '1px'
-            }}>
-              Unis pour exceller
-            </span>
-          )}
-        </div>
+      {showText ? (
+        <img 
+          src="/logo-full.png" 
+          alt="Alliance One" 
+          height={size} 
+          style={{ height: `${size}px`, width: 'auto', objectFit: 'contain' }} 
+        />
+      ) : (
+        <AllianceLogo size={size} />
+      )}
+      
+      {showMotto && (
+        <span style={{ 
+          fontSize: `${Math.max(9, size * 0.26)}px`, 
+          fontWeight: 700, 
+          letterSpacing: '0.12em', 
+          color: '#d97706', 
+          textTransform: 'uppercase',
+          marginTop: '1px'
+        }}>
+          Unis pour exceller
+        </span>
       )}
     </div>
   );
