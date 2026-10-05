@@ -41,15 +41,17 @@ export const ModulesApi = {
   /**
    * Récupère le catalogue complet des modules (Marketplace)
    */
-  getRegistry: (): Promise<ModuleManifest[]> => {
-    return apiClient.get('/core/modules/registry/');
+  getRegistry: async (): Promise<ModuleManifest[]> => {
+    const res: any = await apiClient.get('/core/modules/registry/');
+    return Array.isArray(res) ? res : (res.results || []);
   },
 
   /**
    * Récupère la liste des modules installés pour l'organisation courante
    */
-  getInstallations: (): Promise<ModuleInstallation[]> => {
-    return apiClient.get('/core/modules/installations/');
+  getInstallations: async (): Promise<ModuleInstallation[]> => {
+    const res: any = await apiClient.get('/core/modules/installations/');
+    return Array.isArray(res) ? res : (res.results || []);
   },
 
   /**
