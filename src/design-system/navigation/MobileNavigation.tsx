@@ -38,7 +38,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    window.location.href = '/';
   };
 
   return (

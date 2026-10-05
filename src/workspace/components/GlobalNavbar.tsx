@@ -302,7 +302,7 @@ export const GlobalNavbar: React.FC<GlobalNavbarProps> = ({
                     <span>Centre d'aide</span>
                   </button>
                   <div className="ent-dropdown-divider" />
-                  <button className="ent-list-item danger" onClick={() => { logout(); navigate('/'); }}>
+                  <button className="ent-list-item danger" onClick={() => { logout(); window.location.href = '/'; }}>
                     <LogOut size={16} />
                     <span>Se déconnecter</span>
                   </button>

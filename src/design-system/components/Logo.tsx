@@ -1,5 +1,6 @@
 import React from 'react';
 import { AllianceLogo } from './AllianceLogo';
+import logoFull from '../../assets/Logo technologique Alliance One en bleu (1).png';
 
 export interface LogoProps {
   size?: number;
@@ -31,7 +32,7 @@ export const Logo: React.FC<LogoProps> = ({
     >
       {showText ? (
         <img 
-          src="/logo-full.png" 
+          src={logoFull} 
           alt="Alliance One" 
           height={size} 
           style={{ height: `${size}px`, width: 'auto', objectFit: 'contain' }} 

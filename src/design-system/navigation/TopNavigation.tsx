@@ -24,7 +24,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
 
   const handleLogout = () => {
     logout();
-    navigate('/auth');
+    window.location.href = '/';
   };
 
   return (

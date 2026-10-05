@@ -1,4 +1,5 @@
 import React from 'react';
+import logoIcon from '../../assets/logo.png';
 
 export interface AllianceLogoProps {
   size?: number;
@@ -12,7 +13,7 @@ export const AllianceLogo: React.FC<AllianceLogoProps> = ({
 }) => {
   return (
     <img
-      src="/logo-icon.png"
+      src={logoIcon}
       alt="Alliance One Logo"
       width={size}
       height={size}

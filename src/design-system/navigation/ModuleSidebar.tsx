@@ -72,7 +72,7 @@ export const ModuleSidebar: React.FC<ModuleSidebarProps> = ({
   const handleLogout = () => {
     setDropdownOpen(false);
     logout();
-    navigate('/login');
+    window.location.href = '/';
   };
 
   return (
