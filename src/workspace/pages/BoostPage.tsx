@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, ShieldCheck, Zap, Instagram, Youtube, LayoutGrid, CheckCircle2, AlertCircle } from 'lucide-react';
+import { TrendingUp, ShieldCheck, Zap, Camera, PlayCircle, Smartphone, MessageCircle, LayoutGrid, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiClient } from '../../core/api/client';
 import './BoostPage.css';
 
@@ -161,8 +161,10 @@ export const BoostPage: React.FC = () => {
                 onClick={() => setSelectedCategory(cat)}
               >
                 {cat === 'Tous' ? <LayoutGrid size={16} /> : null}
-                {cat.includes('Instagram') && <Instagram size={16} />}
-                {cat.includes('YouTube') && <Youtube size={16} />}
+                {cat.includes('Instagram') && <Camera size={16} />}
+                {cat.includes('YouTube') && <PlayCircle size={16} />}
+                {cat.includes('TikTok') && <Smartphone size={16} />}
+                {cat.includes('Facebook') && <MessageCircle size={16} />}
                 {cat}
               </button>
             ))}

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { PublicHeader } from './components/PublicHeader';
 import { HeroInfrastructure } from './components/HeroInfrastructure';
 import { EcosystemExplorer } from './components/EcosystemExplorer';
+import { AllianceBoostSection } from './components/AllianceBoostSection';
 import { AllianceAISection } from './components/AllianceAISection';
 import { WaveDivider } from './components/WaveDivider';
 import { FounderAndFooter } from './components/FounderAndFooter';
@@ -59,6 +60,14 @@ export const LandingPage: React.FC = () => {
 
       {/* WAVE TRANSITION (Slightly Dark to Dark) */}
       <div className="relative bg-[#050505]">
+        <WaveDivider position="bottom" color="#0a0a0a" />
+      </div>
+
+      {/* ALLIANCE BOOST SECTION */}
+      <AllianceBoostSection />
+
+      {/* WAVE TRANSITION */}
+      <div className="relative bg-[#0a0a0a]">
         <WaveDivider position="bottom" color="#000000" />
       </div>
 
