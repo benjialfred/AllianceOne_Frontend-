@@ -85,6 +85,8 @@ const CheckoutPage = React.lazy(() => import('./pages/cart/CheckoutPage').then(m
 import { CartDrawer } from './pages/cart/CartDrawer';
 import { MarketingModal } from './design-system/components/MarketingModal';
 
+const BoostPage = React.lazy(() => import('./workspace/pages/BoostPage').then(m => ({ default: m.BoostPage })));
+
 const LoadingScreen: React.FC = () => (
   <AllianceLoader text="Chargement d'Alliance One..." />
 );
@@ -148,6 +150,7 @@ export const RootApp: React.FC = () => {
         <Route path="/pricing" element={<RequireGuest><PricingPage /></RequireGuest>} />
         <Route path="/network" element={<RequireGuest><NetworkPage /></RequireGuest>} />
         <Route path="/marketplace" element={<RequireGuest><MarketplacePage /></RequireGuest>} />
+        <Route path="/boost" element={<BoostPage />} />
         <Route path="/integrations" element={<RequireGuest><IntegrationsPage /></RequireGuest>} />
         <Route path="/developer-center" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
         <Route path="/docs" element={<RequireGuest><DocsPage /></RequireGuest>} />
