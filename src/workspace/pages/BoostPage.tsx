@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, ShieldCheck, Zap, Instagram, Youtube, LayoutGrid, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiClient } from '../../core/api/client';
-import boostVideo from '../../assets/boost.mp4';
 import './BoostPage.css';
+
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../core/stores/authStore';
 
 interface BoostService {
   service: number;
@@ -17,6 +19,9 @@ interface BoostService {
 }
 
 export const BoostPage: React.FC = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+
   const [services, setServices] = useState<BoostService[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +62,11 @@ export const BoostPage: React.FC = () => {
   };
 
   const handleOrder = async () => {
+    if (!isAuthenticated) {
+      navigate('/login?redirect=/boost');
+      return;
+    }
+
     if (!selectedService || quantity < selectedService.min || quantity > selectedService.max || !targetLink) {
       alert("Veuillez vérifier vos informations.");
       return;
@@ -92,16 +102,15 @@ export const BoostPage: React.FC = () => {
   return (
     <div className="ao-boost-page">
       <div className="ao-boost-header">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="ao-boost-video-bg"
-        >
-          <source src={boostVideo} type="video/mp4" />
-        </video>
-        <div className="ao-boost-header-overlay"></div>
+        <div className="ao-boost-animated-bg">
+          <div className="cube cube-1"></div>
+          <div className="cube cube-2"></div>
+          <div className="cube cube-3"></div>
+          <div className="cube cube-4"></div>
+          <div className="cube cube-5"></div>
+          <div className="glow-sphere sphere-1"></div>
+          <div className="glow-sphere sphere-2"></div>
+        </div>
         
         <div className="ao-boost-header-content">
           <div className="ao-boost-badge">
@@ -238,9 +247,9 @@ export const BoostPage: React.FC = () => {
                 <button 
                   className="checkout-btn" 
                   onClick={handleOrder}
-                  disabled={isOrdering || !targetLink || quantity < selectedService.min}
+                  disabled={isAuthenticated ? (isOrdering || !targetLink || quantity < selectedService.min) : false}
                 >
-                  {isOrdering ? 'Traitement...' : 'Lancer le Boost 🚀'}
+                  {isAuthenticated ? (isOrdering ? 'Traitement...' : 'Lancer le Boost 🚀') : 'Connexion requise 🚀'}
                 </button>
               </div>
             </div>
