@@ -4,7 +4,7 @@ import {
   Calendar, CreditCard, Edit3, Settings, Library, Package, 
   Warehouse as WarehouseIcon, History, ClipboardList, Truck, 
   ShoppingCart, Factory, FolderKanban, ListTodo, CheckSquare, 
-  Layers, Landmark, PieChart, ShieldCheck
+  Layers, Landmark, PieChart, ShieldCheck, TrendingUp
 } from 'lucide-react';
 import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 
@@ -38,6 +38,7 @@ import { SettingsHubPage } from './pages/SettingsHubPage';
 import { HyperAdminDashboard } from './pages/hyperadmin/HyperAdminDashboard';
 import { WalletPage } from './pages/WalletPage';
 import { CertificationsPage } from './pages/CertificationsPage';
+import { BoostPage } from './pages/BoostPage';
 
 // Lazy Loaded Module Routes (Performance Optimization)
 const EducationModuleRoutes = React.lazy(() => import('../modules/education/App'));
@@ -147,6 +148,9 @@ const globalNavigation: NavSection[] = [
     { label: "Accueil", path: "/app", icon: LayoutDashboard, shortcut: '⌘ H' },
     { label: "Marketplace", path: "/app/marketplace", icon: Package },
     { label: "Réseau AO", path: "/app/community", icon: Users },
+  ]},
+  { section: 'BOUTIQUE', items: [
+    { label: "Alliance Boost", path: "/app/boost", icon: TrendingUp, badge: 'Hot' },
   ]},
   { section: 'FINANCES', items: [
     { label: "Mon Portefeuille", path: "/app/wallet", icon: CreditCard },
@@ -323,6 +327,7 @@ export const WorkspaceShell: React.FC = () => {
         <Route path="/my-modules" element={<MyModulesPage />} />
         <Route path="/marketplace/module/:slug" element={<ModuleDetailsPage />} />
         <Route path="/marketplace/callback" element={<MarketplaceCallback />} />
+        <Route path="/boost" element={<BoostPage />} />
         <Route path="/wallet" element={<WalletPage />} />
         <Route path="/certifications" element={<CertificationsPage />} />
         <Route path="/developers" element={<DevelopersPage />} />
