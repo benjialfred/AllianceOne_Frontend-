@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, Info } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PublicHeader } from '../landing/components/PublicHeader';
 import { PublicFooter } from '../landing/components/PublicFooter';
 import { PublicAICopilot } from '../landing/components/PublicAICopilot';
 import './PricingPage.css';
 
 export const PricingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
 
   const tiers = [
@@ -131,7 +133,7 @@ export const PricingPage: React.FC = () => {
                     <span className="period">/mois/utilisateur</span>
                   )}
                 </div>
-                <button className={`pricing-btn ${tier.ctaClass}`}>
+                <button className={`pricing-btn ${tier.ctaClass}`} onClick={() => navigate('/register')}>
                   {tier.cta}
                 </button>
                 <div className="pricing-card-features">

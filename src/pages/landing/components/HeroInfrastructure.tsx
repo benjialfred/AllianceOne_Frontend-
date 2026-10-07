@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Database, Users, Briefcase, Layout, BrainCircuit, Box } from 'lucide-react';
+import { ArrowRight, Database, Users, Briefcase, Layout, BrainCircuit, Box, Send } from 'lucide-react';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 import { LivingMotionBackground } from './motion-background/LivingMotionBackground';
 import './HeroInfrastructure.css';
@@ -67,13 +67,26 @@ export const HeroInfrastructure: React.FC = () => {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.6 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}
           >
-            <button className="ao-btn-primary-large" onClick={() => navigate('/register')}>
-              Déployer maintenant <ArrowRight size={18} />
-            </button>
-            <button className="ao-btn-secondary-large" onClick={() => navigate('/platform')}>
-              Explorer l'architecture
-            </button>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <button className="ao-btn-primary-large" onClick={() => navigate('/register')}>
+                Déployer maintenant <ArrowRight size={18} />
+              </button>
+              <button className="ao-btn-secondary-large" onClick={() => navigate('/platform')}>
+                Explorer l'architecture
+              </button>
+            </div>
+            
+            <a 
+              href="https://t.me/AllianceOneAIBot" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="telegram-hero-cta"
+            >
+              <Send size={18} />
+              Essayer l'Assistant Telegram
+            </a>
           </motion.div>
         </div>
 

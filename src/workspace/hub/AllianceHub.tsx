@@ -263,47 +263,55 @@ export const AllianceHub: React.FC = () => {
                       {[0, 50, 100, 150].map((y, i) => (
                         <g key={`grid-${i}`}>
                           <line x1="0" y1={y} x2="800" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                          <text x="0" y={y - 5} fill="#475569" fontSize="10" fontFamily="sans-serif">
-                            {((150 - y) / 1.5)}k
-                          </text>
                         </g>
                       ))}
 
                       {/* Green Line (Operations) */}
-                      <path 
-                        d="M 50 160 C 150 150, 250 180, 350 120 C 450 60, 550 140, 650 90 C 750 40, 800 20, 800 20 L 800 200 L 50 200 Z" 
-                        fill="url(#chart-grad-green)" 
-                      />
-                      <motion.path 
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 2, ease: "easeOut", delay: 0.2 }}
-                        d="M 50 160 C 150 150, 250 180, 350 120 C 450 60, 550 140, 650 90 C 750 40, 800 20, 800 20" 
-                        fill="none" 
-                        stroke="#10b981" 
-                        strokeWidth="3" 
-                        strokeLinecap="round"
-                      />
+                      {(() => {
+                        if (!metrics?.chartData || metrics.chartData.length === 0) return null;
+                        const data = metrics.chartData;
+                        const maxRev = Math.max(...data.map((d: any) => d.revenue || 0));
+                        const maxOps = Math.max(...data.map((d: any) => d.operations || 0));
+                        const maxVal = Math.max(maxRev, maxOps, 1);
+                        const getY = (val: number) => 200 - ((val / maxVal) * 160);
+                        const xStep = 800 / (data.length - 1);
+                        
+                        let revPath = `M 0 ${getY(data[0].revenue)} `;
+                        let opsPath = `M 0 ${getY(data[0].operations)} `;
+                        
+                        for (let i = 1; i < data.length; i++) {
+                           // Simple bezier curve for smoothing
+                           const prevX = (i - 1) * xStep;
+                           const currX = i * xStep;
+                           const cpX = prevX + (xStep / 2);
+                           revPath += `C ${cpX} ${getY(data[i-1].revenue)}, ${cpX} ${getY(data[i].revenue)}, ${currX} ${getY(data[i].revenue)} `;
+                           opsPath += `C ${cpX} ${getY(data[i-1].operations)}, ${cpX} ${getY(data[i].operations)}, ${currX} ${getY(data[i].operations)} `;
+                        }
 
-                      {/* Blue Line (Revenue) */}
-                      <path 
-                        d="M 50 180 C 200 160, 300 90, 450 100 C 600 110, 650 50, 800 30 L 800 200 L 50 200 Z" 
-                        fill="url(#chart-grad-blue)" 
-                      />
-                      <motion.path 
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 2, ease: "easeOut", delay: 0.4 }}
-                        d="M 50 180 C 200 160, 300 90, 450 100 C 600 110, 650 50, 800 30" 
-                        fill="none" 
-                        stroke="#3b82f6" 
-                        strokeWidth="3" 
-                        strokeLinecap="round"
-                      />
-                      
-                      {/* Interactive / Hover Dots (simulated) */}
-                      <circle cx="800" cy="30" r="5" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" />
-                      <circle cx="800" cy="20" r="5" fill="#0f172a" stroke="#10b981" strokeWidth="2" />
+                        const revFill = `${revPath} L 800 200 L 0 200 Z`;
+                        const opsFill = `${opsPath} L 800 200 L 0 200 Z`;
+
+                        return (
+                          <>
+                            <path d={opsFill} fill="url(#chart-grad-green)" />
+                            <motion.path 
+                              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, ease: "easeOut" }}
+                              d={opsPath} fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round"
+                            />
+                            
+                            <path d={revFill} fill="url(#chart-grad-blue)" />
+                            <motion.path 
+                              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, ease: "easeOut", delay: 0.2 }}
+                              d={revPath} fill="none" stroke="#3b82f6" strokeWidth="3" strokeLinecap="round"
+                            />
+
+                            {/* Hover Dots on latest data */}
+                            <circle cx="800" cy={getY(data[data.length - 1].revenue)} r="5" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" />
+                            <circle cx="800" cy={getY(data[data.length - 1].operations)} r="5" fill="#0f172a" stroke="#10b981" strokeWidth="2" />
+                          </>
+                        );
+                      })()}
+
                     </svg>
                   </div>
                 </div>
@@ -324,10 +332,18 @@ export const AllianceHub: React.FC = () => {
                 <Sparkles size={16} /> Alliance Intelligence
               </div>
               <div className="os-panel-body">
-                <p className="os-ai-insight">
-                  J'ai analysé vos flux de trésorerie récents. Vous pourriez optimiser vos achats de matériel scolaire en consolidant vos commandes auprès du fournisseur <strong>Bata</strong>.
-                </p>
-                <button className="os-ai-action">Voir l'analyse détaillée</button>
+                {metrics?.insights && metrics.insights.length > 0 ? (
+                  metrics.insights.map((insight: string, idx: number) => (
+                    <p key={idx} className="os-ai-insight" style={{ marginBottom: idx < metrics.insights.length - 1 ? '1rem' : 0 }}>
+                      {insight}
+                    </p>
+                  ))
+                ) : (
+                  <p className="os-ai-insight">
+                    {loading ? 'Analyse en cours...' : 'Aucun insight pertinent pour le moment.'}
+                  </p>
+                )}
+                <button className="os-ai-action">Ouvrir Copilot</button>
               </div>
             </motion.div>
 
@@ -341,20 +357,25 @@ export const AllianceHub: React.FC = () => {
                 Requiert votre attention
               </div>
               <div className="os-action-list">
-                <div className="os-action-item">
-                  <div className="oai-dot urgent" />
-                  <div className="oai-content">
-                    <h4>Validation de Bon de Commande #PO-102</h4>
-                    <span>12,000,000 FCFA - Équipement IT</span>
+                {metrics?.pendingActions && metrics.pendingActions.length > 0 ? (
+                  metrics.pendingActions.map((action: any, idx: number) => (
+                    <div className="os-action-item" key={idx}>
+                      <div className={`oai-dot ${action.urgency}`} />
+                      <div className="oai-content">
+                        <h4>{action.title}</h4>
+                        <span>{action.description}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="os-action-item">
+                    <div className="oai-dot normal" />
+                    <div className="oai-content">
+                      <h4>{loading ? 'Chargement...' : 'Tout est à jour'}</h4>
+                      <span>Aucune action requise pour le moment</span>
+                    </div>
                   </div>
-                </div>
-                <div className="os-action-item">
-                  <div className="oai-dot warning" />
-                  <div className="oai-content">
-                    <h4>Clôture comptable T3</h4>
-                    <span>Échéance dans 4 jours</span>
-                  </div>
-                </div>
+                )}
               </div>
             </motion.div>
 

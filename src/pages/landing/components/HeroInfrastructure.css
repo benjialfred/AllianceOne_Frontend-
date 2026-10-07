@@ -265,3 +265,25 @@
     transform-origin: center top;
   }
 }
+.telegram-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(36, 161, 222, 0.1);
+  border: 1px solid rgba(36, 161, 222, 0.3);
+  color: #38bdf8;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.telegram-hero-cta:hover {
+  background: rgba(36, 161, 222, 0.2);
+  border-color: rgba(36, 161, 222, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(36, 161, 222, 0.2);
+  color: #7dd3fc;
+}

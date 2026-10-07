@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, ChevronDown, Settings, Bell, LogOut } from 'lucide-react';
+import { Search, Plus, ChevronDown, Settings, Bell, LogOut, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../../core/stores/authStore';
@@ -38,6 +38,11 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       </div>
 
       <div className="ao-top-right">
+        <button className="ao-create-btn" onClick={() => navigate('/')} style={{ background: 'transparent', border: '1px solid var(--ao-elegant-border)', color: 'var(--ao-elegant-text-main)' }}>
+          <Home size={14} />
+          <span>Accueil Public</span>
+        </button>
+
         <button className="ao-create-btn" onClick={onOpenCreate}>
           <Plus size={14} />
           <span>Créer</span>

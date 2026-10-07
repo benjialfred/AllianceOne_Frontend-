@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, LineChart, Users, LayoutList, Database, Briefcase, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { PublicHeader } from '../landing/components/PublicHeader';
 import { PublicFooter } from '../landing/components/PublicFooter';
 import { PublicAICopilot } from '../landing/components/PublicAICopilot';
 import './ResourcesPages.css';
 
 export const ModulesPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const modulesList = [
     { name: "Education", desc: "Gestion des écoles, universités, étudiants, professeurs et notes.", icon: <BookOpen size={24} /> },
     { name: "Finance", desc: "Comptabilité, facturation, trésorerie et intégration bancaire.", icon: <LineChart size={24} /> },
@@ -36,7 +39,7 @@ export const ModulesPage: React.FC = () => {
                 <div className="resource-card-icon">{mod.icon}</div>
                 <h3>{mod.name}</h3>
                 <p>{mod.desc}</p>
-                <div className="resource-card-link">
+                <div className="resource-card-link" onClick={() => navigate('/register')} style={{cursor: 'pointer'}}>
                   Découvrir le module <ArrowRight size={16} />
                 </div>
               </motion.div>

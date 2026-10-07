@@ -92,3 +92,20 @@
   --ao-z-toast: 600;
   --ao-z-intelligence: 1000; /* AI is always on top of everything if needed */
 }
+
+/* COLORS: DARK THEME (Obsidian & Titanium) */
+[data-theme='dark'] {
+  --ao-color-bg-primary: #0a0d14; /* Obsidian 800 */
+  --ao-color-bg-secondary: #121620; /* Obsidian 700 */
+  --ao-color-bg-tertiary: #1a1f2e; /* Obsidian 600 */
+  --ao-color-bg-surface: #121620;
+  
+  --ao-color-text-primary: #f8fafc; /* Titanium */
+  --ao-color-text-secondary: #d1d6e0;
+  --ao-color-text-tertiary: #8c97a8;
+  --ao-color-text-inverse: #111418;
+
+  --ao-color-border-subtle: #1a1f2e;
+  --ao-color-border-default: #334155;
+  --ao-color-border-strong: #475569;
+}

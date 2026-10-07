@@ -39,7 +39,11 @@ interface PlatformState {
   setCurrentSchoolClass: (schoolClass: any | null) => void;
 }
 
-export const usePlatformStore = create<PlatformState>((set, get) => ({
+import { persist } from 'zustand/middleware';
+
+export const usePlatformStore = create<PlatformState>()(
+  persist(
+    (set, get) => ({
   currentOrganization: null,
   organizations: [],
   currentWorkspace: null,
@@ -70,7 +74,13 @@ export const usePlatformStore = create<PlatformState>((set, get) => ({
   setLoadedModules: (modules) => set({ loadedModules: modules }),
   setCurrentModule: (mod) => set({ currentModule: mod }),
   setCurrentSchoolClass: (schoolClass) => set({ currentSchoolClass: schoolClass }),
-}));
+    }),
+    {
+      name: 'alliance-platform-storage',
+      partialize: (state) => ({ theme: state.theme, sidebarCollapsed: state.sidebarCollapsed }),
+    }
+  )
+);
 
 // Enregistrer le resolver de tenant dans le client API
 apiClient.setTenantResolver(() => {

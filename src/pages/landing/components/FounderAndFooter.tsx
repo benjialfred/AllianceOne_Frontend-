@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Quote } from 'lucide-react';
+import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 import './FounderAndFooter.css';
 
@@ -130,9 +131,9 @@ export const FounderAndFooter: React.FC = () => {
                 Operating Infrastructure for Modern Organizations. Built in Africa. Designed for the world.
               </p>
               <div className="footer-socials">
-                <div className="social-icon">X</div>
-                <div className="social-icon">IN</div>
-                <div className="social-icon">GH</div>
+                <div className="social-icon"><FaTwitter size={18} /></div>
+                <div className="social-icon"><FaLinkedin size={18} /></div>
+                <div className="social-icon"><FaGithub size={18} /></div>
               </div>
             </div>
 

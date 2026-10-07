@@ -145,6 +145,10 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                       <Settings size={18} />
                       <span>Paramètres</span>
                     </button>
+                    <button className="ao-mobile-nav-item" onClick={() => navigate('/')}>
+                      <Home size={18} />
+                      <span>Retour à l'accueil</span>
+                    </button>
                     <button className="ao-mobile-nav-item text-red-500" onClick={handleLogout}>
                       <LogOut size={18} />
                       <span>Déconnexion</span>

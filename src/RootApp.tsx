@@ -92,7 +92,15 @@ const LoadingScreen: React.FC = () => (
   <AllianceLoader text="Chargement d'Alliance One..." />
 );
 
+import { usePlatformStore } from './core/stores/platformStore';
+
 export const RootApp: React.FC = () => {
+  const theme = usePlatformStore(s => s.theme);
+  
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   return (
     <>
       <PremiumPreloader />
@@ -104,9 +112,7 @@ export const RootApp: React.FC = () => {
         <Route
           path="/"
           element={
-            <RequireGuest>
-              <LandingPage />
-            </RequireGuest>
+            <LandingPage />
           }
         />
 
@@ -142,28 +148,28 @@ export const RootApp: React.FC = () => {
           }
         />
 
-        <Route path="/platform" element={<RequireGuest><PlatformPage /></RequireGuest>} />
-        <Route path="/modules" element={<RequireGuest><ModulesPage /></RequireGuest>} />
-        <Route path="/modules/*" element={<RequireGuest><ModulesPage /></RequireGuest>} />
-        <Route path="/ai" element={<RequireGuest><AIPage /></RequireGuest>} />
-        <Route path="/help" element={<RequireGuest><HelpCenterPage /></RequireGuest>} />
-        <Route path="/security" element={<RequireGuest><SecurityPage /></RequireGuest>} />
-        <Route path="/pricing" element={<RequireGuest><PricingPage /></RequireGuest>} />
-        <Route path="/network" element={<RequireGuest><NetworkPage /></RequireGuest>} />
-        <Route path="/marketplace" element={<RequireGuest><MarketplacePage /></RequireGuest>} />
+        <Route path="/platform" element={<PlatformPage />} />
+        <Route path="/modules" element={<ModulesPage />} />
+        <Route path="/modules/*" element={<ModulesPage />} />
+        <Route path="/ai" element={<AIPage />} />
+        <Route path="/help" element={<HelpCenterPage />} />
+        <Route path="/security" element={<SecurityPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/network" element={<NetworkPage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/boost" element={<BoostPage />} />
-        <Route path="/integrations" element={<RequireGuest><IntegrationsPage /></RequireGuest>} />
-        <Route path="/developer-center" element={<RequireGuest><DevelopersPage /></RequireGuest>} />
-        <Route path="/docs" element={<RequireGuest><DocsPage /></RequireGuest>} />
-        <Route path="/guides" element={<RequireGuest><DocsPage /></RequireGuest>} />
-        <Route path="/insights" element={<RequireGuest><InsightsPage /></RequireGuest>} />
-        <Route path="/about" element={<RequireGuest><AboutPage /></RequireGuest>} />
-        <Route path="/news" element={<RequireGuest><NewsPage /></RequireGuest>} />
-        <Route path="/careers" element={<RequireGuest><CareersPage /></RequireGuest>} />
-        <Route path="/contact" element={<RequireGuest><ContactPage /></RequireGuest>} />
+        <Route path="/integrations" element={<IntegrationsPage />} />
+        <Route path="/developer-center" element={<DevelopersPage />} />
+        <Route path="/docs" element={<DocsPage />} />
+        <Route path="/guides" element={<DocsPage />} />
+        <Route path="/insights" element={<InsightsPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/news" element={<NewsPage />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/settings" element={<PublicSettingsPage />} />
-        <Route path="/checkout" element={<RequireGuest><CheckoutPage /></RequireGuest>} />
-        <Route path="/legal" element={<RequireGuest><LegalPage /></RequireGuest>} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/legal" element={<LegalPage />} />
 
         {/* ─── ONBOARDING (Authenticated) ─── */}
         <Route

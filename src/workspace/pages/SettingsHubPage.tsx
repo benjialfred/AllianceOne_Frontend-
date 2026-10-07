@@ -113,8 +113,7 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
       
       const payload = {
         name: orgName,
-        legal_name: orgRegistration,
-        // add more fields as needed that backend supports
+        registration_number: orgRegistration,
       };
       
       const updatedOrg = await apiClient.patch<any>(`/core/identity/organizations/${currentOrg.id}/`, payload);
@@ -336,29 +335,29 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   {/* Doc Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', border: '1px solid #e2e8f0', borderRadius: '16px' }}>
-                    <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '12px' }}>
-                      <FileText size={24} color="#0f172a" />
+                  <div className="sh-doc-item">
+                    <div className="sh-doc-icon">
+                      <FileText size={24} />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', color: '#0f172a' }}>Registre du Commerce (RCCM)</h4>
+                      <h4 style={{ margin: '0 0 4px 0', fontSize: '15px' }}>Registre du Commerce (RCCM)</h4>
                       <span style={{ fontSize: '13px', color: '#059669', fontWeight: 500 }}>Approuvé le 12 Sept 2026</span>
                     </div>
-                    <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#94a3b8' }} title="Remplacer">
+                    <button className="sh-doc-action" title="Remplacer">
                       <Upload size={18} />
                     </button>
                   </div>
 
                   {/* Doc Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', border: '1px solid #e2e8f0', borderRadius: '16px' }}>
-                    <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '12px' }}>
-                      <FileBadge size={24} color="#0f172a" />
+                  <div className="sh-doc-item">
+                    <div className="sh-doc-icon">
+                      <FileBadge size={24} />
                     </div>
                     <div style={{ flex: 1 }}>
-                      <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', color: '#0f172a' }}>Carte de Contribuable (NIU)</h4>
+                      <h4 style={{ margin: '0 0 4px 0', fontSize: '15px' }}>Carte de Contribuable (NIU)</h4>
                       <span style={{ fontSize: '13px', color: '#059669', fontWeight: 500 }}>Approuvé le 12 Sept 2026</span>
                     </div>
-                    <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#94a3b8' }} title="Remplacer">
+                    <button className="sh-doc-action" title="Remplacer">
                       <Upload size={18} />
                     </button>
                   </div>
@@ -366,7 +365,7 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
 
                 <button 
                   onClick={() => docInputRef.current?.click()}
-                  style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '16px', border: '2px dashed #cbd5e1', borderRadius: '16px', background: 'transparent', color: '#0f172a', fontWeight: 600, fontSize: '15px', cursor: 'pointer', marginTop: '24px', transition: 'all 0.2s' }}
+                  className="sh-doc-add-btn"
                 >
                   <FolderOpen size={20} />
                   Ajouter un nouveau document juridique
@@ -390,14 +389,14 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
               <h2 className="sh-section-title">Services Externes</h2>
               
               {/* Telegram */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px', border: '1px solid #e2e8f0', borderRadius: '16px', background: 'white' }}>
+              <div className="sh-integration-card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                  <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #229ED9 0%, #0088cc 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', boxShadow: '0 8px 16px rgba(0, 136, 204, 0.2)' }}>
+                  <div className="sh-integration-icon telegram">
                     <Send size={28} />
                   </div>
                   <div>
-                    <h3 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 600, color: '#0f172a' }}>Telegram Bot API</h3>
-                    <p style={{ margin: 0, fontSize: '14px', color: '#64748b' }}>
+                    <h3 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 600 }}>Telegram Bot API</h3>
+                    <p style={{ margin: 0, fontSize: '14px' }}>
                       {tgLinked 
                         ? `Compte actif : @${tgUsername || 'Utilisateur'}`
                         : 'Recevez des notifications et commandez l\'IA via Telegram.'
@@ -407,9 +406,7 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
                 </div>
                 <button
                   onClick={onOpenTelegram}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px', background: '#0088cc', color: '#ffffff', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '14px', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(0, 136, 204, 0.2)'
-                  }}
+                  className="sh-btn-telegram"
                 >
                   <span>{tgLinked ? 'Gérer la connexion' : 'Connecter Telegram'}</span>
                   <ExternalLink size={16} />
@@ -436,7 +433,25 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
                   <p style={{ margin: 0, fontSize: '14px', color: '#64748b' }}>Basculer entre le mode clair (Prestige) et sombre.</p>
                 </div>
                 <button
-                  onClick={toggleTheme}
+                  onClick={async () => {
+                    toggleTheme();
+                    // Let the store handle its state, then we persist it.
+                    // To get the new theme we just invert current since toggleTheme is sync
+                    const nextTheme = theme === 'light' ? 'dark' : 'light';
+                    try {
+                      const updatedPreferences = { ...(user as any)?.preferences, theme: nextTheme };
+                      const { apiClient } = await import('../../core/api/client');
+                      await apiClient.patch('/core/identity/users/me/', {
+                        preferences: updatedPreferences
+                      });
+                      
+                      if (user) {
+                        setUser({ ...user, preferences: updatedPreferences } as any);
+                      }
+                    } catch (err) {
+                      console.error("Erreur lors de la sauvegarde du thème", err);
+                    }
+                  }}
                   className="sh-btn-outline"
                   style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 20px' }}
                 >
@@ -450,9 +465,29 @@ export const SettingsHubPage: React.FC<SettingsHubPageProps> = ({ onOpenTelegram
                   <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', color: '#0f172a' }}>Langue par défaut</h4>
                   <p style={{ margin: 0, fontSize: '14px', color: '#64748b' }}>Langue utilisée dans toute la plateforme.</p>
                 </div>
-                <select className="sh-input" style={{ width: '200px' }}>
-                  <option>Français (FR)</option>
-                  <option>English (US)</option>
+                <select 
+                  className="sh-input" 
+                  style={{ width: '200px' }}
+                  value={(user as any)?.preferences?.language || 'fr'}
+                  onChange={async (e) => {
+                    const nextLang = e.target.value;
+                    try {
+                      const updatedPreferences = { ...(user as any)?.preferences, language: nextLang };
+                      const { apiClient } = await import('../../core/api/client');
+                      await apiClient.patch('/core/identity/users/me/', {
+                        preferences: updatedPreferences
+                      });
+                      
+                      if (user) {
+                        setUser({ ...user, preferences: updatedPreferences } as any);
+                      }
+                    } catch (err) {
+                      console.error("Erreur lors de la sauvegarde de la langue", err);
+                    }
+                  }}
+                >
+                  <option value="fr">Français (FR)</option>
+                  <option value="en">English (US)</option>
                 </select>
               </div>
             </motion.div>

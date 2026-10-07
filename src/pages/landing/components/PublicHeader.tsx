@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronDown, ArrowRight, Layout, Cpu, ShieldCheck, Box, Code2, Users, 
   BookOpen, LineChart, Database, Briefcase, ShoppingBag, Menu, X, Home, Info, Mail,
-  Server, Zap, CreditCard, Search, Settings
+  Server, Zap, CreditCard, Search, Settings, LayoutDashboard
 } from 'lucide-react';
 import { AllianceLogo } from '../../../design-system/components/AllianceLogo';
 import { useCartStore } from '../../../core/stores/cartStore';
@@ -17,6 +17,7 @@ export const PublicHeader: React.FC = () => {
   const location = useLocation();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { items, setIsOpen: setCartOpen } = useCartStore();
   const { isAuthenticated } = useAuthStore();
 
@@ -58,17 +59,25 @@ export const PublicHeader: React.FC = () => {
           {/* DESKTOP NAVIGATION */}
           {location.pathname !== '/contact' && location.pathname !== '/settings' ? (
             <nav className="ao-dark-nav hidden-on-mobile">
-              <div className="ao-dark-nav-item" onClick={() => navigate('/services')} onMouseEnter={() => handleMouseLeave()}>
-                Modules
+              <div className="ao-dark-nav-item" onClick={() => navigate('/services')}>
+                <Box size={16} />
+                <span>Modules</span>
               </div>
-              <div className="ao-dark-nav-item" onClick={() => navigate('/ai')} onMouseEnter={() => handleMouseLeave()}>
-                Alliance IA
+              <div className="ao-dark-nav-item" onClick={() => navigate('/ai')}>
+                <Cpu size={16} />
+                <span>Alliance IA</span>
               </div>
-              <div className="ao-dark-nav-item" onClick={() => navigate('/boost')} onMouseEnter={() => handleMouseLeave()}>
-                Alliance Boost
+              <div className="ao-dark-nav-item" onClick={() => navigate('/boost')}>
+                <Zap size={16} />
+                <span>Alliance Boost</span>
               </div>
-              <div className="ao-dark-nav-item" onClick={() => navigate('/pricing')} onMouseEnter={() => handleMouseLeave()}>
-                Tarifs
+              <div className="ao-dark-nav-item" onClick={() => navigate('/pricing')}>
+                <CreditCard size={16} />
+                <span>Tarifs</span>
+              </div>
+              <div className="ao-dark-nav-item" onClick={() => navigate('/contact')}>
+                <Mail size={16} />
+                <span>Contact</span>
               </div>
             </nav>
           ) : (
@@ -77,26 +86,48 @@ export const PublicHeader: React.FC = () => {
 
           {/* ACTIONS */}
           <div className="ao-dark-actions">
-            <button 
-              className="ao-dark-search-btn hidden-on-mobile"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#9ca3af',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '8px'
-              }}
-              onClick={() => {
-                // Future search implementation
-                const searchInput = prompt('Recherche...');
-                if (searchInput) console.log('Searching for:', searchInput);
-              }}
-            >
-              <Search size={20} />
-            </button>
+            <div className="ao-dark-search-container hidden-on-mobile" style={{ display: 'flex', alignItems: 'center' }}>
+              <AnimatePresence>
+                {isSearchOpen && (
+                  <motion.input
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 200, opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    type="text"
+                    placeholder="Recherche..."
+                    autoFocus
+                    onBlur={() => setIsSearchOpen(false)}
+                    style={{
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '20px',
+                      padding: '4px 12px',
+                      color: '#fff',
+                      marginRight: '8px',
+                      outline: 'none',
+                      fontSize: '14px'
+                    }}
+                  />
+                )}
+              </AnimatePresence>
+              <button 
+                className="ao-dark-search-btn"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#9ca3af',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              >
+                <Search size={20} />
+              </button>
+            </div>
             <button 
               className="ao-cart-btn"
               onClick={() => setCartOpen(true)}
@@ -110,11 +141,11 @@ export const PublicHeader: React.FC = () => {
             </button>
             {isAuthenticated ? (
               location.pathname === '/' ? (
-                <button className="ao-dark-btn-primary hidden-on-mobile" onClick={() => navigate('/hub')}>
-                  Tableau de bord
+                <button className="ao-dark-btn-primary" onClick={() => navigate('/app')} style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                  <LayoutDashboard size={18} /> Tableau de bord
                 </button>
               ) : (
-                <button className="ao-dark-btn-primary hidden-on-mobile" onClick={() => navigate('/')}>
+                <button className="ao-dark-btn-primary" onClick={() => navigate('/')}>
                   Retour à l'accueil
                 </button>
               )
@@ -206,14 +237,19 @@ export const PublicHeader: React.FC = () => {
                   <div className="icon-box"><Settings size={20} /></div>
                   <span>Paramètres</span>
                 </a>
+
+                <a className="mobile-premium-link" onClick={() => { setIsMobileMenuOpen(false); navigate('/contact'); }}>
+                  <div className="icon-box"><Mail size={20} /></div>
+                  <span>Nous Contacter</span>
+                </a>
               </motion.div>
             </motion.div>
             
             <div className="mobile-sheet-footer">
               {isAuthenticated ? (
                 location.pathname === '/' ? (
-                  <button className="ao-dark-btn-primary w-full" onClick={() => { setIsMobileMenuOpen(false); navigate('/hub'); }}>
-                    Tableau de bord
+                  <button className="ao-dark-btn-primary w-full" onClick={() => { setIsMobileMenuOpen(false); navigate('/app'); }} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'}}>
+                    <LayoutDashboard size={18} /> Tableau de bord
                   </button>
                 ) : (
                   <button className="ao-dark-btn-primary w-full" onClick={() => { setIsMobileMenuOpen(false); navigate('/'); }}>

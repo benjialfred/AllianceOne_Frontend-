@@ -281,3 +281,49 @@
 .dark-menu-footer a:hover {
   text-decoration: underline;
 }
+
+/* Enhanced Nav Item Hover */
+.ao-dark-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ao-dark-nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.15));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.ao-dark-nav-item:hover::before {
+  opacity: 1;
+}
+
+.ao-dark-nav-item:hover {
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.ao-dark-nav-item svg, .ao-dark-nav-item span {
+  position: relative;
+  z-index: 1;
+}
+
+.ao-dark-nav-item svg {
+  transition: transform 0.3s ease;
+}
+
+.ao-dark-nav-item:hover svg {
+  transform: scale(1.1) rotate(5deg);
+}

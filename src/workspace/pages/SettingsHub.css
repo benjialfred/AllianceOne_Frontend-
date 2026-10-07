@@ -308,3 +308,119 @@
   from { opacity: 0; transform: translateY(20px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* New integration & doc items classes */
+.sh-doc-item { display: flex; align-items: center; gap: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 16px; }
+.sh-doc-icon { background: #f8fafc; padding: 12px; border-radius: 12px; color: #0f172a; }
+.sh-doc-item h4 { color: #0f172a; }
+.sh-doc-action { background: transparent; border: none; cursor: pointer; color: #94a3b8; }
+.sh-doc-add-btn { display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px; padding: 16px; border: 2px dashed #cbd5e1; border-radius: 16px; background: transparent; color: #0f172a; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 24px; transition: all 0.2s; }
+
+.sh-integration-card { display: flex; align-items: center; justify-content: space-between; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background: white; }
+.sh-integration-icon.telegram { width: 56px; height: 56px; border-radius: 16px; background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; box-shadow: 0 8px 16px rgba(0, 136, 204, 0.2); }
+.sh-integration-card h3 { color: #0f172a; }
+.sh-integration-card p { color: #64748b; }
+.sh-btn-telegram { display: flex; align-items: center; gap: 8px; padding: 12px 24px; background: #0088cc; color: #ffffff; border: none; border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
+
+/* --- DARK THEME OVERRIDES --- */
+[data-theme='dark'] .sh-root {
+  background-color: var(--color-obsidian-900);
+}
+
+[data-theme='dark'] .sh-header-banner {
+  background: var(--color-obsidian-800);
+  border-bottom: 1px solid var(--color-obsidian-700);
+}
+
+[data-theme='dark'] .sh-form-panel,
+[data-theme='dark'] .sh-modal-content {
+  background: var(--color-obsidian-800);
+  border-color: var(--color-obsidian-700);
+}
+
+[data-theme='dark'] .sh-section-title,
+[data-theme='dark'] .sh-modal-title {
+  color: var(--color-obsidian-50);
+}
+
+[data-theme='dark'] .sh-subtitle,
+[data-theme='dark'] .sh-modal-subtitle {
+  color: var(--color-obsidian-400);
+}
+
+[data-theme='dark'] .sh-input-label {
+  color: var(--color-obsidian-400);
+}
+
+[data-theme='dark'] .sh-input {
+  background: var(--color-obsidian-900);
+  border-color: var(--color-obsidian-600);
+  color: var(--color-obsidian-50);
+}
+
+[data-theme='dark'] .sh-input:focus {
+  border-color: var(--color-obsidian-200);
+  background: var(--color-obsidian-800);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .sh-avatar-upload {
+  background: var(--color-obsidian-900);
+  border-color: var(--color-obsidian-600);
+}
+[data-theme='dark'] .sh-avatar-upload:hover {
+  background: var(--color-obsidian-800);
+  border-color: var(--color-obsidian-400);
+}
+
+[data-theme='dark'] .sh-avatar-circle {
+  background: var(--color-obsidian-800);
+  border-color: var(--color-obsidian-700);
+}
+
+[data-theme='dark'] .sh-avatar-upload h4,
+[data-theme='dark'] h4 {
+  color: var(--color-obsidian-50) !important;
+}
+
+[data-theme='dark'] .sh-btn-outline {
+  background: transparent;
+  border-color: var(--color-obsidian-600);
+  color: var(--color-obsidian-200);
+}
+[data-theme='dark'] .sh-btn-outline:hover {
+  background: var(--color-obsidian-700);
+  border-color: var(--color-obsidian-400);
+}
+
+[data-theme='dark'] .sh-btn-primary {
+  background: var(--color-obsidian-200);
+  color: var(--color-obsidian-900);
+}
+
+[data-theme='dark'] hr {
+  border-top: 1px solid var(--color-obsidian-700) !important;
+}
+
+[data-theme='dark'] .sh-suggestion-item {
+  background: var(--color-obsidian-900);
+  border-color: var(--color-obsidian-600);
+}
+[data-theme='dark'] .sh-suggestion-item:hover {
+  background: var(--color-obsidian-800);
+  border-color: var(--color-obsidian-400);
+}
+
+[data-theme='dark'] .sh-suggestion-icon {
+  background: var(--color-obsidian-800);
+}
+
+[data-theme='dark'] .sh-suggestion-text h4 {
+  color: var(--color-obsidian-50);
+}
+
+[data-theme='dark'] .sh-doc-item { border-color: var(--color-obsidian-600); background: var(--color-obsidian-900); }
+[data-theme='dark'] .sh-doc-icon { background: var(--color-obsidian-800); color: var(--color-obsidian-50); }
+[data-theme='dark'] .sh-doc-add-btn { border-color: var(--color-obsidian-600); color: var(--color-obsidian-200); }
+[data-theme='dark'] .sh-integration-card { background: var(--color-obsidian-900); border-color: var(--color-obsidian-600); }
+[data-theme='dark'] .sh-integration-card h3 { color: var(--color-obsidian-50); }
