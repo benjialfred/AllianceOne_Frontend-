@@ -46,13 +46,13 @@ export const ContactPage: React.FC = () => {
       />
       <PublicHeader />
       
-      <main className="pt-40 pb-32 relative overflow-hidden flex flex-col items-center justify-center min-h-screen">
+      <main style={{ paddingTop: '160px', paddingBottom: '80px' }} className="relative overflow-hidden flex flex-col items-center min-h-screen">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none flex justify-center">
           <div className="contact-ambient-glow"></div>
         </div>
 
-        <div className="max-w-2xl w-full mx-auto px-6 relative z-10">
+        <div className="max-w-2xl w-full mx-auto px-6 relative z-10 flex-grow">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="contact-form-container relative"
           >
-            <div className="absolute inset-0 bg-white/[0.02] border border-white/[0.05] rounded-3xl backdrop-blur-3xl -z-10"></div>
+            <div className="contact-form-wrapper relative z-10 p-8 md:p-12">
             
             <AnimatePresence mode="wait">
               {status === 'success' ? (
@@ -100,7 +100,7 @@ export const ContactPage: React.FC = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit} 
-                  className="flex flex-col p-8 md:p-12 gap-8"
+                  className="flex flex-col gap-8"
                 >
                   
                   {status === 'error' && (
@@ -173,11 +173,14 @@ export const ContactPage: React.FC = () => {
                 </motion.form>
               )}
             </AnimatePresence>
+            </div>
           </motion.div>
         </div>
       </main>
       
-      <FounderAndFooter />
+      <footer className="w-full py-8 border-t border-white/5 text-center text-sm text-zinc-500">
+        <p>© {new Date().getFullYear()} Alliance One. Tous droits réservés.</p>
+      </footer>
     </div>
   );
 };

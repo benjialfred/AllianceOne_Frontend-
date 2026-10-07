@@ -27,6 +27,12 @@
   justify-content: space-between;
 }
 
+@media (max-width: 768px) {
+  .ao-dark-header-inner {
+    padding: 0 16px;
+  }
+}
+
 /* BRAND */
 .ao-brand-link {
   display: flex;
@@ -135,6 +141,38 @@
   background: #f0f0f0;
   box-shadow: 0 0 20px rgba(255,255,255,0.2);
   transform: translateY(-1px);
+}
+
+/* CART BUTTON */
+.ao-cart-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.ao-cart-btn:hover {
+  color: #d4d4d8;
+}
+
+.ao-cart-badge {
+  position: absolute;
+  top: 0px;
+  right: -2px;
+  background: #10B981;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.85);
+  line-height: 1;
 }
 
 /* SLEEK POPOVER MENUS */

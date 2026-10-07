@@ -271,3 +271,141 @@
   height: 100%;
   border: none;
 }
+
+/* ==========================================================================
+   SYSTEMIC ENGINEERING
+   ========================================================================== */
+.founder-sys-header {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: flex-start;
+}
+
+.founder-sys-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+/* ==========================================================================
+   HOW I BUILD & BEYOND CODE
+   ========================================================================== */
+.founder-circuit-line {
+  position: absolute;
+  left: 16px;
+  top: 2rem;
+  bottom: 2rem;
+  width: 1px;
+  background-color: var(--founder-border-light);
+}
+
+.founder-circuit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--founder-text-display);
+  position: absolute;
+  left: 12.5px;
+}
+
+.founder-build-item {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  padding-left: 4rem;
+}
+
+.founder-beyond-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 992px) {
+  /* Hero Section */
+  .founder-hero-section {
+    flex-direction: column !important;
+    padding-top: 6rem !important;
+  }
+  
+  .founder-hero-left {
+    padding-right: 0 !important;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .founder-hero-subtitle {
+    margin-bottom: 2rem !important;
+  }
+  
+  .founder-hero-data-grid {
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  .founder-hero-right {
+    width: 100%;
+    height: 60vh !important;
+    justify-content: center !important;
+  }
+  
+  .founder-hero-image-wrapper {
+    border-radius: 24px !important;
+  }
+
+  .founder-display-monumental {
+    font-size: 15vw;
+  }
+
+  /* Other components */
+  .founder-sys-header {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .founder-sys-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .founder-build-container {
+    gap: 2rem !important;
+  }
+
+  .founder-build-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding-left: 0;
+  }
+
+  .founder-circuit-line, .founder-circuit-dot {
+    display: none;
+  }
+
+  .founder-beyond-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .founder-climax-text {
+    font-size: 12vw;
+  }
+  
+  .founder-projects-list {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .founder-hero-data-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .founder-hero-right {
+    height: 50vh !important;
+  }
+}

@@ -727,9 +727,11 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                       <AoIntelligenceMark state="IDLE" size={64} showHalo />
                     </motion.div>
 
-                    <h2 className="ao-hero-title">Bonjour {useAuthStore.getState().user?.first_name || 'Benjamin'},</h2>
-                    <h3 className="ao-hero-title" style={{ fontSize: '24px', marginBottom: '12px' }}>Je suis Alliance AI, votre assistant intelligent.</h3>
-                    <p className="ao-hero-subtitle">
+                    <h2 className="ao-hero-title ao-hero-animate-1">
+                      <span className="ao-hero-gemini-text">Bonjour {useAuthStore.getState().user?.first_name || 'Benjamin'},</span>
+                    </h2>
+                    <h3 className="ao-hero-title ao-hero-animate-2" style={{ fontSize: '24px', marginBottom: '12px', color: '#e2e8f0' }}>Je suis Alliance AI, votre assistant intelligent.</h3>
+                    <p className="ao-hero-subtitle ao-hero-animate-2">
                       Je peux analyser vos données, vous fournir des insights,
                       <br />
                       créer des rapports, exécuter des missions et vous aider
@@ -737,10 +739,10 @@ export const AllianceAICopilot: React.FC<AllianceAICopilotProps> = ({ isOpen, on
                       à prendre les meilleures décisions.
                     </p>
 
-                    <div style={{ alignSelf: 'flex-start', marginLeft: '12px', fontSize: '13px', fontWeight: 600, color: '#64748b', marginBottom: '12px' }}>
+                    <div className="ao-hero-animate-3" style={{ alignSelf: 'flex-start', marginLeft: '12px', fontSize: '13px', fontWeight: 600, color: '#94a3b8', marginBottom: '12px' }}>
                       Posez-moi vos questions pour démarrer :
                     </div>
-                    <div className="ao-hero-suggestions-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                    <div className="ao-hero-suggestions-grid ao-hero-animate-3" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
                       <button onClick={() => handleSendMessage("Que fait exactement Alliance One ?")}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Sparkles size={16} color="#4f46e5" /></span>
                         <span>Que fait exactement Alliance One ?</span>

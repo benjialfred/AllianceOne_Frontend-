@@ -53,6 +53,7 @@ const InsightsPage = React.lazy(() => import('./pages/public/InsightsPage').then
 const CareersPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.CareersPage })));
 const ContactPage = React.lazy(() => import('./pages/contact/ContactPage').then(m => ({ default: m.ContactPage })));
 const LegalPage = React.lazy(() => import('./pages/public/PublicPagesStubs').then(m => ({ default: m.LegalPage })));
+const PublicSettingsPage = React.lazy(() => import('./pages/public/PublicSettingsPage').then(m => ({ default: m.PublicSettingsPage })));
 
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -160,6 +161,7 @@ export const RootApp: React.FC = () => {
         <Route path="/news" element={<RequireGuest><NewsPage /></RequireGuest>} />
         <Route path="/careers" element={<RequireGuest><CareersPage /></RequireGuest>} />
         <Route path="/contact" element={<RequireGuest><ContactPage /></RequireGuest>} />
+        <Route path="/settings" element={<PublicSettingsPage />} />
         <Route path="/checkout" element={<RequireGuest><CheckoutPage /></RequireGuest>} />
         <Route path="/legal" element={<RequireGuest><LegalPage /></RequireGuest>} />
 

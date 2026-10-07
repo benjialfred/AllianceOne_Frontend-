@@ -14,6 +14,7 @@
   font-family: var(--ao-font-sans);
   padding-top: 100px;
   padding-bottom: 100px;
+  overflow: hidden;
 }
 
 /* Motion Background handles the void */
@@ -226,12 +227,41 @@
     flex-direction: column;
     padding: 120px 24px 60px;
     gap: 40px;
+    text-align: center;
+  }
+  .ao-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .ao-hero-title {
     font-size: 48px;
   }
+  .ao-hero-cta {
+    justify-content: center;
+  }
   .ao-hero-visual {
     width: 100%;
     height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ao-hero-title {
+    font-size: 32px;
+  }
+  .ao-hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .ao-btn-primary-large, .ao-btn-secondary-large {
+    width: 100%;
+    justify-content: center;
+  }
+  .ao-hero-visual {
+    height: 280px;
+    transform: scale(0.65);
+    transform-origin: center top;
   }
 }

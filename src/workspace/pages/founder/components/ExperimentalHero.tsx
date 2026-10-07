@@ -21,17 +21,18 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={heroRef} style={{ minHeight: '95vh', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingTop: '4rem' }}>
+    <section ref={heroRef} className="founder-hero-section" style={{ minHeight: '95vh', display: 'flex', alignItems: 'center', paddingTop: '4rem' }}>
       
       {/* Left: Dense Information & Title */}
       <motion.div 
+        className="founder-hero-left"
         style={{ flex: 1, paddingRight: '2rem', y: yText, opacity: opacityText }}
       >
         <motion.div 
           initial={{ opacity: 0, letterSpacing: '0.15em' }}
           animate={{ opacity: 1, letterSpacing: '0.15em' }}
           transition={{ duration: 1.5, ease: 'easeOut', delay: 1 }}
-          className="founder-micro"
+          className="founder-micro founder-hero-subtitle"
           style={{ marginBottom: '4rem' }}
         >
           Fondateur / Alliance One
@@ -77,6 +78,7 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.2 }}
+          className="founder-hero-data-grid"
           style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', maxWidth: '400px' }}
         >
           <div>
@@ -101,9 +103,10 @@ export const ExperimentalHero: React.FC<ExperimentalHeroProps> = ({ setCursorSta
       </motion.div>
 
       {/* Right: Massive Portfolio Image Wrapper */}
-      <div style={{ flex: 1, position: 'relative', height: '90vh', display: 'flex', justifyContent: 'flex-end', alignItems: 'stretch' }}>
+      <div className="founder-hero-right" style={{ flex: 1, position: 'relative', height: '90vh', display: 'flex', justifyContent: 'flex-end', alignItems: 'stretch' }}>
         
         <motion.div
+          className="founder-hero-image-wrapper"
           initial={{ opacity: 0, scale: 0.95, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 1 }}

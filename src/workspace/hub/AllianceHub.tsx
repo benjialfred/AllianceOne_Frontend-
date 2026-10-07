@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { usePlatformStore } from '../../core/stores/platformStore';
 import { useAuthStore } from '../../core/stores/authStore';
+import { apiClient } from '../../core/api/client';
 import { 
   Users, Activity, Boxes, Settings, Clock, CheckCircle, 
   ChevronRight, Command, Search, Sparkles, TrendingUp, AlertTriangle, Shield, Wallet
@@ -14,6 +15,26 @@ export const AllianceHub: React.FC = () => {
   const user = useAuthStore((s) => s.user);
   const navigate = useNavigate();
   const [searchFocused, setSearchFocused] = useState(false);
+  const [metrics, setMetrics] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const response = await apiClient.get('/core/dashboards/hub-metrics/');
+        setMetrics(response.data);
+      } catch (err) {
+        console.error('Failed to fetch hub metrics:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMetrics();
+  }, [currentOrg]);
+
+  const formatCurrency = (val: number) => {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XAF', maximumFractionDigits: 0 }).format(val);
+  };
 
   return (
     <div className="os-hub-root">
@@ -37,7 +58,7 @@ export const AllianceHub: React.FC = () => {
               placeholder="Que souhaitez-vous accomplir aujourd'hui ?" 
               className="os-omnibar-input"
               onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}va
+              onBlur={() => setSearchFocused(false)}
             />
             <div className="os-omnibar-shortcut">
               <Command size={14} /> K
@@ -105,12 +126,20 @@ export const AllianceHub: React.FC = () => {
                   </div>
                   <div className="omc-body">
                     <div className="omc-kpi">
-                      <span className="omc-kpi-val">124.5M FCFA</span>
+                      <span className="omc-kpi-val">
+                        {loading ? '...' : formatCurrency(metrics?.finance?.totalRevenue || 0)}
+                      </span>
                       <span className="omc-kpi-lab">Trésorerie globale</span>
                     </div>
-                    <div className="omc-status positive">
-                      <TrendingUp size={14} /> +12% ce mois
-                    </div>
+                    {metrics?.finance?.pendingInvoices > 0 ? (
+                       <div className="omc-status warning">
+                         <AlertTriangle size={14} /> {metrics.finance.pendingInvoices} factures en attente
+                       </div>
+                    ) : (
+                       <div className="omc-status positive">
+                         <TrendingUp size={14} /> Trésorerie à jour
+                       </div>
+                    )}
                   </div>
                 </div>
 
@@ -124,12 +153,20 @@ export const AllianceHub: React.FC = () => {
                   </div>
                   <div className="omc-body">
                     <div className="omc-kpi">
-                      <span className="omc-kpi-val">8,402</span>
-                      <span className="omc-kpi-lab">Articles en stock</span>
+                      <span className="omc-kpi-val">
+                        {loading ? '...' : formatCurrency(metrics?.inventory?.totalStockValue || 0)}
+                      </span>
+                      <span className="omc-kpi-lab">Valeur du stock</span>
                     </div>
-                    <div className="omc-status warning">
-                      <AlertTriangle size={14} /> 12 ruptures imminentes
-                    </div>
+                    {metrics?.inventory?.criticalAlerts > 0 ? (
+                        <div className="omc-status warning">
+                          <AlertTriangle size={14} /> {metrics.inventory.criticalAlerts} ruptures imminentes
+                        </div>
+                    ) : (
+                        <div className="omc-status positive">
+                          <CheckCircle size={14} /> Stock optimal
+                        </div>
+                    )}
                   </div>
                 </div>
 
@@ -143,12 +180,20 @@ export const AllianceHub: React.FC = () => {
                   </div>
                   <div className="omc-body">
                     <div className="omc-kpi">
-                      <span className="omc-kpi-val">1,250</span>
+                      <span className="omc-kpi-val">
+                        {loading ? '...' : metrics?.education?.totalStudents || 0}
+                      </span>
                       <span className="omc-kpi-lab">Élèves inscrits</span>
                     </div>
-                    <div className="omc-status positive">
-                      <CheckCircle size={14} /> 98% de présence
-                    </div>
+                    {metrics?.education?.pendingEnrollments > 0 ? (
+                        <div className="omc-status warning">
+                          <AlertTriangle size={14} /> {metrics.education.pendingEnrollments} inscriptions à valider
+                        </div>
+                    ) : (
+                        <div className="omc-status positive">
+                          <CheckCircle size={14} /> Effectifs à jour
+                        </div>
+                    )}
                   </div>
                 </div>
 
@@ -162,11 +207,13 @@ export const AllianceHub: React.FC = () => {
                   </div>
                   <div className="omc-body">
                     <div className="omc-kpi">
-                      <span className="omc-kpi-val">24</span>
-                      <span className="omc-kpi-lab">Tâches actives</span>
+                      <span className="omc-kpi-val">
+                        {loading ? '...' : 'Actif'}
+                      </span>
+                      <span className="omc-kpi-lab">Tâches & Projets</span>
                     </div>
-                    <div className="omc-status warning">
-                      <Clock size={14} /> 3 échéances aujourd'hui
+                    <div className="omc-status positive">
+                      <Clock size={14} /> Suivi opérationnel
                     </div>
                   </div>
                 </div>

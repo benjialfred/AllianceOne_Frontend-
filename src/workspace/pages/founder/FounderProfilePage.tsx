@@ -110,7 +110,17 @@ export const FounderProfilePage: React.FC = () => {
           >
             ← RETOUR
           </button>
-          <div className="founder-micro" style={{ opacity: 0.5 }}>System ID: A1-FD</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+            <button 
+              onClick={() => navigate('/contact')} 
+              onMouseEnter={cursorHover}
+              onMouseLeave={cursorLeave}
+              className="founder-link-raw"
+            >
+              CONTACT
+            </button>
+            <div className="founder-micro" style={{ opacity: 0.5 }}>System ID: A1-FD</div>
+          </div>
         </div>
       </motion.nav>
 
@@ -154,16 +164,16 @@ export const FounderProfilePage: React.FC = () => {
 
         {/* ================= 02 / HOW I BUILD (Circuit Sequence) ================= */}
         <section>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
+          <div className="founder-sys-header">
             <FadeUp>
               <div className="founder-micro" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <GitCommit size={16} color="var(--founder-accent)" /> 02 — Méthodologie
               </div>
             </FadeUp>
             
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '4rem' }} className="founder-build-container">
               {/* Animated vertical circuit line */}
-              <div style={{ position: 'absolute', left: '16px', top: '2rem', bottom: '2rem', width: '1px', backgroundColor: 'var(--founder-border-light)' }}>
+              <div className="founder-circuit-line">
                 <motion.div 
                   style={{ width: '1px', backgroundColor: 'var(--founder-text-display)', height: '100%', originY: 0 }}
                   initial={{ scaleY: 0 }}
@@ -173,26 +183,26 @@ export const FounderProfilePage: React.FC = () => {
                 />
               </div>
 
-              <motion.div ref={buildRef1} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b1View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
+              <motion.div ref={buildRef1} className="founder-build-item" style={{ opacity: b1View ? 1 : 0.2, transition: 'opacity 0.6s' }}>
+                <div className="founder-circuit-dot" />
                 <div className="founder-section-title">Comprendre</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Comprendre précisément l'origine du problème, les contraintes métier et les objectifs avant d'écrire la moindre ligne de code. L'ingénierie commence par l'écoute.</div>
               </motion.div>
 
-              <motion.div ref={buildRef2} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b2View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
+              <motion.div ref={buildRef2} className="founder-build-item" style={{ opacity: b2View ? 1 : 0.2, transition: 'opacity 0.6s' }}>
+                <div className="founder-circuit-dot" />
                 <div className="founder-section-title">Architecturer</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Définir des fondations résilientes. Choisir les technologies pour leur adéquation avec les exigences de sécurité et de performance.</div>
               </motion.div>
 
-              <motion.div ref={buildRef3} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b3View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
+              <motion.div ref={buildRef3} className="founder-build-item" style={{ opacity: b3View ? 1 : 0.2, transition: 'opacity 0.6s' }}>
+                <div className="founder-circuit-dot" />
                 <div className="founder-section-title">Construire</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Exécuter avec précision. Écrire un code propre, testable et documenté. Chaque fonction doit avoir une raison d'exister.</div>
               </motion.div>
 
-              <motion.div ref={buildRef4} style={{ display: 'flex', gap: '4rem', alignItems: 'center', opacity: b4View ? 1 : 0.2, transition: 'opacity 0.6s', paddingLeft: '4rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--founder-text-display)', position: 'absolute', left: '12.5px' }} />
+              <motion.div ref={buildRef4} className="founder-build-item" style={{ opacity: b4View ? 1 : 0.2, transition: 'opacity 0.6s' }}>
+                <div className="founder-circuit-dot" />
                 <div className="founder-section-title">Raffiner</div>
                 <div className="founder-body" style={{ maxWidth: '300px' }}>Chercher la simplicité au-delà de la complexité initiale. L'excellence se trouve dans la soustraction.</div>
               </motion.div>
@@ -221,7 +231,7 @@ export const FounderProfilePage: React.FC = () => {
 
         {/* ================= 06 / BEYOND CODE ================= */}
         <section>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '2rem' }}>
+          <div className="founder-sys-header">
             <FadeUp>
               <div className="founder-micro" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Heart size={16} color="var(--founder-accent)" /> 06 — Au-delà du Code
@@ -233,7 +243,7 @@ export const FounderProfilePage: React.FC = () => {
                 <h2 className="founder-section-title" style={{ marginBottom: '4rem' }}>Dimensions de caractère.</h2>
               </FadeUp>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+              <div className="founder-beyond-grid">
                 <FadeUp delay={0.3}>
                   <div className="founder-micro" style={{ color: 'var(--founder-text-display)', marginBottom: '1rem' }}>Discipline</div>
                   <div className="founder-body">Constance dans l'effort et exécution méthodique. La capacité à répéter l'effort jusqu'à la maîtrise, inspirée par la rigueur sportive (Workout, Basketball).</div>

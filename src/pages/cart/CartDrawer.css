@@ -4,11 +4,11 @@
   background: rgba(7, 10, 18, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 2000;
+  z-index: 200000;
 }
 
 .ao-cart-drawer-panel {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
@@ -21,6 +21,7 @@
   box-shadow: var(--ao-shadow-xl);
   font-family: var(--ao-font-sans);
   color: var(--ao-color-text-primary);
+  z-index: 200001;
 }
 
 .ao-cart-header {

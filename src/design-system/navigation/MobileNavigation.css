@@ -29,18 +29,19 @@
     left: 0;
     right: 0;
     height: 72px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(15, 23, 42, 0.9); /* Force dark to match OsHub */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid var(--ao-elegant-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     z-index: var(--ao-z-navbar);
     justify-content: space-around;
     align-items: center;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  [data-theme='dark'] .ao-mobile-bottom-nav {
-    background: rgba(15, 23, 42, 0.9);
+  /* Hide floating AI widget on mobile since it's in the bottom nav */
+  .ao-ai-floating-widget {
+    display: none !important;
   }
 
   .ao-mobile-tab {
@@ -50,7 +51,7 @@
     justify-content: center;
     background: transparent;
     border: none;
-    color: var(--ao-elegant-text-muted);
+    color: #94a3b8;
     font-size: 10px;
     font-weight: 500;
     gap: 4px;
@@ -61,13 +62,9 @@
   }
 
   .ao-mobile-tab.active,
-  .ao-mobile-tab:active {
-    color: var(--ao-elegant-primary);
-  }
-
-  [data-theme='dark'] .ao-mobile-tab.active,
-  [data-theme='dark'] .ao-mobile-tab:active {
-    color: #fff;
+  .ao-mobile-tab:active,
+  .ao-mobile-tab:hover {
+    color: #f8fafc;
   }
 
   .ao-mobile-fab-container {

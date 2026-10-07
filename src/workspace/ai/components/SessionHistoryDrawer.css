@@ -1,7 +1,7 @@
 .ao-history-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   z-index: 10005;
   display: flex;
@@ -12,18 +12,18 @@
   width: 340px;
   max-width: 90vw;
   height: 100%;
-  background: var(--color-bg-card, #ffffff);
-  border-left: 1px solid var(--color-border, #e2e8f0);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+  background: #030712;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   z-index: 10006;
-  color: var(--color-text-primary, #0f172a);
+  color: #f8fafc;
 }
 
 .ao-drawer-header {
   padding: 18px 16px 14px 16px;
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -42,20 +42,20 @@
 }
 
 .ao-drawer-title-icon {
-  color: #0088cc;
+  color: #3b82f6;
 }
 
 .ao-drawer-title-wrap h3 {
   margin: 0;
   font-size: 15px;
   font-weight: 700;
-  color: var(--color-text-primary, #0f172a);
+  color: #f8fafc;
 }
 
 .ao-drawer-close-btn {
   background: transparent;
   border: none;
-  color: var(--color-text-tertiary, #94a3b8);
+  color: #94a3b8;
   cursor: pointer;
   padding: 6px;
   border-radius: 8px;
@@ -63,8 +63,8 @@
 }
 
 .ao-drawer-close-btn:hover {
-  background: var(--color-bg-hover, #f1f5f9);
-  color: var(--color-text-primary, #0f172a);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
 }
 
 /* New Session CTA */
@@ -75,21 +75,21 @@
   gap: 8px;
   width: 100%;
   padding: 10px 14px;
-  background: linear-gradient(135deg, #0088cc 0%, #0077b5 100%);
-  color: #ffffff;
-  border: none;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.25);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
   transition: all 0.2s ease;
 }
 
 .ao-new-session-cta:hover {
-  background: linear-gradient(135deg, #0099e6 0%, #0088cc 100%);
+  background: rgba(59, 130, 246, 0.2);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 136, 204, 0.35);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.2);
 }
 
 .ao-sparkle-icon {
@@ -106,15 +106,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-bg-secondary, #f8fafc);
-  border: 1px solid var(--color-border, #e2e8f0);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 6px 10px;
   transition: border-color 0.15s ease;
 }
 
 .ao-drawer-search-box:focus-within {
-  border-color: #0088cc;
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .ao-search-icon {
@@ -128,7 +129,11 @@
   border: none;
   outline: none;
   font-size: 12.5px;
-  color: var(--color-text-primary, #0f172a);
+  color: #f8fafc;
+}
+
+.ao-drawer-search-box input::placeholder {
+  color: #64748b;
 }
 
 .ao-clear-search {
@@ -155,7 +160,7 @@
   justify-content: center;
   text-align: center;
   padding: 40px 16px;
-  color: var(--color-text-secondary, #64748b);
+  color: #64748b;
   gap: 10px;
   font-size: 13px;
 }
@@ -166,13 +171,13 @@
 }
 
 .ao-drawer-error {
-  color: #b91c1c;
+  color: #ef4444;
 }
 
 .ao-drawer-error button {
-  background: #fee2e2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -199,7 +204,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-text-tertiary, #94a3b8);
+  color: #64748b;
   padding: 4px 8px 6px 8px;
 }
 
@@ -217,12 +222,12 @@
 }
 
 .ao-conv-item:hover {
-  background: var(--color-bg-hover, #f1f5f9);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .ao-conv-item.active {
-  background: rgba(0, 136, 204, 0.1);
-  border: 1px solid rgba(0, 136, 204, 0.25);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 .ao-conv-main {
@@ -242,7 +247,7 @@
 .ao-conv-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-text-primary, #0f172a);
+  color: #f8fafc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -261,7 +266,7 @@
 .ao-conv-preview {
   margin: 0;
   font-size: 11px;
-  color: var(--color-text-secondary, #64748b);
+  color: #94a3b8;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -285,7 +290,7 @@
 .ao-action-icon-btn {
   background: transparent;
   border: none;
-  color: var(--color-text-tertiary, #94a3b8);
+  color: #94a3b8;
   cursor: pointer;
   padding: 4px;
   border-radius: 6px;
@@ -296,21 +301,21 @@
 }
 
 .ao-action-icon-btn:hover {
-  background: var(--color-bg-card, #ffffff);
-  color: var(--color-text-primary, #0f172a);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .ao-action-icon-btn.pin.pinned {
-  color: #0088cc;
+  color: #3b82f6;
 }
 
 .ao-action-icon-btn.delete:hover {
-  color: #e11d48;
+  color: #ef4444;
 }
 
 .ao-conv-arrow {
-  color: #cbd5e1;
+  color: #64748b;
 }
 
 /* Rename form */
@@ -324,16 +329,16 @@
 .ao-rename-form input {
   flex: 1;
   padding: 3px 6px;
-  border: 1px solid #0088cc;
+  border: 1px solid #3b82f6;
   border-radius: 4px;
   font-size: 12px;
   outline: none;
-  background: var(--color-bg-card, #ffffff);
-  color: var(--color-text-primary, #0f172a);
+  background: #0f172a;
+  color: #f8fafc;
 }
 
 .ao-save-rename-btn {
-  background: #0088cc;
+  background: #3b82f6;
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -346,8 +351,8 @@
 /* Drawer Footer */
 .ao-drawer-footer {
   padding: 12px 16px;
-  border-top: 1px solid var(--color-border, #e2e8f0);
-  background: var(--color-bg-secondary, #f8fafc);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.8);
 }
 
 .ao-footer-info {
@@ -355,7 +360,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 11.5px;
-  color: var(--color-text-tertiary, #94a3b8);
+  color: #94a3b8;
 }
 
 .ao-refresh-btn {
@@ -368,5 +373,5 @@
 }
 
 .ao-refresh-btn:hover {
-  color: #0088cc;
+  color: #3b82f6;
 }

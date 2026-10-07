@@ -41,42 +41,27 @@ export const LivingMotionBackground: React.FC<LivingMotionBackgroundProps> = ({ 
             fill="none"
             stroke="rgba(255,255,255,0.03)"
             strokeWidth="1"
-            animate={{
-              d: [
-                "M -100 500 C 200 400 400 600 1100 500",
-                "M -100 450 C 300 550 500 350 1100 550",
-                "M -100 500 C 200 400 400 600 1100 500"
-              ]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.path
             d="M -100 300 C 300 500 600 200 1100 400"
             fill="none"
             stroke="rgba(255,255,255,0.02)"
             strokeWidth="2"
-            animate={{
-              d: [
-                "M -100 300 C 300 500 600 200 1100 400",
-                "M -100 400 C 200 200 700 500 1100 300",
-                "M -100 300 C 300 500 600 200 1100 400"
-              ]
-            }}
-            transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+            initial={{ opacity: 0.3 }}
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           />
           <motion.path
             d="M -100 700 C 400 600 700 800 1100 650"
             fill="none"
             stroke="rgba(255,255,255,0.04)"
             strokeWidth="0.5"
-            animate={{
-              d: [
-                "M -100 700 C 400 600 700 800 1100 650",
-                "M -100 650 C 300 750 800 550 1100 750",
-                "M -100 700 C 400 600 700 800 1100 650"
-              ]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            initial={{ opacity: 0.6 }}
+            animate={{ opacity: [0.6, 0.2, 0.6] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
         </svg>
       </motion.div>
